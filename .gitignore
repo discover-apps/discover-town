@@ -1,0 +1,20 @@
+# Build
+/dist
+
+# API keys and secrets
+.env
+
+# Dependency directories
+/node_modules
+
+# OS metadata
+.DS_Store
+
+# Logs
+debug.log
+
+# Misc
+package-lock.json
+
+# Jetbrains config files
+.idea
