@@ -1,0 +1,12 @@
+@mixin link {
+  color: $primary-1;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+a {
+  @include link;
+}

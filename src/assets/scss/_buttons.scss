@@ -1,0 +1,120 @@
+/* Default button properties */
+@mixin button {
+  width: 100%;
+  color: #fff;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  background-color: $primary-1;
+  font-size: 1rem;
+  font-weight: 500;
+  font-family: 'Roboto', sans-serif;
+  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2),
+  0 1px 1px 0 rgba(0, 0, 0, 0.14),
+  0 1px 3px 0 rgba(0, 0, 0, 0.12);
+
+  &:focus {
+    outline: none;
+  }
+  &:hover {
+    background-color: $primary-2;
+  }
+}
+
+button {
+  @include button;
+}
+
+/* Clickable icons that are transparent except for logo */
+.icon-button {
+  @include button;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0);
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  border: none;
+  box-shadow: none;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.33);
+  }
+}
+
+/* OAuth login button */
+@mixin btn-oauth-login {
+  @include button;
+  padding: 0;
+  display: flex;
+  height: 58px;
+  width: 100%;
+  border-radius: 4px;
+
+  div.text {
+    width: 100%;
+    height: 58px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  div.logo {
+    padding: 0 0.5rem;
+    border-right: 1px solid #768BB7;
+    height: 58px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      height: 33px;
+      width: 33px;
+    }
+  }
+}
+
+/* OAuth button Facebook theme */
+button.btn-facebook-login {
+  @include btn-oauth-login;
+  background-color: #4a6ea8;
+  border: 1px solid #4a6ea8;
+
+  div.text {
+    color: #fff;
+  }
+
+  div.logo {
+    border-right: 1px solid #768BB7;
+  }
+
+  &:hover {
+    background-color: #2e4366;
+    border: 1px solid #2e4366;
+  }
+}
+
+/* OAuth button Google theme */
+button.btn-google-login {
+  @include btn-oauth-login;
+  background-color: #fff;
+  border: 1px solid #D5D5D5;
+
+  div.text {
+    color: rgba(0, 0, 0, 0.45);
+  }
+
+  div.logo {
+    border-right: 1px solid #D5D5D5;
+  }
+
+  &:hover {
+    background-color: #e6e6e6;
+    border: 1px solid #e6e6e6;
+  }
+}

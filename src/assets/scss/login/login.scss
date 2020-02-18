@@ -1,0 +1,38 @@
+.login_container {
+  margin: 0 auto;
+  max-width: 600px;
+
+  section.oauth {
+    padding: 1rem;
+
+    button:not(:last-child) {
+      margin-bottom: 1rem;
+    }
+  }
+
+  h4 {
+    color: rgba(0, 0, 0, 0.45);
+    text-align: center;
+    margin: 0 0 1rem 0;
+  }
+
+  section.credentials {
+    padding: 1rem;
+    background-color: #F1F1F1;
+    border: 2px solid rgba(0, 0, 0, 0.25);
+    border-left: none;
+    border-right: none;
+
+    input:not(:last-child) {
+      margin-bottom: 1rem;
+    }
+  }
+
+  p {
+    text-align: center;
+
+    &:last-child {
+      padding-bottom: 1rem;
+    }
+  }
+}
