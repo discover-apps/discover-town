@@ -1,0 +1,18 @@
+nav {
+  padding: .25rem .25rem;
+  background-color: $primary-1;
+
+  div.navbar_inner {
+    margin: 0 auto;
+    max-width: $max-width;
+    display: flex;
+    justify-content: space-between;
+
+    span {
+      color: #fff;
+      display: flex;
+      align-items: center;
+      user-select: none;
+    }
+  }
+}
