@@ -15,8 +15,10 @@ export const Login = () => {
                 <button>Log in</button>
             </form>
         </section>
-        <p><a href="#">Forgot your password?</a></p>
-        <p>Don't have an account? <a href="#">Create one</a></p>
+        <section>
+            <p><a href="#">Forgot your password?</a></p>
+            <p>Don't have an account? <a href="#">Create one</a></p>
+        </section>
     </main>
 };
 
