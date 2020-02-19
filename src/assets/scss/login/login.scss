@@ -31,6 +31,10 @@
   p {
     text-align: center;
 
+    &:first-child {
+      margin: 1rem 0;
+    }
+
     &:last-child {
       padding-bottom: 1rem;
     }

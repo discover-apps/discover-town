@@ -6,8 +6,10 @@
 @import './_inputs.scss';
 @import './_links.scss';
 @import './_paper.scss';
+@import './_text.scss';
 
 /* Components */
+@import './home/home';
 @import './login/login';
 @import './login/register';
 @import './navbar/navbar';
