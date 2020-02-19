@@ -9,13 +9,15 @@ module.exports = merge(config, {
     devtool: 'source-map',
     target: 'node',
     externals: [nodeExternals()],
+    node: {
+        __dirname: false
+    },
     entry: {
         server: ['./src/server/index.ts']
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: '[name].bundle.js',
-        publicPath: '/'
+        filename: '[name].bundle.js'
     },
     optimization: {
         minimize: true

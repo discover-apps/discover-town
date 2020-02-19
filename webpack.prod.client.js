@@ -4,6 +4,7 @@ const config = require('./webpack.config');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = merge(config, {
+    name: 'react',
     mode: 'production',
     devtool: 'source-map',
     entry: {
@@ -11,8 +12,7 @@ module.exports = merge(config, {
     },
     output: {
         path: path.resolve(__dirname, './dist'),
-        filename: './[name].bundle.js',
-        publicPath: '/'
+        filename: './[name].bundle.js'
     },
     optimization: {
         minimize: true

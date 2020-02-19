@@ -8,6 +8,7 @@ COPY . .
 
 # Delete and Reinstall Dependencies (eliminate OS conflicts)
 RUN rm -rf node_modules/
+RUN rm package-lock.json
 RUN npm install
 
 # Build server / client bundles with webpack

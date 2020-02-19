@@ -16,6 +16,9 @@ const app = express();
 app.use(helmet());
 app.use(morgan('combined'));
 
+// Define API routes
+app.get('/api/', home.get);
+
 // Configure environment settings
 if (ENVIRONMENT === 'development') {
     // Configure Webpack Dev Server (with React Hot-Reload)
@@ -31,16 +34,13 @@ if (ENVIRONMENT === 'development') {
     app.use(webpackHotMiddleware(compiler));
 } else {
     // Configure Static Files (Production)
-    app.use(express.static("./"));
+    app.use(express.static(__dirname));
 
     // Serve React Static Files (Production)
-    app.get('/', (req: Request, res: Response) => {
-        res.sendFile(path.resolve(__dirname, "/index.html"))
+    app.get('*', (req: Request, res: Response) => {
+        res.sendFile(path.join(__dirname, "/index.html"));
     });
 }
-
-// Define API routes
-app.get('/api/', home.get);
 
 // Start server
 app.listen(PORT, () => {

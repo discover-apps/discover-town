@@ -45,14 +45,17 @@
   "dependencies": {
     "@material-ui/core": "^4.9.3",
     "@material-ui/icons": "^4.9.1",
+    "@types/react-router-dom": "^5.1.3",
     "express": "^4.17.1",
     "nodemon": "^2.0.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-hot-loader": "^4.12.19"
+    "react-hot-loader": "^4.12.19",
+    "react-router-dom": "^5.1.2"
   },
   "scripts": {
     "dev": "SET NODE_ENV=development&nodemon ./src/server/index.ts",
+    "prod": "npm run build && node ./dist/server.bundle.js",
     "test": "jest --projects src/react src/server",
     "build": "npm run build-client && npm run build-server",
     "build-client": "webpack --config webpack.prod.client.js",

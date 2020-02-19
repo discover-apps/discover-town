@@ -16,8 +16,7 @@ module.exports = merge(config, {
     },
     output: {
         path: path.resolve(__dirname, "./dist"),
-        filename: "[name].bundle.js",
-        publicPath: "/"
+        filename: "[name].bundle.js"
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
