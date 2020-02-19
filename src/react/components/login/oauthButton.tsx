@@ -1,4 +1,4 @@
-import React from 'React';
+import React from 'react';
 import fbLogo from "../../../assets/img/facebook-logo.png";
 import googleLogo from "../../../assets/img/google-logo.png";
 

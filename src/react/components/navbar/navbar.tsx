@@ -1,4 +1,4 @@
-import React from 'React';
+import React from 'react';
 import MenuIcon from '@material-ui/icons/Menu';
 import ProfileIcon from '@material-ui/icons/AccountCircle';
 

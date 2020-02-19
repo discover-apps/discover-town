@@ -1,4 +1,4 @@
-import React from 'React';
+import React from 'react';
 import OAuthButton from './oauthButton';
 
 export const Login = () => {
@@ -17,7 +17,7 @@ export const Login = () => {
         </section>
         <section>
             <p><a href="#">Forgot your password?</a></p>
-            <p>Don't have an account? <a href="#">Create one</a></p>
+            <p>Don't have an account? <a href="/register">Create one</a></p>
         </section>
     </main>
 };

@@ -1,4 +1,4 @@
-import React from 'React';
+import React from 'react';
 import OAuthButton from "./oauthButton";
 
 export const Register = () => {
@@ -24,7 +24,7 @@ export const Register = () => {
                 <p>We will manage information about you as described in our <a href="#">Privacy Policy</a>, and <a
                     href="#">Cookie Policy</a>.</p>
                 <hr/>
-                <p>Already a member? <a href="#">Log in</a></p>
+                <p>Already a member? <a href="/login">Log in</a></p>
             </section>
         </main>
     )
