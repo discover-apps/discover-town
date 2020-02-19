@@ -24,10 +24,11 @@ if (ENVIRONMENT === 'development') {
     // Configure Webpack Dev Server (with React Hot-Reload)
     const webpackConfig = require('../../webpack.dev.js');
     const compiler = webpack(webpackConfig);
-
+    const history = require('connect-history-api-fallback');
+    app.use(history());
     app.use(
         webpackDevMiddleware(compiler, {
-            publicPath: webpackConfig.output.publicPath,
+            publicPath: '/',
             stats: "errors-warnings"
         })
     );
