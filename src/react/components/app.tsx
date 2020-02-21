@@ -1,11 +1,12 @@
 import {hot} from 'react-hot-loader/root';
 import React from 'react';
 import 'assets/scss/app.scss';
-import {BrowserRouter, Route, Switch} from "react-router-dom";
+import {BrowserRouter, Route, Switch,} from "react-router-dom";
 import Navbar from "./navbar/navbar";
 import Register from "./login/register";
 import Login from "./login/login";
-import Home from "./home/home";
+import Browse from "./home/browse";
+import Event from './home/event';
 
 const App = () => {
     return (
@@ -16,7 +17,8 @@ const App = () => {
                     <Switch>
                         <Route path="/login" component={Login}/>
                         <Route path="/register" component={Register}/>
-                        <Route path="/home" component={Home}/>
+                        <Route path="/browse" component={Browse}/>
+                        <Route path="/event" component={Event}/>
                     </Switch>
                 </BrowserRouter>
             </div>

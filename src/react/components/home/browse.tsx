@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import HomeEvent from "./event";
+import HomeEvent from "./eventListing";
 import ShowMore from "./showMore";
 
-export const Home = () => {
+export const Browse = () => {
     const [events, setEvents] = useState<number[]>([1, 2, 3]);
 
     const showMore = () => {
@@ -19,4 +19,4 @@ export const Home = () => {
     </main>)
 };
 
-export default Home;
+export default Browse;

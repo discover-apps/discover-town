@@ -9,7 +9,9 @@
 @import './_text.scss';
 
 /* Components */
-@import './home/home';
+@import './home/browse';
+@import './home/event';
+@import './home/eventListing';
 @import './login/login';
 @import './login/register';
 @import './navbar/navbar';
@@ -25,7 +27,7 @@ body {
   min-height: 100vh;
   box-sizing: border-box;
   font-family: 'Roboto', sans-serif;
-  background-color: $black-222;
+  background-color: $white-111;
 }
 
 body * {

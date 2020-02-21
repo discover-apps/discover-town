@@ -1,8 +1,11 @@
 /* Default button properties */
 @mixin button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   color: #fff;
-  padding: 0.5rem 0;
+  padding: 0.5rem 1rem;
   cursor: pointer;
   border: none;
   border-radius: 4px;
@@ -14,16 +17,36 @@
   0 1px 1px 0 rgba(0, 0, 0, 0.14),
   0 1px 3px 0 rgba(0, 0, 0, 0.12);
 
+  svg {
+    padding-right: 0.5rem;
+  }
   &:focus {
     outline: none;
   }
   &:hover {
     background-color: $primary-2;
+    transition-duration: 0.5s;
+  }
+  &:not(:hover) {
+    transition-duration: 0.5s;
   }
 }
 
 button {
   @include button;
+}
+
+/* Outline buttons grey */
+.outline-button {
+  color: $black-222;
+  border: 1px solid $black-222;
+  background-color: $transparent-color;
+
+  &:hover {
+    color: $primary-1;
+    border-color: $primary-1;
+    background-color: $transparent-color;
+  }
 }
 
 /* Clickable icons that are transparent except for logo */
