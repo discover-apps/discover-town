@@ -17,9 +17,6 @@
   0 1px 1px 0 rgba(0, 0, 0, 0.14),
   0 1px 3px 0 rgba(0, 0, 0, 0.12);
 
-  svg {
-    padding-right: 0.5rem;
-  }
   &:focus {
     outline: none;
   }
@@ -38,9 +35,13 @@ button {
 
 /* Outline buttons grey */
 .outline-button {
-  color: $black-222;
-  border: 1px solid $black-222;
+  color: $black-888;
+  border: 1px solid $black-888;
   background-color: $transparent-color;
+
+  svg {
+    padding-right: 0.5rem;
+  }
 
   &:hover {
     color: $primary-1;
