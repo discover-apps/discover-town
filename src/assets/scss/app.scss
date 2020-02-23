@@ -9,6 +9,9 @@
 @import './_text.scss';
 
 /* Components */
+@import './event/event';
+@import './event/eventInformation';
+@import './event/eventTitle';
 @import './home/browse';
 @import './home/event';
 @import './home/eventListing';

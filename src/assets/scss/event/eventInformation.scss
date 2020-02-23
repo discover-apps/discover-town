@@ -1,0 +1,26 @@
+section.information {
+  div.info {
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid $black-999;
+
+    div.icon {
+      padding-right: 1rem;
+
+      svg {
+        color: $black-999;
+        height: 32px;
+        width: 32px;
+      }
+    }
+
+    div.text {
+      color: $black-999;
+    }
+  }
+
+  div.map {
+    padding: 1rem;
+  }
+}

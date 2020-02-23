@@ -6,7 +6,7 @@ import Navbar from "./navbar/navbar";
 import Register from "./login/register";
 import Login from "./login/login";
 import Browse from "./home/browse";
-import Event from './home/event';
+import Event from './event/event';
 
 const App = () => {
     return (
