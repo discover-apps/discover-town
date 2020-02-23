@@ -1,0 +1,21 @@
+section.details {
+  padding: 1rem;
+
+  div.image {
+    width: 100%;
+    height: 150px;
+    background-color: $white-111;
+    margin-bottom: 1rem;
+
+    img {
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  div.text {
+    h2 {
+      margin-bottom: 1rem;
+    }
+  }
+}
