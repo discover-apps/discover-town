@@ -2,6 +2,7 @@ import React from 'react';
 import EventTitle from "./eventTitle";
 import EventInformation from "./eventInformation";
 import EventDetails from "./eventDetails";
+import {EventAttendees} from "./eventAttendees";
 
 export const Event = () => {
     return (
@@ -9,6 +10,7 @@ export const Event = () => {
             <EventTitle/>
             <EventInformation/>
             <EventDetails/>
+            <EventAttendees/>
         </main>
     )
 };
