@@ -1,7 +1,10 @@
-import {hot} from 'react-hot-loader/root';
 import React from 'react';
 import 'assets/scss/app.scss';
+import {hot} from 'react-hot-loader/root';
 import {BrowserRouter, Route, Switch,} from "react-router-dom";
+import {useDispatch, useSelector} from 'react-redux';
+
+import Sidebar from "./sidebar/sidebar";
 import Navbar from "./navbar/navbar";
 import Register from "./login/register";
 import Login from "./login/login";
@@ -9,9 +12,15 @@ import Browse from "./home/browse";
 import Event from './event/event';
 
 const App = () => {
+
+    const dispatch = useDispatch();
+    const sidebarOpen = useSelector((state: any) => state.sidebar.open);
+
     return (
-        <div className="app_container">
-            <Navbar/>
+        <div className="app_container no-scroll">
+            <header>
+                <Navbar/>
+            </header>
             <div className="app_inner">
                 <BrowserRouter>
                     <Switch>
@@ -21,6 +30,9 @@ const App = () => {
                         <Route path="/event" component={Event}/>
                     </Switch>
                 </BrowserRouter>
+            </div>
+            <div className="app_modal_portal">
+                {sidebarOpen ? <Sidebar/> : ''}
             </div>
         </div>
     )
