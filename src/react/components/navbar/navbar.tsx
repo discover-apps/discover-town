@@ -7,11 +7,12 @@ import {toggleSidebar} from "../../store/actions/sidebar.action";
 export const Navbar = () => {
 
     const dispatch = useDispatch();
+    const sidebarOpen = useSelector((state: any) => state.sidebar.open);
 
     const clickSidebar = () => {
-        const sidebarOpen = useSelector((state: any) => state.sidebar.open);
-        document.body.style.overflow = sidebarOpen ? "hidden" : "visible";
-        dispatch(toggleSidebar(!sidebarOpen))
+        document.body.style.overflow = sidebarOpen ? "visible" : "hidden";
+        dispatch(toggleSidebar(!sidebarOpen));
+        console.log('test');
     };
 
     return <nav className="navbar_container">

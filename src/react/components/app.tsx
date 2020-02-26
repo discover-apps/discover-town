@@ -18,22 +18,22 @@ const App = () => {
 
     return (
         <div className="app_container no-scroll">
-            <header>
-                <Navbar/>
-            </header>
-            <div className="app_inner">
-                <BrowserRouter>
+            <BrowserRouter>
+                <header>
+                    <Navbar/>
+                </header>
+                <div className="app_inner">
                     <Switch>
                         <Route path="/login" component={Login}/>
                         <Route path="/register" component={Register}/>
                         <Route path="/browse" component={Browse}/>
                         <Route path="/event" component={Event}/>
                     </Switch>
-                </BrowserRouter>
-            </div>
-            <div className="app_modal_portal">
-                {sidebarOpen ? <Sidebar/> : ''}
-            </div>
+                </div>
+                <div className="app_modal_portal">
+                    {sidebarOpen ? <Sidebar/> : ''}
+                </div>
+            </BrowserRouter>
         </div>
     )
 };
