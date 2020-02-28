@@ -14,38 +14,31 @@ mongoose.connect('mongodb://localhost:27017/discover-town', {
  * @param password
  */
 export const registerUser = async (email: string, password: string): Promise<User> => {
-    return new Promise(async (resolve, reject) => {
-        // check if email or password are null
-        if (!email || !password) {
-            reject('Invalid E-mail address or Password.');
-        }
+    // check if email or password are null
+    if (!email || !password) {
+        throw ('Invalid E-mail address or Password.');
+    }
 
-        // check if email is invalid
-        if (!EmailValidator.validate(email)) {
-            reject('Invalid E-mail address.');
-        }
+    // check if email is invalid
+    if (!EmailValidator.validate(email)) {
+        throw ('Invalid E-mail address.');
+    }
 
-        // check if database already contains E-mail address
-        await User.findOne({email}).then((user: any) => {
-            if (user) {
-                reject('E-mail address already in use.')
-            }
-        });
+    // check if database already contains E-mail address
+    let user: any = await User.findOne({email});
+    if (user) {
+        throw 'E-mail already in use.';
+    }
 
-        // create user object
-        const user = new User({
-            _id: new mongoose.Types.ObjectId(),
-            email: email,
-            password: password
-        });
-
-        // save user object to database
-        await user.save().then((result: any) => {
-            resolve(result);
-        }).catch((error: any) => {
-            reject(error);
-        });
+    // create user object
+    user = new User({
+        _id: new mongoose.Types.ObjectId(),
+        email: email,
+        password: password
     });
+
+    // save user object to database
+    return user.save();
 };
 
 /**
@@ -54,7 +47,19 @@ export const registerUser = async (email: string, password: string): Promise<Use
  * @param password
  */
 export const loginUser = async (email: string, password: string): Promise<Session> => {
-    return new Promise<Session>((resolve, reject) => {
+    return new Promise<Session>(async (resolve, reject) => {
+        // TODO: explicity set user type
+        // TODO: rewrite Promise correctly
+        await User.findOne({email, password}).then((user: any) => {
+            if (user) {
+                const session: Session = {
+                    accessToken: "testAccess",
+                    refreshToken: "testRefresh"
+                };
+                return resolve(session);
+            }
+        });
 
+        return reject('User not found');
     });
 };

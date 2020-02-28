@@ -66,7 +66,7 @@
     "react-router-dom": "^5.1.2"
   },
   "scripts": {
-    "dev": "SET NODE_ENV=development&nodemon ./src/server/index.ts",
+    "dev": "NODE_ENV=development nodemon ./src/server/index.ts",
     "prod": "npm run build && node ./dist/server.bundle.js",
     "test": "jest --projects src/react src/server",
     "build": "npm run build-client && npm run build-server",
