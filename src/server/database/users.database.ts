@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import {User} from '../models/user.model';
 import EmailValidator from 'email-validator';
-import Login from "components/login/login";
+import {Session} from "../models/session.model";
 
 mongoose.connect('mongodb://localhost:27017/discover-town', {
     useNewUrlParser: true,
@@ -48,8 +48,13 @@ export const registerUser = async (email: string, password: string): Promise<Use
     });
 };
 
-export const loginUser = async (email: string, password: string): Promise<Login> => {
-    return new Promise<Login>((resolve, reject) => {
+/**
+ * When given a valid email and password combination, creates a Session object in the database
+ * @param email
+ * @param password
+ */
+export const loginUser = async (email: string, password: string): Promise<Session> => {
+    return new Promise<Session>((resolve, reject) => {
 
     });
 };
