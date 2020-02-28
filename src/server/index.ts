@@ -22,8 +22,9 @@ app.use(bodyParser.json());
 // Define API routes
 app.get('/api/', home.get);
 app.post('/api/login', auth.login);
+app.post('/api/register', auth.register);
 app.get('/api/*', (req: Request, res: Response) => {
-    res.status(200).json({message: "Invalid API Route"});
+    res.status(404).send("Route not found");
 });
 
 // Configure environment settings

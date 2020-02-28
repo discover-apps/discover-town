@@ -13,7 +13,6 @@ export const Sidebar = () => {
     const clickSidebar = () => {
         document.body.style.overflow = sidebarOpen ? "visible" : "hidden";
         dispatch(toggleSidebar(!sidebarOpen));
-        console.log('test');
     };
 
     const navigateTo = (url: string) => {
