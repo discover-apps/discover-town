@@ -3,11 +3,13 @@ import path from 'path';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import webpack from 'webpack';
+import bodyParser from "body-parser";
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import {ENVIRONMENT, PORT} from '../util/secrets';
 // Import API Routes
 import * as home from './controllers/home';
+import * as auth from './controllers/auth.controller';
 
 // Create express server
 const app = express();
@@ -15,9 +17,14 @@ const app = express();
 // Add middleware
 app.use(helmet());
 app.use(morgan('combined'));
+app.use(bodyParser.json());
 
 // Define API routes
 app.get('/api/', home.get);
+app.post('/api/login', auth.login);
+app.get('/api/*', (req: Request, res: Response) => {
+    res.status(200).json({message: "Invalid API Route"});
+});
 
 // Configure environment settings
 if (ENVIRONMENT === 'development') {
