@@ -16,12 +16,12 @@ mongoose.connect('mongodb://localhost:27017/discover-town', {
 export const registerUser = async (email: string, password: string): Promise<User> => {
     // check if email or password are null
     if (!email || !password) {
-        throw ('Invalid E-mail address or Password.');
+        throw 'Invalid E-mail address or Password.';
     }
 
     // check if email is invalid
     if (!EmailValidator.validate(email)) {
-        throw ('Invalid E-mail address.');
+        throw 'Invalid E-mail address.';
     }
 
     // check if database already contains E-mail address
@@ -47,19 +47,14 @@ export const registerUser = async (email: string, password: string): Promise<Use
  * @param password
  */
 export const loginUser = async (email: string, password: string): Promise<Session> => {
-    return new Promise<Session>(async (resolve, reject) => {
-        // TODO: explicity set user type
-        // TODO: rewrite Promise correctly
-        await User.findOne({email, password}).then((user: any) => {
-            if (user) {
-                const session: Session = {
-                    accessToken: "testAccess",
-                    refreshToken: "testRefresh"
-                };
-                return resolve(session);
-            }
-        });
+    let user: any = await User.findOne({email, password});
+    if (user) {
+        const session: Session = {
+            accessToken: "testAccess",
+            refreshToken: "testRefresh"
+        };
+        return session;
+    }
 
-        return reject('User not found');
-    });
+    throw 'User not found';
 };
