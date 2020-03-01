@@ -1,17 +1,18 @@
 import React, {ChangeEvent, FormEvent, useState} from 'react';
 import OAuthButton from './oauthButton';
-import {loginUser} from "../../api/auth/auth";
-import {User} from "../../models/user";
+import {loginUser} from "../../api/auth.api";
+import {AxiosError} from 'axios';
+import {Session} from "../../models/session.model";
 
 export const Login = () => {
 
     const [login, setLogin] = useState({email: '', password: ''});
 
     const postLogin = () => {
-        loginUser(login.email, login.password).then((user: User) => {
-            console.log('successfully logged in user ', user.email);
-        }).catch((error: string) => {
-            console.log(error);
+        loginUser(login.email, login.password).then((session: Session) => {
+            console.log('successfully logged in user', session.refreshToken);
+        }).catch((error: AxiosError) => {
+            console.log(error.response.data);
         });
     };
 

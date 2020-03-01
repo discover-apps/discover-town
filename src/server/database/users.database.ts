@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import {User} from '../models/user.model';
 import EmailValidator from 'email-validator';
 import {Session} from "../models/session.model";
+import {createSession} from "./session.database";
 
 mongoose.connect('mongodb://localhost:27017/discover-town', {
     useNewUrlParser: true,
@@ -42,19 +43,15 @@ export const registerUser = async (email: string, password: string): Promise<Use
 };
 
 /**
- * When given a valid email and password combination, creates a Session object in the database
+ * When given a valid email and password combination, creates a session object in the database
  * @param email
  * @param password
  */
 export const loginUser = async (email: string, password: string): Promise<Session> => {
     let user: any = await User.findOne({email, password});
     if (user) {
-        const session: Session = {
-            accessToken: "testAccess",
-            refreshToken: "testRefresh"
-        };
-        return session;
+        return await createSession(email);
     }
 
-    throw 'User not found';
+    throw 'User with those credentials not found.';
 };

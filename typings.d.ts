@@ -12,3 +12,9 @@ declare module "*.svg" {
     const value: any;
     export default value;
 }
+
+declare namespace Express {
+    export interface Request {
+        userId?: string;
+    }
+}

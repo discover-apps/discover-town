@@ -1,25 +1,55 @@
 import mongoose from "mongoose";
+import jwt from 'jsonwebtoken';
 import {Session} from "../models/session.model";
-
-const jwt = require('jsonwebtoken');
-
-const TOKEN_SECRET_1 = "a16a6b854feb30347742ae9e90ec9e02";
-const TOKEN_SECRET_2 = "a16a6b854feb30347742ae9e90ec9e02";
+import {JWT_ACCESS_TOKEN_SECRET, JWT_REFRESH_TOKEN_SECRET} from "../../util/secrets";
+import {NextFunction, Request, Response} from "express";
 
 mongoose.connect('mongodb://localhost:27017/discover-town', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
 
-const createSession = (email: String): Promise<Session> => {
+export const createSession = (email: string): Promise<Session> => {
     const session: any = new Session({
         email: email,
-        refreshToken: null, // add generated token here
-        accessToken: null // add generated token here
+        accessToken: generateAccessToken(email),
+        refreshToken: generateRefreshToken(email)
     });
-    throw 'Error creating session.'
+
+    return session.save();
 };
 
-const generateToken = (email: string, secret: strigg) => {
-    return jwt.sign(email, TOKEN_SECRET, {expiresIn: '15m'})
+const refreshSession = (token: string): Promise<Session> => {
+    throw 'Error refreshing session.';
+};
+
+const deleteSession = (token: string): Promise<Session> => {
+    throw 'Error deleting session.';
+};
+
+const authenticateSession = (req: Request, res: Response, next: NextFunction) => {
+    // TODO: Verify this is correct
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (!token) {
+        return res.sendStatus(401);
+    }
+
+    jwt.verify(token, JWT_ACCESS_TOKEN_SECRET, (err, userId) => {
+        if (err) {
+            return res.sendStatus(403);
+        }
+
+        // req.userId = userId.toString();
+        next();
+    });
+};
+
+const generateAccessToken = (email: string) => {
+    return jwt.sign({email}, JWT_ACCESS_TOKEN_SECRET, {expiresIn: '10m'});
+};
+
+const generateRefreshToken = (email: string) => {
+    return jwt.sign({email}, JWT_REFRESH_TOKEN_SECRET);
 };

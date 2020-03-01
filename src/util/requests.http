@@ -1,0 +1,21 @@
+### User Login
+
+POST http://localhost:3000/api/login
+Content-Type: application/json
+
+{
+  "email": "jason@gmail.com",
+  "password": "password123"
+}
+
+### User Login (Invalid)
+
+POST http://localhost:3000/api/login
+Content-Type: application/json
+
+{
+  "email": "jason@gmail.com",
+  "password": "invalid_password"
+}
+
+###

@@ -3,7 +3,6 @@ import path from 'path';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import webpack from 'webpack';
-import bodyParser from "body-parser";
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import {ENVIRONMENT, PORT} from '../util/secrets';
@@ -17,7 +16,7 @@ const app = express();
 // Add middleware
 app.use(helmet());
 app.use(morgan('combined'));
-app.use(bodyParser.json());
+app.use(express.json());
 
 // Define API routes
 app.get('/api/', home.get);
