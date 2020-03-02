@@ -7,7 +7,7 @@ export const login = (req: Request, res: Response) => {
     const email = req.body.email;
     const password = req.body.password;
     loginUser(email, password).then((session: Session) => {
-        res.status(200).json({refreshToken: session.refreshToken});
+        res.status(200).json({accessToken: session.accessToken, refreshToken: session.refreshToken});
     }).catch((error: any) => {
         res.status(300).json(error);
     })
