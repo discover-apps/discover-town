@@ -4,7 +4,9 @@ import mongoose from 'mongoose';
 const sessionSchema = new mongoose.Schema({
     email: String,
     accessToken: String,
-    refreshToken: String
+    refreshToken: String,
+    ipAddress: Object,
+    userAgent: Object
 });
 
 // The object itself
@@ -14,4 +16,6 @@ export const Session = mongoose.model('Session', sessionSchema);
 export interface Session {
     accessToken: string;
     refreshToken: string;
+    ipAddress: Object;
+    userAgent: Object;
 }

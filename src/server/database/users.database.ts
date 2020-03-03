@@ -46,12 +46,26 @@ export const registerUser = async (email: string, password: string): Promise<Use
  * When given a valid email and password combination, creates a session object in the database
  * @param email
  * @param password
+ * @param ip
+ * @param userAgent
  */
-export const loginUser = async (email: string, password: string): Promise<Session> => {
+export const loginUser = async (email: string, password: string, ip: any, userAgent: any): Promise<Session> => {
     let user: any = await User.findOne({email, password});
     if (user) {
-        return await createSession(email);
+        return await createSession(email, ip, userAgent);
     }
 
     throw 'User with those credentials not found.';
+};
+
+/**
+ * When given a valid email, returns the corresponding User record.
+ * @param email
+ */
+export const getProfileByEmail = async (email: string): Promise<User> => {
+    let user: any = await User.findOne({email});
+    if (user) {
+        return await user;
+    }
+    throw 'Error retrieving user credentials.';
 };

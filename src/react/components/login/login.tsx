@@ -3,14 +3,20 @@ import OAuthButton from './oauthButton';
 import {loginUser} from "../../api/auth.api";
 import {AxiosError} from 'axios';
 import {Session} from "../../models/session.model";
+import {useDispatch} from "react-redux";
+import {setJwt} from "../../store/actions/auth.action";
 
 export const Login = () => {
 
+    const dispatch = useDispatch();
     const [login, setLogin] = useState({email: '', password: ''});
 
     const postLogin = () => {
         loginUser(login.email, login.password).then((session: Session) => {
-            console.log('successfully logged in user', session.refreshToken);
+            console.log('successfully logged in user');
+            console.log(session);
+            // add jwt to localstorage and redux store
+            dispatch(setJwt(session.refreshToken));
         }).catch((error: AxiosError) => {
             console.log(error.response.data);
         });

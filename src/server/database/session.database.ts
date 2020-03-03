@@ -9,11 +9,13 @@ mongoose.connect('mongodb://localhost:27017/discover-town', {
     useUnifiedTopology: true
 });
 
-export const createSession = (email: string): Promise<Session> => {
+export const createSession = (email: string, ip: any, userAgent: any): Promise<Session> => {
     const session: any = new Session({
         email: email,
         accessToken: generateAccessToken(email),
-        refreshToken: generateRefreshToken(email)
+        refreshToken: generateRefreshToken(email),
+        ipAddress: ip,
+        userAgent: userAgent
     });
 
     return session.save();

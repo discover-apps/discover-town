@@ -9,11 +9,9 @@ const baseUrl = "http://localhost:3000/api";
  * @param password
  */
 export const loginUser = async (email: string, password: string): Promise<Session> => {
-    const response: AxiosResponse<string> = await axios.post(baseUrl + '/login', {email, password});
+    const response: AxiosResponse<Session> = await axios.post(baseUrl + '/login', {email, password});
     if (response.status == 200) {
-        return {
-            refreshToken: response.data
-        };
+        return response.data;
     }
     throw response;
 };

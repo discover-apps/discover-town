@@ -25,7 +25,7 @@ app.get('/api/', home.get);
 app.post('/api/login', auth.login);
 app.post('/api/register', auth.register);
 app.post('/api/session/refresh', refreshSession);
-app.get('/api/user/profile', authenticateSession, user.secretMessage);
+app.get('/api/user/profile', authenticateSession, user.getProfile);
 app.get('/api/*', (req: Request, res: Response) => {
     res.status(404).send("Route not found");
 });
