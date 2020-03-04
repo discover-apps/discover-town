@@ -58,7 +58,7 @@ export const authenticateSession = (req: Request, res: Response, next: NextFunct
             return res.sendStatus(403);
         }
 
-        // Extract the user from the token
+        // Attach the user to the request object
         req.user = user.email;
         next();
     });
