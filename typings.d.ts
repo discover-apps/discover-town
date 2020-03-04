@@ -1,3 +1,5 @@
+import {Request} from 'express';
+
 declare module "*.png" {
     const value: any;
     export default value;
@@ -13,7 +15,7 @@ declare module "*.svg" {
     export default value;
 }
 
-declare namespace Express {
+declare module "express" {
     export interface Request {
         email?: string;
     }

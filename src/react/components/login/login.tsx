@@ -16,7 +16,7 @@ export const Login = () => {
             console.log('successfully logged in user');
             console.log(session);
             // add jwt to localstorage and redux store
-            dispatch(setJwt(session.refreshToken));
+            dispatch(setJwt(session.accessToken));
         }).catch((error: AxiosError) => {
             console.log(error.response.data);
         });

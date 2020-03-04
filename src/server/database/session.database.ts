@@ -26,8 +26,7 @@ const deleteSession = (token: string): Promise<Session> => {
 };
 
 export const authenticateSession = (req: Request, res: Response, next: NextFunction) => {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
+    const token = req.headers['authorization'];
 
     if (!token) {
         return res.sendStatus(401);
@@ -38,7 +37,7 @@ export const authenticateSession = (req: Request, res: Response, next: NextFunct
             return res.sendStatus(403);
         }
 
-        // req.userId = userId.toString();
+        // req.email = user.toString();
         next();
     });
 };
@@ -65,7 +64,7 @@ export const refreshSession = async (req: Request, res: Response) => {
 };
 
 const generateAccessToken = (email: string) => {
-    return jwt.sign({email}, JWT_ACCESS_TOKEN_SECRET, {expiresIn: '20s'});
+    return jwt.sign({email}, JWT_ACCESS_TOKEN_SECRET, {expiresIn: '15m'});
 };
 
 const generateRefreshToken = (email: string) => {

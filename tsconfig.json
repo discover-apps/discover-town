@@ -13,6 +13,7 @@
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "typeRoots": [
+      "./typings.d.ts",
       "./node_modules/@types/"
     ]
   },

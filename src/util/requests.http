@@ -23,7 +23,7 @@ GET http://localhost:3000/api/user/profile
 
 ### User Profile (Valid token)
 GET http://localhost:3000/api/user/profile
-Authorization: BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imphc29uQGdtYWlsLmNvbSIsImlhdCI6MTU4MzExMzA1NSwiZXhwIjoxNTgzMTEzMDc1fQ.PMN4WeT7v1O5Zrv7SNtJs46GsyzXi3BKTRYpU3AnwOM
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imphc29uQGdtYWlsLmNvbSIsImlhdCI6MTU4MzI2MDgyN30.Iv1bGF28pfm81usNipMcXW4IXipFAjBGHtNXgIsCeN8
 
 ### Get Refresh Token
 POST http://localhost:3000/api/session/refresh

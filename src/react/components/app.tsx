@@ -13,6 +13,7 @@ import Browse from "./home/browse";
 import Event from './event/event';
 import Home from "./home/home";
 import Profile from "./user/profile";
+import {modifyHttpHeader} from "../api/_api";
 
 const App = () => {
 
@@ -21,7 +22,13 @@ const App = () => {
 
     /* when app starts, load saved jwt if available, this acts as a authorized session. */
     // TODO: Authenticate loaded jwt before automatically logging in user
-    localStorage.getItem("jwt") ? dispatch(setJwt(localStorage.getItem("jwt"))) : null;
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+        dispatch(setJwt(jwt));
+        modifyHttpHeader(jwt);
+    }
+
+    // TODO: Add jwt to axios http object
 
     return (
         <div className="app_container no-scroll">
