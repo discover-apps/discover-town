@@ -10,6 +10,12 @@ mongoose.connect('mongodb://localhost:27017/discover-town', {
     useUnifiedTopology: true
 });
 
+/**
+ * Creates a session object and stores it in the session db.
+ * @param email
+ * @param ip
+ * @param userAgent
+ */
 export const createSession = (email: string, ip: any, userAgent: any): Promise<Session> => {
     const session: any = new Session({
         email: email,
@@ -27,7 +33,7 @@ const deleteSession = (token: string): Promise<Session> => {
 };
 
 /**
- * Responsible for authenticating each request and extracting the user behind the request.
+ * Validates JWT in Authorization Header, extracts user from JWT and attaches user to request.
  * @param req
  * @param res
  * @param next
