@@ -1,4 +1,6 @@
 import axios, {AxiosResponse} from 'axios';
+import store from "./../store/store";
+import {deleteJwt} from "../store/actions/auth.action";
 
 export const baseUrl = 'http://localhost:3000/api/';
 
@@ -29,7 +31,8 @@ export const modifyHttpHeader = (jwt: string): void => {
         // Any status codes that falls outside the range of 2xx cause this function to trigger
         const status = error.response.status;
         if (status === 401 || status === 403) {
-            // TODO: delete JWT from Redux store and Localstorage
+            // Delete jwt from Redux store and Localstorage
+            store.dispatch(deleteJwt());
         }
         throw error;
     });
