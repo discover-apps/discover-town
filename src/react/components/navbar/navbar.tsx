@@ -12,7 +12,6 @@ export const Navbar = () => {
     const clickSidebar = () => {
         document.body.style.overflow = sidebarOpen ? "visible" : "hidden";
         dispatch(toggleSidebar(!sidebarOpen));
-        console.log('test');
     };
 
     return <nav className="navbar_container">
