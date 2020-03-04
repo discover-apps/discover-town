@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, {AxiosResponse} from 'axios';
 
 export const baseUrl = 'http://localhost:3000/api/';
 
@@ -20,5 +20,17 @@ export const modifyHttpHeader = (jwt: string): void => {
         baseURL: baseUrl,
         timeout: 10000,
         headers: jwt ? {'Authorization': jwt} : {}
+    });
+
+    http.interceptors.response.use((config: AxiosResponse<any>) => {
+        // Any status code that lie within the range of 2xx cause this function to trigger
+        return config;
+    }, (error) => {
+        // Any status codes that falls outside the range of 2xx cause this function to trigger
+        const status = error.response.status;
+        if (status === 401 || status === 403) {
+            // TODO: delete JWT from Redux store and Localstorage
+        }
+        throw error;
     });
 };
