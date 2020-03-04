@@ -1,12 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {AppContainer} from 'react-hot-loader';
-import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import App from './components/app';
-import reducer from './store/reducers/_index.reducer';
-
-const store = createStore(reducer);
+import store from "./store/store";
 
 const render = () => {
     ReactDOM.render(
