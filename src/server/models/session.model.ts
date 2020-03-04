@@ -14,8 +14,9 @@ export const Session = mongoose.model('Session', sessionSchema);
 
 // The object type interface
 export interface Session {
-    accessToken: string;
-    refreshToken: string;
+    email: String;
+    accessToken: String;
+    refreshToken: String;
     ipAddress: Object;
     userAgent: Object;
 }

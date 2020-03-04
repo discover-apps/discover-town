@@ -7,11 +7,10 @@ export const secretMessage = (req: Request, res: Response) => {
 };
 
 export const getProfile = (req: Request, res: Response) => {
-    const email = "test";
-    if (!email) {
+    if (!req.user) {
         res.sendStatus(401);
     }
-    getProfileByEmail(email).then((user: User) => {
+    getProfileByEmail(req.user.toString()).then((user: User) => {
         if (user) {
             res.json(user);
         }
