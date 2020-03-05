@@ -14,6 +14,7 @@ import Event from './event/event';
 import Home from "./home/home";
 import Profile from "./user/profile";
 import {modifyHttpHeader} from "../api/_api";
+import {ProtectedRoute} from "../util/protected.route";
 
 const App = () => {
 
@@ -28,8 +29,6 @@ const App = () => {
         modifyHttpHeader(jwt);
     }
 
-    // TODO: Add jwt to axios http object
-
     return (
         <div className="app_container no-scroll">
             <BrowserRouter>
@@ -42,7 +41,7 @@ const App = () => {
                         <Route path="/register" component={Register}/>
                         <Route path="/browse" component={Browse}/>
                         <Route path="/event" component={Event}/>
-                        <Route path="/profile" component={Profile}/>
+                        <ProtectedRoute path="/profile" component={Profile}/>
                         <Route path="/" component={Home}/>
                     </Switch>
                 </div>
