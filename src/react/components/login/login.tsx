@@ -2,20 +2,18 @@ import React, {ChangeEvent, FormEvent, useState} from 'react';
 import OAuthButton from './oauthButton';
 import {loginUser} from "../../api/auth.api";
 import {Session} from "../../models/session.model";
-import {useDispatch} from "react-redux";
-import {setJwt} from "../../store/actions/auth.action";
 import {useHistory} from 'react-router-dom';
+import {authorizeClient} from "../../util/auth";
 
 export const Login = () => {
 
     const history = useHistory();
-    const dispatch = useDispatch();
     const [login, setLogin] = useState({email: '', password: ''});
 
     const postLogin = () => {
-        loginUser(login.email, login.password).then((session: Session) => {
+        loginUser(login.email, login.password).then(async (session: Session) => {
             // add jwt to localstorage and redux store
-            dispatch(setJwt(session.accessToken));
+            await authorizeClient(session.accessToken);
             // redirect to profile page
             history.push('/profile');
         });

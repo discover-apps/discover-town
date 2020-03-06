@@ -1,6 +1,5 @@
 import axios, {AxiosResponse} from 'axios';
-import store from "./../store/store";
-import {deleteJwt} from "../store/actions/auth.action";
+import {deauthorizeClient} from "../util/auth";
 
 export const baseUrl = 'http://localhost:3000/api/';
 
@@ -15,24 +14,24 @@ export let http = axios.create({
 
 /**
  * Allows for adjusting authorization header upon user log in and log out.
- * @param jwt
+ * @param token
  */
-export const modifyHttpHeader = (jwt: string): void => {
+export const modifyHttpHeader = (token: string): void => {
     http = axios.create({
         baseURL: baseUrl,
         timeout: 10000,
-        headers: jwt ? {'Authorization': jwt} : {}
+        headers: token ? {'Authorization': token} : {}
     });
 
     http.interceptors.response.use((config: AxiosResponse<any>) => {
         // Any status code that lie within the range of 2xx cause this function to trigger
         return config;
-    }, (error) => {
+    }, async (error) => {
         // Any status codes that falls outside the range of 2xx cause this function to trigger
         const status = error.response.status;
         if (status === 401 || status === 403) {
             // Delete jwt from Redux store and Localstorage
-            store.dispatch(deleteJwt());
+            deauthorizeClient();
         }
         throw error;
     });

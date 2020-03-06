@@ -1,19 +1,17 @@
 interface State {
-    jwt: string;
+    accessToken: string;
 }
 
 const initialState: State = {
-    jwt: undefined
+    accessToken: undefined
 };
 
 const auth = (state = initialState, action: any) => {
     switch (action.type) {
         case 'LOGIN':
-            localStorage.setItem("jwt", action.jwt);
-            return {...state, jwt: action.jwt};
+            return {...state, accessToken: action.accessToken};
         case 'LOGOUT':
-            localStorage.removeItem("jwt");
-            return {...state, jwt: undefined};
+            return {...state, accessToken: undefined};
         default:
             return state;
     }

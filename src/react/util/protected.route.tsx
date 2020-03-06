@@ -4,7 +4,7 @@ import store from '../store/store';
 
 // @ts-ignore
 export const ProtectedRoute = ({component: Component, ...rest}) => {
-    const authenticated: boolean = store.getState().auth.jwt;
+    const authenticated: boolean = store.getState().auth.accessToken;
     return <Route
         {...rest}
         render={props => {

@@ -2,8 +2,7 @@ import React from 'react';
 import 'assets/scss/app.scss';
 import {hot} from 'react-hot-loader/root';
 import {BrowserRouter, Route, Switch,} from "react-router-dom";
-import {useDispatch, useSelector} from 'react-redux';
-import {setJwt} from "../store/actions/auth.action";
+import {useSelector} from 'react-redux';
 
 import Sidebar from "./sidebar/sidebar";
 import Navbar from "./navbar/navbar";
@@ -13,21 +12,13 @@ import Browse from "./home/browse";
 import Event from './event/event';
 import Home from "./home/home";
 import Profile from "./user/profile";
-import {modifyHttpHeader} from "../api/_api";
 import {ProtectedRoute} from "../util/protected.route";
+import {loadClientAuthorization} from "../util/auth";
 
 const App = () => {
-
-    const dispatch = useDispatch();
     const sidebarOpen = useSelector((state: any) => state.sidebar.open);
 
-    /* when app starts, load saved jwt if available, this acts as a authorized session. */
-    // TODO: Authenticate loaded jwt before automatically logging in user
-    const jwt = localStorage.getItem("jwt");
-    if (jwt) {
-        dispatch(setJwt(jwt));
-        modifyHttpHeader(jwt);
-    }
+    loadClientAuthorization();
 
     return (
         <div className="app_container no-scroll">

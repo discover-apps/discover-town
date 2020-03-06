@@ -1,8 +1,8 @@
-export const setJwt = (jwt: string) => ({
+export const setAccessToken = (token: string) => ({
     type: 'LOGIN',
-    jwt: jwt
+    accessToken: token
 });
 
-export const deleteJwt = () => ({
+export const deleteAccessToken = () => ({
     type: 'LOGOUT'
 });
