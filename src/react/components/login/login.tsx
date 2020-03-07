@@ -9,13 +9,18 @@ export const Login = () => {
 
     const history = useHistory();
     const [login, setLogin] = useState({email: '', password: ''});
+    const [error, setError] = useState('');
 
     const postLogin = () => {
+        // clear error (if any)
+        setError('');
         loginUser(login.email, login.password).then(async (session: Session) => {
             // add jwt to localstorage and redux store
             await authorizeClient(session.accessToken);
             // redirect to profile page
             history.push('/profile');
+        }).catch((error) => {
+            setError(error.response.data);
         });
     };
 
@@ -56,6 +61,7 @@ export const Login = () => {
                 />
                 <button>Log in</button>
             </form>
+            {error ? <p className="error">{error}</p> : ''}
         </section>
         <section>
             <p><a href="#">Forgot your password?</a></p>
