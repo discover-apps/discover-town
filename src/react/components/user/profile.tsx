@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {User} from "../../models/user";
 import {getUserProfile} from "../../api/user.api";
+import {deauthorizeClient} from "../../util/auth";
+import {useHistory} from 'react-router-dom';
 
 export const Profile = () => {
 
@@ -21,5 +23,18 @@ export const Profile = () => {
 export default Profile;
 
 const ProfilePage = (user: User) => {
-    return (<p><b>Email: </b> {user.email}</p>)
+
+    const history = useHistory();
+
+    const logoutUser = async () => {
+        await deauthorizeClient();
+        history.push('/');
+    };
+
+    return (
+        <section>
+            <p><b>Email: </b> {user.email}</p>
+            <button onClick={() => logoutUser()}>Log out</button>
+        </section>
+    )
 };
