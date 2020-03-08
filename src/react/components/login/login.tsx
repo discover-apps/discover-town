@@ -15,7 +15,7 @@ export const Login = () => {
         // clear error (if any)
         setError('');
         loginUser(login.email, login.password).then(async (session: Session) => {
-            // add jwt to localstorage and redux store
+            // authorize client
             await authorizeClient(session.accessToken);
             // redirect to profile page
             history.push('/profile');

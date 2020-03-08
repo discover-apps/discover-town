@@ -1,4 +1,4 @@
-### User Login
+### UserModel Login
 
 POST http://localhost:3000/api/login
 Content-Type: application/json
@@ -8,7 +8,7 @@ Content-Type: application/json
   "password": "password123"
 }
 
-### User Login (Invalid)
+### UserModel Login (Invalid)
 
 POST http://localhost:3000/api/login
 Content-Type: application/json
@@ -18,10 +18,10 @@ Content-Type: application/json
   "password": "invalid_password"
 }
 
-### User Profile (No token)
+### UserModel Profile (No token)
 GET http://localhost:3000/api/user/profile
 
-### User Profile (Valid token)
+### UserModel Profile (Valid token)
 GET http://localhost:3000/api/user/profile
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imphc29uQGdtYWlsLmNvbSIsImlhdCI6MTU4MzI2MDgyN30.Iv1bGF28pfm81usNipMcXW4IXipFAjBGHtNXgIsCeN8
 

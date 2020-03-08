@@ -1,15 +1,28 @@
 import React, {ChangeEvent, FormEvent, useState} from 'react';
 import OAuthButton from "./oauthButton";
 import {useHistory} from "react-router-dom";
+import {registerUser} from "../../api/auth.api";
+import {RegisterUser} from "../../models/user.model";
+import {Session} from "../../models/session.model";
+import {authorizeClient} from "../../util/auth";
 
 export const Register = () => {
 
     const history = useHistory();
-    const [user, setUser] = useState({email: '', password: ''});
+    const [user, setUser] = useState<RegisterUser>({name: '', email: '', password: '', confirm: ''});
     const [error, setError] = useState('');
 
     const postRegister = () => {
-
+        // clear error
+        setError('');
+        registerUser(user).then(async (session: Session) => {
+            // authorize client
+            await authorizeClient(session.accessToken);
+            // redirect to profile page
+            history.push('/profile');
+        }).catch((error) => {
+            setError(error.response.data);
+        });
     };
 
     const onChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -35,7 +48,7 @@ export const Register = () => {
             </section>
             <h4>OR</h4>
             <section className="credentials">
-                <form>
+                <form onSubmit={onSubmit}>
                     <input type="text"
                            id="name"
                            name="name"
@@ -62,7 +75,7 @@ export const Register = () => {
                     />
                     <p>Your name is public. We'll use your email address to send you updates, and your location to find
                         events near you.</p>
-                    <button>Log in</button>
+                    <button>Create account</button>
                 </form>
             </section>
             <section className="policy">
