@@ -1,7 +1,32 @@
-import React from 'react';
+import React, {ChangeEvent, FormEvent, useState} from 'react';
 import OAuthButton from "./oauthButton";
+import {useHistory} from "react-router-dom";
 
 export const Register = () => {
+
+    const history = useHistory();
+    const [user, setUser] = useState({email: '', password: ''});
+    const [error, setError] = useState('');
+
+    const postRegister = () => {
+
+    };
+
+    const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+        event.persist();
+        setUser({
+            ...user,
+            [event.target.name]: event.target.value
+        });
+    };
+
+    const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+        if (event) {
+            event.preventDefault();
+        }
+        postRegister();
+    };
+
     return (
         <main className="register_container paper elevation-3">
             <section className="oauth">
@@ -11,9 +36,30 @@ export const Register = () => {
             <h4>OR</h4>
             <section className="credentials">
                 <form>
-                    <input type="name" id="name" name="name" placeholder="Your name"/>
-                    <input type="email" id="email" name="email" placeholder="Email address"/>
-                    <input type="password" id="password" name="password" placeholder="Password"/>
+                    <input type="text"
+                           id="name"
+                           name="name"
+                           placeholder="Your name"
+                           onChange={onChange}
+                    />
+                    <input type="text"
+                           id="email"
+                           name="email"
+                           placeholder="Email address"
+                           onChange={onChange}
+                    />
+                    <input type="password"
+                           id="password"
+                           name="password"
+                           placeholder="Password"
+                           onChange={onChange}
+                    />
+                    <input type="password"
+                           id="confirm"
+                           name="confirm"
+                           placeholder="Confirm Password"
+                           onChange={onChange}
+                    />
                     <p>Your name is public. We'll use your email address to send you updates, and your location to find
                         events near you.</p>
                     <button>Log in</button>
