@@ -3,6 +3,7 @@ import {User} from "../../models/user.model";
 import {getUserProfile} from "../../api/user.api";
 import {deauthorizeClient} from "../../util/auth";
 import {useHistory} from 'react-router-dom';
+import {ProfileHeader} from "./profileHeader";
 
 export const Profile = () => {
 
@@ -14,10 +15,11 @@ export const Profile = () => {
         });
     }, []);
 
-    return (<main>
-        <h1>My Profile</h1>
-        {user ? ProfilePage(user) : 'Logging in user...'}
-    </main>)
+    return (
+        <main>
+            <ProfileHeader/>
+        </main>
+    )
 };
 
 export default Profile;

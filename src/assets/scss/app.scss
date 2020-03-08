@@ -21,6 +21,7 @@
 @import './login/register';
 @import './navbar/navbar';
 @import './sidebar/sidebar';
+@import './user/profile';
 
 /* Fonts */
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap');
@@ -43,7 +44,6 @@ body * {
 div.app_container {
   div.app_inner {
     margin: 0 auto;
-    padding: 1rem;
     max-width: $max-width;
   }
 }

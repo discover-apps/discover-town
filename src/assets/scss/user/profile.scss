@@ -1,0 +1,58 @@
+section.profile-header {
+  background-color: $white-000;
+
+  div.user {
+    display: grid;
+    padding: 1rem;
+    grid-template-columns: auto 1fr 1fr;
+    align-items: center;
+
+    div.photo {
+      width: 40px;
+      height: 40px;
+
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+      }
+    }
+
+    div.details {
+      padding-left: 1rem;
+
+      h3, h5 {
+        font-weight: 400;
+        color: $black-777;
+      }
+    }
+
+    div.follow-button {
+      margin: 0 0 0 auto;
+
+      button {
+        padding: 0.5rem 2rem;
+        max-width: 100px;
+      }
+    }
+  }
+
+  div.menu {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+
+    div.option {
+      color: $black-777;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 500;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    div.selected {
+      color: $primary-1;
+      border-bottom: 3px solid $primary-1;
+    }
+  }
+}
