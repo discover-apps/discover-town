@@ -12,8 +12,10 @@ mongoose.connect('mongodb://localhost:27017/discover-town', {
 /**
  * When given a valid RegisterUser object, returns a User record
  * @param user
+ * @param ip
+ * @param agent
  */
-export const registerUser = async (user: RegisterUser): Promise<User> => {
+export const registerUser = async (user: RegisterUser, ip: any, agent: string): Promise<Session> => {
     // check if email or password are null
     if (!user.email || !user.password) {
         throw 'Invalid E-mail address or Password.';
@@ -25,7 +27,7 @@ export const registerUser = async (user: RegisterUser): Promise<User> => {
     }
 
     // check if password matches confirm password
-    if (user.password == user.confirm) {
+    if (user.password != user.confirm) {
         throw 'Passwords do not match.'
     }
 
@@ -49,7 +51,10 @@ export const registerUser = async (user: RegisterUser): Promise<User> => {
     });
 
     // save user object to database
-    return newUser.save();
+    await newUser.save();
+
+    // log user into system
+    return loginUser(user.email, user.password, ip, agent);
 };
 
 /**
@@ -60,12 +65,17 @@ export const registerUser = async (user: RegisterUser): Promise<User> => {
  * @param userAgent
  */
 export const loginUser = async (email: string, password: string, ip: any, userAgent: any): Promise<Session> => {
+    // check if email or password are null
+    if (!email || !password) {
+        throw 'Invalid E-mail address or Password.';
+    }
+
     let user: any = await User.findOne({email, password});
     if (user) {
         return await createSession(email, ip, userAgent);
     }
 
-    throw 'UserModel with those credentials not found.';
+    throw 'User with those credentials not found.';
 };
 
 /**

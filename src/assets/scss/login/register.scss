@@ -13,6 +13,11 @@
         margin-bottom: 1rem;
       }
     }
+
+    p.error {
+      margin-top: 1rem;
+      color: $danger;
+    }
   }
 
   section.oauth {

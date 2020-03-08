@@ -54,29 +54,34 @@ export const Register = () => {
                            name="name"
                            placeholder="Your name"
                            onChange={onChange}
+                           required
                     />
-                    <input type="text"
+                    <input type="email"
                            id="email"
                            name="email"
                            placeholder="Email address"
                            onChange={onChange}
+                           required
                     />
                     <input type="password"
                            id="password"
                            name="password"
                            placeholder="Password"
                            onChange={onChange}
+                           required
                     />
                     <input type="password"
                            id="confirm"
                            name="confirm"
                            placeholder="Confirm Password"
                            onChange={onChange}
+                           required
                     />
                     <p>Your name is public. We'll use your email address to send you updates, and your location to find
                         events near you.</p>
                     <button>Create account</button>
                 </form>
+                {error ? <p className="error">{error}</p> : ''}
             </section>
             <section className="policy">
                 <p>When you "Continue", you agree to our <a href="#">Terms of Service</a>.</p>

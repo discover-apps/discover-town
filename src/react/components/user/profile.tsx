@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {UserModel} from "../../models/user.model";
+import {User} from "../../models/user.model";
 import {getUserProfile} from "../../api/user.api";
 import {deauthorizeClient} from "../../util/auth";
 import {useHistory} from 'react-router-dom';
@@ -9,7 +9,7 @@ export const Profile = () => {
     const [user, setUser] = useState(undefined);
 
     useEffect(() => {
-        getUserProfile().then((user: UserModel) => {
+        getUserProfile().then((user: User) => {
             setUser(user);
         });
     }, []);
@@ -22,7 +22,7 @@ export const Profile = () => {
 
 export default Profile;
 
-const ProfilePage = (user: UserModel) => {
+const ProfilePage = (user: User) => {
 
     const history = useHistory();
 

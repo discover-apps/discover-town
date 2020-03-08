@@ -22,7 +22,7 @@ export const loginUser = async (email: string, password: string): Promise<Sessio
  * @param user
  */
 export const registerUser = async (user: RegisterUser): Promise<Session> => {
-    const response: AxiosResponse<Session> = await axios.post(baseUrl + '/register', user);
+    const response: AxiosResponse<Session> = await axios.post(baseUrl + '/register', {user});
     if (response.status == 200) {
         return response.data;
     }

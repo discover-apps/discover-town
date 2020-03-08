@@ -52,12 +52,14 @@ export const Login = () => {
                        name="email"
                        placeholder="Email address"
                        onChange={onChange}
+                       required
                 />
                 <input type="password"
                        id="password"
                        name="password"
                        placeholder="Password"
                        onChange={onChange}
+                       required
                 />
                 <button>Log in</button>
             </form>
