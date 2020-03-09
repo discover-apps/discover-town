@@ -1,7 +1,17 @@
 import React from 'react';
 import Placeholder from '../../../assets/img/placeholder_person.jpg';
 
-export const ProfileHeader = () => {
+interface Props {
+    selectPage: any;
+    selectedPage: number;
+}
+
+export const ProfileHeader = (props: Props) => {
+
+    const selected = (page: number) => {
+        return props.selectedPage == page ? 'selected' : '';
+    };
+
     return (
         <section className="profile-header elevation-4">
             <div className="user">
@@ -17,13 +27,13 @@ export const ProfileHeader = () => {
                 </div>
             </div>
             <div className="menu">
-                <div className="option selected">
+                <div className={`option ${selected(0)}`} onClick={() => props.selectPage(0)}>
                     activity
                 </div>
-                <div className="option">
+                <div className={`option ${selected(1)}`} onClick={() => props.selectPage(1)}>
                     events
                 </div>
-                <div className="option">
+                <div className={`option ${selected(2)}`} onClick={() => props.selectPage(2)}>
                     details
                 </div>
             </div>

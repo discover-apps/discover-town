@@ -5,10 +5,12 @@ import {deauthorizeClient} from "../../util/auth";
 import {useHistory} from 'react-router-dom';
 import {ProfileHeader} from "./profileHeader";
 import {ProfileActivity} from "./profileActivity";
+import {ProfileEvents} from "./profileEvents";
 
 export const Profile = () => {
 
     const [user, setUser] = useState(undefined);
+    const [page, setPage] = useState(0);
 
     useEffect(() => {
         getUserProfile().then((user: User) => {
@@ -16,10 +18,23 @@ export const Profile = () => {
         });
     }, []);
 
+    const loadPage = () => {
+        switch (page) {
+            case 0:
+                return <ProfileActivity/>;
+            case 1:
+                return <ProfileEvents/>;
+            case 2:
+                return '';
+            default:
+                return <ProfileActivity/>;
+        }
+    };
+
     return (
         <main>
-            <ProfileHeader/>
-            <ProfileActivity/>
+            <ProfileHeader selectPage={setPage} selectedPage={page}/>
+            {loadPage()}
         </main>
     )
 };
