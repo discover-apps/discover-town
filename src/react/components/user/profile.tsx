@@ -4,6 +4,7 @@ import {getUserProfile} from "../../api/user.api";
 import {deauthorizeClient} from "../../util/auth";
 import {useHistory} from 'react-router-dom';
 import {ProfileHeader} from "./profileHeader";
+import {ProfileActivity} from "./profileActivity";
 
 export const Profile = () => {
 
@@ -18,6 +19,7 @@ export const Profile = () => {
     return (
         <main>
             <ProfileHeader/>
+            <ProfileActivity/>
         </main>
     )
 };
