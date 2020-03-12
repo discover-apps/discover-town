@@ -1,5 +1,5 @@
 import {Request, Response} from "express";
-import {readUserById, readUserByUsername} from "../../database/user/user.database";
+import {readUserById, readUserByUsername, updateUser} from "../../database/user/user.database";
 import User from "../../models/user.model";
 
 export const getCurrentProfile = (req: Request, res: Response) => {
@@ -19,6 +19,19 @@ export const getUserProfile = (req: Request, res: Response) => {
     // get user database record
     readUserByUsername(username).then((user: User) => {
         res.status(200).json(user);
+    }).catch((error) => {
+        res.status(500).json(error);
+    })
+};
+
+export const editUserProfile = (req: Request, res: Response) => {
+    // get user id from req
+    const userId = Number.parseInt(req.user.toString());
+    // get user object from req body
+    const user: User = req.body;
+    // update user record in database
+    updateUser(userId, user).then((rowsAffected) => {
+        res.status(200).json('Successfully update profile.');
     }).catch((error) => {
         res.status(500).json(error);
     })

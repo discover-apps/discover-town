@@ -15,7 +15,7 @@ afterAll(async () => {
     await deleteTestUserFromDb();
 });
 
-describe('Sends POST request to /api/auth/ routes', () => {
+describe('auth.controller.spec.ts', () => {
     it('Sends valid register and receives session', async done => {
         const register = {
             email: testUser.email,

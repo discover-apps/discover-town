@@ -2,7 +2,7 @@ import User from "../../models/user.model";
 import {createUser, deleteUser, readUserByEmail, readUserById, readUserByUsername, updateUser} from "./user.database";
 import {testUser} from "../../models/_testModels.model";
 
-describe('Tests user database crud operations', () => {
+describe('user.database.spec.ts', () => {
     it('Inserts a user record and returns the record id', async done => {
         createUser(testUser).then((userId: number) => {
             expect(userId).not.toBeNull();

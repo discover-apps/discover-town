@@ -74,7 +74,7 @@
   "scripts": {
     "dev": "nodemon ./src/server/index.ts",
     "prod": "npm run build && node ./dist/server.bundle.js",
-    "test": "jest --projects src/react src/server",
+    "test": "jest --projects src/server -i --runInBand",
     "build": "npm run build-client && npm run build-server",
     "build-client": "webpack --config webpack.prod.client.js",
     "build-server": "webpack --config webpack.prod.server.js",

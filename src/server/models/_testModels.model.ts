@@ -19,6 +19,19 @@ export const testUser: User = {
     country: null
 };
 
+export const testUserUpdated: User = {
+    username: "testUsernameUpdated",
+    email: "testEmailUpdated@gmail.com",
+    name: "Test Name Updated",
+    password: "testPassword123Updated",
+    joined: new Date(),
+    completed: true,
+    private: true,
+    city: "cityUpdated",
+    state: "stateUpdated",
+    country: "countryUpdated"
+};
+
 export const testSession: Session = {
     accessToken: "testAccessToken",
     refreshToken: "testRefreshToken",

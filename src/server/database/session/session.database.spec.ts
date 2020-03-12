@@ -23,7 +23,7 @@ afterAll(async () => {
     const rowsAffected = await deleteUser(testUser.id);
 });
 
-describe('Tests session database crud operations', () => {
+describe('session.database.spec.ts', () => {
     it('Inserts a session record and returns the record id', async done => {
         createSession(testSession).then((sessionId: number) => {
             expect(sessionId).not.toBeNull();
