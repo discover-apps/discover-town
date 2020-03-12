@@ -8,10 +8,8 @@ import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import {ENVIRONMENT, PORT} from '../util/secrets';
 // Import API Routes
-import * as home from './controllers/home';
-import * as auth from './controllers/auth.controller';
-import * as user from './controllers/user.controller';
-import {authenticateSession, refreshSession} from "./database/session.database";
+import * as authController from './controllers/auth/auth.controller';
+import {authenticateSession} from './controllers/auth/auth.controller';
 
 // Create express server
 const app = express();
@@ -22,11 +20,10 @@ app.use(morgan('combined'));
 app.use(express.json());
 
 // Define API routes
-app.get('/api/', home.get);
-app.post('/api/login', auth.login);
-app.post('/api/register', auth.register);
-app.post('/api/session/refresh', refreshSession);
-app.get('/api/user/profile', authenticateSession, user.getProfile);
+app.post('/api/auth/login', authController.login);
+app.post('/api/auth/register', authController.register);
+app.get('/api/auth/logout', authenticateSession, authController.logout);
+
 app.get('/api/*', (req: Request, res: Response) => {
     res.status(404).send("Route not found");
 });

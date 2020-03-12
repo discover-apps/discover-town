@@ -35,3 +35,27 @@ if (!JWT_REFRESH_TOKEN_SECRET) {
     console.error('Environmental Variable: JWT_REFRESH_TOKEN_SECRET not found, please check .env files.');
     process.exit(1);
 }
+
+export const MYSQL_HOST = process.env.MYSQL_HOST;
+if (!MYSQL_HOST) {
+    console.error('Environmental Variable: MYSQL_HOST not found, please check .env files.');
+    process.exit(1);
+}
+
+export const MYSQL_USER = process.env.MYSQL_USER;
+if (!MYSQL_USER) {
+    console.error('Environmental Variable: MYSQL_USER not found, please check .env files.');
+    process.exit(1);
+}
+
+export const MYSQL_PASSWORD = process.env.MYSQL_PASSWORD;
+if (!MYSQL_PASSWORD) {
+    console.error('Environmental Variable: MYSQL_PASSWORD not found, please check .env files.');
+    process.exit(1);
+}
+
+export const MYSQL_DATABASE = process.env.MYSQL_DATABASE;
+if (!MYSQL_DATABASE) {
+    console.error('Environmental Variable: MYSQL_DATABASE not found, please check .env files.');
+    process.exit(1);
+}

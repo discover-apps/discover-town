@@ -1,13 +1,14 @@
 // The object type interface
 export interface User {
-    _id: String,
-    email: String,
-    password: String
+    _id: string;
+    username: string;
+    email: string;
+    password: string;
 }
 
 export interface RegisterUser {
-    name: string;
     email: string;
+    username: string;
     password: string;
     confirm: string;
 }

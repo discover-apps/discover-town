@@ -10,7 +10,7 @@ const baseUrl = "http://localhost:3000/api";
  * @param password
  */
 export const loginUser = async (email: string, password: string): Promise<Session> => {
-    const response: AxiosResponse<Session> = await axios.post(baseUrl + '/login', {email, password});
+    const response: AxiosResponse<Session> = await axios.post(baseUrl + '/auth/login', {email, password});
     if (response.status == 200) {
         return response.data;
     }
@@ -22,7 +22,13 @@ export const loginUser = async (email: string, password: string): Promise<Sessio
  * @param user
  */
 export const registerUser = async (user: RegisterUser): Promise<Session> => {
-    const response: AxiosResponse<Session> = await axios.post(baseUrl + '/register', {user});
+    if (user.password.length < 5 || user.password.length > 32) {
+        throw 'Password must be between 5 and 32 characters.'
+    }
+    if (user.password != user.confirm) {
+        throw 'Passwords must match.'
+    }
+    const response: AxiosResponse<Session> = await axios.post(baseUrl + '/auth/register', user);
     if (response.status == 200) {
         return response.data;
     }

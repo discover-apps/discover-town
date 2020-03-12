@@ -9,7 +9,7 @@ import {authorizeClient} from "../../util/auth";
 export const Register = () => {
 
     const history = useHistory();
-    const [user, setUser] = useState<RegisterUser>({name: '', email: '', password: '', confirm: ''});
+    const [user, setUser] = useState<RegisterUser>({username: '', email: '', password: '', confirm: ''});
     const [error, setError] = useState('');
 
     const postRegister = () => {
@@ -21,7 +21,11 @@ export const Register = () => {
             // redirect to profile page
             history.push('/profile');
         }).catch((error) => {
-            setError(error.response.data);
+            if (error.response) {
+                setError(error.response.data);
+            } else {
+                setError(error);
+            }
         });
     };
 
@@ -50,9 +54,9 @@ export const Register = () => {
             <section className="credentials">
                 <form onSubmit={onSubmit}>
                     <input type="text"
-                           id="name"
-                           name="name"
-                           placeholder="Your name"
+                           id="username"
+                           name="username"
+                           placeholder="Username"
                            onChange={onChange}
                            required
                     />

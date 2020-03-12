@@ -31,7 +31,10 @@ export const modifyHttpHeader = (token: string): void => {
         const status = error.response.status;
         if (status === 401 || status === 403) {
             // Delete jwt from Redux store and Localstorage
-            deauthorizeClient();
+            await deauthorizeClient();
+        }
+        if (status === 404) {
+            // TODO: Navigate to website root
         }
         throw error;
     });
