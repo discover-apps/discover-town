@@ -1,22 +1,29 @@
 import React, {useEffect, useState} from 'react';
 import {User} from "../../models/user.model";
 import {getUserProfile} from "../../api/user.api";
-import {deauthorizeClient} from "../../util/auth";
-import {useHistory} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import {ProfileHeader} from "./profileHeader";
 import {ProfileActivity} from "./profileActivity";
 import {ProfileEvents} from "./profileEvents";
+import {useSelector} from "react-redux";
 
 export const Profile = () => {
 
+    const currentUser = useSelector((state: any) => state.auth.currentUser);
     const [user, setUser] = useState(undefined);
     const [page, setPage] = useState(0);
+    const {username} = useParams();
 
     useEffect(() => {
-        getUserProfile().then((user: User) => {
-            setUser(user);
-        });
-    }, []);
+        if (username) {
+            getUserProfile(username).then((user: User) => {
+                setUser(user);
+            });
+        } else {
+            setUser(currentUser);
+        }
+
+    }, [username, currentUser]);
 
     const loadPage = () => {
         switch (page) {
@@ -40,20 +47,3 @@ export const Profile = () => {
 };
 
 export default Profile;
-
-const ProfilePage = (user: User) => {
-
-    const history = useHistory();
-
-    const logoutUser = async () => {
-        await deauthorizeClient();
-        history.push('/');
-    };
-
-    return (
-        <section>
-            <p><b>Email: </b> {user.email}</p>
-            <button onClick={() => logoutUser()}>Log out</button>
-        </section>
-    )
-};

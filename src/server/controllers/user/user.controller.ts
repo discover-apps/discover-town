@@ -1,5 +1,5 @@
 import {Request, Response} from "express";
-import {readUserById} from "../../database/user/user.database";
+import {readUserById, readUserByUsername} from "../../database/user/user.database";
 import User from "../../models/user.model";
 
 export const getCurrentProfile = (req: Request, res: Response) => {
@@ -11,4 +11,15 @@ export const getCurrentProfile = (req: Request, res: Response) => {
     }).catch((error) => {
         res.status(500).json(error);
     });
+};
+
+export const getUserProfile = (req: Request, res: Response) => {
+    // get user username from req body
+    const username: string = req.query.username;
+    // get user database record
+    readUserByUsername(username).then((user: User) => {
+        res.status(200).json(user);
+    }).catch((error) => {
+        res.status(500).json(error);
+    })
 };

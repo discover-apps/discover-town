@@ -1,7 +1,8 @@
 import React from 'react';
-import Placeholder from '../../../assets/img/placeholder_person.jpg';
 import {User} from "../../models/user.model";
 import {useSelector} from "react-redux";
+import Placeholder from '../../../assets/img/placeholder_person.jpg';
+import {useHistory} from 'react-router-dom';
 
 interface Props {
     user: User;
@@ -12,9 +13,14 @@ interface Props {
 export const ProfileHeader = (props: Props) => {
 
     const currentUser = useSelector((state: any) => state.auth.currentUser);
+    const history = useHistory();
 
     const selected = (page: number) => {
         return props.selectedPage == page ? 'selected' : '';
+    };
+
+    const navigateTo = (url: string) => {
+        history.push(url);
     };
 
     return (
@@ -24,11 +30,17 @@ export const ProfileHeader = (props: Props) => {
                     <img src={Placeholder} alt="user_image"/>
                 </div>
                 <div className="details">
-                    <h3>Google Events</h3>
+                    <h3>{props.user ? props.user.username : 'Loading...'}</h3>
                     <h5>100 Followers</h5>
                 </div>
                 <div className="follow-button">
-                    {currentUser ? <button className="outline-button">Edit</button> : <button>Follow</button>}
+                    {currentUser ?
+                        <button className="outline-button"
+                                onClick={() => navigateTo('/profile/edit/')}>
+                            Edit
+                        </button>
+                        :
+                        <button>Follow</button>}
                 </div>
             </div>
             <div className="menu">

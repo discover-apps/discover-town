@@ -5,8 +5,8 @@ import {http} from './_api';
 /**
  * Sends a request to the UserModel API that returns a user if the request is authenticated.
  */
-export const getUserProfile = async (): Promise<User> => {
-    const response: AxiosResponse<User> = await http.get('user/profile');
+export const getUserProfile = async (username: string): Promise<User> => {
+    const response: AxiosResponse<User> = await http.get(`user/profile?username=${username}`);
     if (response.status == 200) {
         return response.data;
     }

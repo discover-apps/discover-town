@@ -3,12 +3,14 @@ import {useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {toggleSidebar} from "../../store/actions/sidebar.action";
 import CloseIcon from '@material-ui/icons/Close';
+import {deauthorizeClient} from "../../util/auth";
 
 export const Sidebar = () => {
 
     const history = useHistory();
     const dispatch = useDispatch();
     const sidebarOpen = useSelector((state: any) => state.sidebar.open);
+    const currentUser = useSelector((state: any) => state.auth.currentUser);
 
     const clickSidebar = () => {
         document.body.style.overflow = sidebarOpen ? "visible" : "hidden";
@@ -17,6 +19,12 @@ export const Sidebar = () => {
 
     const navigateTo = (url: string) => {
         history.push(url);
+        clickSidebar();
+    };
+
+    const logoutUser = async () => {
+        await deauthorizeClient();
+        history.push('/');
         clickSidebar();
     };
 
@@ -37,7 +45,7 @@ export const Sidebar = () => {
                 <div className="link" onClick={() => navigateTo('/browse')}>
                     Browse
                 </div>
-                <div className="link" onClick={() => navigateTo('/profile')}>
+                <div className="link" onClick={() => navigateTo('/profile/')}>
                     My Profile
                 </div>
                 <div className="link" onClick={() => navigateTo('/categories')}>
@@ -55,6 +63,15 @@ export const Sidebar = () => {
                 <div className="link" onClick={() => navigateTo('/myevents')}>
                     Liked events
                 </div>
+                {currentUser ?
+                    <div className="link" onClick={() => logoutUser()}>
+                        Sign out
+                    </div>
+                    :
+                    <div className="link" onClick={() => navigateTo('/login')}>
+                        Sign in
+                    </div>
+                }
             </div>
         </section>
     )

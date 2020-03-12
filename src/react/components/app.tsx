@@ -14,6 +14,7 @@ import Home from "./home/home";
 import Profile from "./user/profile";
 import {ProtectedRoute} from "../util/protected.route";
 import {loadClientAuthorization} from "../util/auth";
+import {ProfileEdit} from "./user/profileEdit";
 
 const App = () => {
     const sidebarOpen = useSelector((state: any) => state.sidebar.open);
@@ -32,7 +33,8 @@ const App = () => {
                         <Route path="/register" component={Register}/>
                         <Route path="/browse" component={Browse}/>
                         <Route path="/event" component={Event}/>
-                        <ProtectedRoute path="/profile" component={Profile}/>
+                        <ProtectedRoute exact path="/profile" component={Profile}/>
+                        <ProtectedRoute exact path="/profile/edit" component={ProfileEdit}/>
                         <Route path="/" component={Home}/>
                     </Switch>
                 </div>
