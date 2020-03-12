@@ -1,19 +1,25 @@
-import {deleteAccessToken, setAccessToken} from "../store/actions/auth.action";
+import {deleteAccessToken, setAccessToken, setCurrentUser} from "../store/actions/auth.action";
 import store from "../store/store";
 import {modifyHttpHeader} from "../api/_api";
+import {getCurrentUser} from "../api/user.api";
+import {User} from "../models/user.model";
 
 /**
  * Authorizes a client given a session. Sets accessToken in redux store, sets
  * authorization header in http requests, and saves accessToken in localstorage.
  * @param token
+ * @param user
  */
-export const authorizeClient = (token: string): Promise<void> => {
+export const authorizeClient = async (token: string): Promise<void> => {
     // add accessToken to redux store
     store.dispatch(setAccessToken(token));
     // add accessToken to localstorage
     localStorage.setItem("accessToken", token);
     // add accessToken to http authorization header
     modifyHttpHeader(token);
+    // add current user to redux store
+    const user: User = await getCurrentUser();
+    store.dispatch(setCurrentUser(user));
     return;
 };
 
@@ -37,7 +43,6 @@ export const deauthorizeClient = (): Promise<void> => {
  */
 export const loadClientAuthorization = async (): Promise<void> => {
     const token = localStorage.getItem("accessToken");
-
     if (token) {
         return authorizeClient(token);
     } else {

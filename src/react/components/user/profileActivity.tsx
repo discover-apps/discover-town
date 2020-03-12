@@ -3,8 +3,13 @@ import EventIcon from '@material-ui/icons/Event';
 import GroupIcon from '@material-ui/icons/Group';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Placeholder from '../../../assets/img/placeholder_item.png';
+import {User} from "../../models/user.model";
 
-export const ProfileActivity = () => {
+interface Props {
+    user: User;
+}
+
+export const ProfileActivity = (props: Props) => {
     return (
         <section className="profile-activity elevation-4">
             <EventActivity/>

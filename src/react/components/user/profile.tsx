@@ -21,19 +21,19 @@ export const Profile = () => {
     const loadPage = () => {
         switch (page) {
             case 0:
-                return <ProfileActivity/>;
+                return <ProfileActivity user={user}/>;
             case 1:
-                return <ProfileEvents/>;
+                return <ProfileEvents user={user}/>;
             case 2:
                 return '';
             default:
-                return <ProfileActivity/>;
+                return <ProfileActivity user={user}/>;
         }
     };
 
     return (
         <main>
-            <ProfileHeader selectPage={setPage} selectedPage={page}/>
+            <ProfileHeader user={user} selectPage={setPage} selectedPage={page}/>
             {loadPage()}
         </main>
     )

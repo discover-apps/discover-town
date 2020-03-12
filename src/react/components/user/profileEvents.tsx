@@ -1,7 +1,12 @@
 import React from 'react';
 import Placeholder from '../../../assets/img/placeholder_item.png';
+import {User} from "../../models/user.model";
 
-export const ProfileEvents = () => {
+interface Props {
+    user: User;
+}
+
+export const ProfileEvents = (props: Props) => {
     return (
         <section className="profile-events elevation-4">
             <Event/>

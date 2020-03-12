@@ -1,12 +1,17 @@
 import React from 'react';
 import Placeholder from '../../../assets/img/placeholder_person.jpg';
+import {User} from "../../models/user.model";
+import {useSelector} from "react-redux";
 
 interface Props {
+    user: User;
     selectPage: any;
     selectedPage: number;
 }
 
 export const ProfileHeader = (props: Props) => {
+
+    const currentUser = useSelector((state: any) => state.auth.currentUser);
 
     const selected = (page: number) => {
         return props.selectedPage == page ? 'selected' : '';
@@ -23,7 +28,7 @@ export const ProfileHeader = (props: Props) => {
                     <h5>100 Followers</h5>
                 </div>
                 <div className="follow-button">
-                    <button>Follow</button>
+                    {currentUser ? <button className="outline-button">Edit</button> : <button>Follow</button>}
                 </div>
             </div>
             <div className="menu">

@@ -10,6 +10,7 @@ import {ENVIRONMENT, PORT} from '../util/secrets';
 // Import API Routes
 import * as authController from './controllers/auth/auth.controller';
 import {authenticateSession} from './controllers/auth/auth.controller';
+import * as userController from './controllers/user/user.controller';
 
 // Create express server
 const app = express();
@@ -23,6 +24,7 @@ app.use(express.json());
 app.post('/api/auth/login', authController.login);
 app.post('/api/auth/register', authController.register);
 app.get('/api/auth/logout', authenticateSession, authController.logout);
+app.get('/api/user/', authenticateSession, userController.getCurrentProfile);
 
 app.get('/api/*', (req: Request, res: Response) => {
     res.status(404).send("Route not found");

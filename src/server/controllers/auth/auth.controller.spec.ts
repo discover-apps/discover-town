@@ -1,21 +1,11 @@
 import supertest, {Response} from "supertest";
 import app from '../../index';
 import {testSession, testUser} from "../../models/_testModels.model";
-import {deleteUser, readUserByEmail} from "../../database/user/user.database";
+import {readUserByEmail} from "../../database/user/user.database";
 import {deleteAllSessionsForUser} from "../../database/session/session.database";
+import {deleteTestUserFromDb} from "../../util/test.util";
 
 const request = supertest(app);
-
-// TODO: Add this to common test functions file
-const deleteTestUserFromDb = async () => {
-    // get test user id
-    const testUserId = await readUserByEmail(testUser.email);
-    if (testUserId) {
-        await deleteAllSessionsForUser(testUserId.id);
-        // delete user record from database
-        await deleteUser(testUserId.id);
-    }
-};
 
 beforeAll(async () => {
     await deleteTestUserFromDb();

@@ -12,3 +12,11 @@ export const getUserProfile = async (): Promise<User> => {
     }
     throw 'Error retrieving UserModel profile.';
 };
+
+export const getCurrentUser = async (): Promise<User> => {
+    const response: AxiosResponse<User> = await http.get('user');
+    if (response.status == 200) {
+        return response.data;
+    }
+    throw 'Error retrieving current user profile.';
+};

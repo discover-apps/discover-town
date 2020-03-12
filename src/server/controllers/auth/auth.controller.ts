@@ -84,7 +84,7 @@ export const authenticateSession = (req: Request, res: Response, next: NextFunct
     });
 };
 
-const loginUser = (user: User, ip: string, agent: string): Promise<Session> => {
+export const loginUser = (user: User, ip: string, agent: string): Promise<Session> => {
     return new Promise<Session>(async (resolve, reject) => {
         const userRecord = await readUserByEmail(user.email);
         if (userRecord && user.password == userRecord.password) {
@@ -109,7 +109,7 @@ const loginUser = (user: User, ip: string, agent: string): Promise<Session> => {
     });
 };
 
-const registerUser = (user: User, ip: string, agent: string): Promise<Session> => {
+export const registerUser = (user: User, ip: string, agent: string): Promise<Session> => {
     return new Promise<Session>(async (resolve, reject) => {
         // check is username is valid
         if (user.username == "") {
