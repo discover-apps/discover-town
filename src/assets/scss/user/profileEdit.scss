@@ -7,6 +7,11 @@ main.profile-edit {
   }
 
   section.picture {
+    user-select: none;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
     div.image {
       margin: 0 auto;
       height: 84px;
@@ -17,6 +22,7 @@ main.profile-edit {
         width: 100%;
         border-radius: 50%;
         object-fit: cover;
+        cursor: pointer;
       }
     }
 
@@ -26,18 +32,40 @@ main.profile-edit {
       color: $primary-1;
       font-size: 0.875rem;
       font-weight: 500;
+      cursor: pointer;
     }
   }
 
   section.profile {
     form {
       padding: 0 1rem;
-    }
 
-    input {
-      &:not(:last-child) {
-        margin-bottom: 0.5rem;
+      p.form-error {
+        color: $danger;
+        margin: 1rem 0;
+        text-align: center;
+      }
+
+      input {
+        &:not(:last-child) {
+          margin-bottom: 0.5rem;
+        }
       }
     }
+
+    a {
+      text-align: center;
+      display: block;
+      margin: 1rem auto;
+    }
   }
+
+  div.loading-spinner {
+    display: flex;
+    height: 10vh;
+    justify-content: center;
+    align-items: center;
+    font-size: 5rem;
+  }
+
 }

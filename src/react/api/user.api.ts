@@ -20,3 +20,11 @@ export const getCurrentUser = async (): Promise<User> => {
     }
     throw 'Error retrieving current user profile.';
 };
+
+export const updateUserProfile = async (user: User): Promise<string> => {
+    const response: AxiosResponse<string> = await http.post('user/edit', user);
+    if (response.status == 200) {
+        return response.data;
+    }
+    throw 'Error updating user profile.';
+};

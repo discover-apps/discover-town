@@ -4,6 +4,9 @@ export interface User {
     username: string;
     email: string;
     password: string;
+    city: string;
+    state: string;
+    country: string;
 }
 
 export interface RegisterUser {
