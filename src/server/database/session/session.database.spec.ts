@@ -8,7 +8,7 @@ import {
     updateSession
 } from "./session.database";
 import Session from "../../models/session.model";
-import {testSession, testUser} from "../../models/_testModels.model";
+import {testSession, testUser} from "../../util/test.util";
 import {createUser, deleteUser} from "../user/user.database";
 
 beforeAll(async () => {

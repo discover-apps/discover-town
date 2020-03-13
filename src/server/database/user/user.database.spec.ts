@@ -1,6 +1,10 @@
 import User from "../../models/user.model";
 import {createUser, deleteUser, readUserByEmail, readUserById, readUserByUsername, updateUser} from "./user.database";
-import {testUser} from "../../models/_testModels.model";
+import {deleteTestUserFromDb, testUser} from "../../util/test.util";
+
+afterAll(async () => {
+    await deleteTestUserFromDb();
+});
 
 describe('user.database.spec.ts', () => {
     it('Inserts a user record and returns the record id', async done => {
@@ -24,12 +28,37 @@ describe('user.database.spec.ts', () => {
         });
         tempUser = {...testUser};
         tempUser.id = undefined;
-        tempUser.username = "testUsernameNotDuplicate";
+        tempUser.username = "notDuplicate";
         await createUser(tempUser).then((userId: number) => {
             // should fail
         }).catch((error: any) => {
             expect(error).not.toBeNull();
             expect(error).toEqual('A user with that email address already exists.');
+        });
+        done();
+    });
+
+    it('Fails to insert user with invalid username', async done => {
+        // invalid character ' '
+        await createUser({...testUser, username: 'Invalid Username'}).then(() => {
+            // should fail
+        }).catch((error: any) => {
+            expect(error).not.toBeNull();
+            expect(error).toEqual('Username should not contain any special characters.');
+        });
+        // length too short
+        await createUser({...testUser, username: 'asd'}).then(() => {
+            // should fail
+        }).catch((error: any) => {
+            expect(error).not.toBeNull();
+            expect(error).toEqual('Username should be between 4 and 16 characters.');
+        });
+        // length too long
+        await createUser({...testUser, username: 'Invalid_Username1'}).then(() => {
+            // should fail
+        }).catch((error: any) => {
+            expect(error).not.toBeNull();
+            expect(error).toEqual('Username should be between 4 and 16 characters.');
         });
         done();
     });
@@ -90,7 +119,7 @@ describe('user.database.spec.ts', () => {
             expect(error).not.toBeNull();
             expect(error).toEqual('A user with that username already exists.');
         });
-        tempUser.username = "testUsernameNotDuplicate";
+        tempUser.username = "notDuplicate";
         await updateUser(testUser.id, tempUser).then((rowsAffected: number) => {
             // should fail
         }).catch((error: any) => {
@@ -99,6 +128,33 @@ describe('user.database.spec.ts', () => {
         });
         // delete temp user from database
         const rowsEffected = await deleteUser(tempUserId);
+        done();
+    });
+
+    it('Fails to updated user with invalid username', async done => {
+        // get user record
+        const user = await readUserByUsername(testUser.username);
+        // invalid character ' '
+        await updateUser(user.id, {...testUser, username: 'New Username'}).then(() => {
+            // should fail
+        }).catch((error: any) => {
+            expect(error).not.toBeNull();
+            expect(error).toEqual('Username should not contain any special characters.');
+        });
+        // length too short
+        await updateUser(user.id, {...testUser, username: 'New'}).then(() => {
+            // should fail
+        }).catch((error: any) => {
+            expect(error).not.toBeNull();
+            expect(error).toEqual('Username should be between 4 and 16 characters.');
+        });
+        // length too long
+        await updateUser(user.id, {...testUser, username: 'New_Username_Too_Long'}).then(() => {
+            // should fail
+        }).catch((error: any) => {
+            expect(error).not.toBeNull();
+            expect(error).toEqual('Username should be between 4 and 16 characters.');
+        });
         done();
     });
 

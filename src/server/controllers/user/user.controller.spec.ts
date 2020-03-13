@@ -1,7 +1,6 @@
 import app from '../../index';
 import supertest, {Response} from "supertest";
-import {deleteTestUserFromDb, registerTestUserToDb} from "../../util/test.util";
-import {testUser, testUserUpdated} from "../../models/_testModels.model";
+import {deleteTestUserFromDb, registerTestUserToDb, testUser, testUserUpdated} from "../../util/test.util";
 import Session from "../../models/session.model";
 import {createUser, readUserByUsername} from "../../database/user/user.database";
 import User from "../../models/user.model";

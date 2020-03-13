@@ -3,6 +3,11 @@ import User from "../../models/user.model";
 
 export const createUser = async (user: User): Promise<number> => {
     return new Promise<number>((resolve, reject) => {
+        // validate username
+        const usernameError = validateUsername(user.username);
+        if (usernameError) {
+            reject(usernameError);
+        }
         database<User>('Users')
             .insert(user)
             .then((results: any) => {
@@ -69,6 +74,11 @@ export const readUserByEmail = (email: string): Promise<User> => {
 
 export const updateUser = async (userId: number, user: User): Promise<number> => {
     return new Promise<number>((resolve, reject) => {
+        // validate username
+        const usernameError = validateUsername(user.username);
+        if (usernameError) {
+            reject(usernameError);
+        }
         database<User>('Users')
             .update(user)
             .where({id: userId})
@@ -101,4 +111,16 @@ export const deleteUser = async (userId: number): Promise<number> => {
                 reject(error);
             });
     });
+};
+
+const validateUsername = (username: string): string => {
+    if (/[^a-zA-Z0-9_]/.test(username)) {
+        return 'Username should not contain any special characters.';
+    }
+
+    if (username.length < 4 || username.length > 16) {
+        return 'Username should be between 4 and 16 characters.';
+    }
+
+    return undefined;
 };
