@@ -27,6 +27,7 @@ app.get('/api/auth/logout', authenticateSession, authController.logout);
 app.post('/api/user/edit', authenticateSession, userController.editUserProfile);
 app.get('/api/user/profile', userController.getUserProfile);
 app.get('/api/user', authenticateSession, userController.getCurrentProfile);
+app.post('/api/user/follow', authenticateSession, userController.followUser);
 
 app.get('/api/*', (req: Request, res: Response) => {
     res.status(404).send("Route not found");

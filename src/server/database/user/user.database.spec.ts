@@ -1,6 +1,17 @@
 import User from "../../models/user.model";
-import {createUser, deleteUser, readUserByEmail, readUserById, readUserByUsername, updateUser} from "./user.database";
-import {deleteTestUserFromDb, testUser} from "../../util/test.util";
+import {
+    addUserFollower,
+    createUser,
+    deleteUser,
+    getUserFollowers,
+    readUserByEmail,
+    readUserById,
+    readUserByUsername,
+    removeUserFollower,
+    updateUser,
+    userFollowsUser
+} from "./user.database";
+import {addTestUserToDb, deleteTestUserFromDb, deleteTestUsersFromDb, testUser} from "../../util/test.util";
 
 afterAll(async () => {
     await deleteTestUserFromDb();
@@ -164,5 +175,79 @@ describe('user.database.spec.ts', () => {
             expect(rowsAffected).toEqual(1);
             done();
         });
+    });
+});
+
+describe('Tests UserFollowsUser database', () => {
+    let user1: User = undefined;
+    let user2: User = undefined;
+    beforeEach(async () => {
+        user1 = await addTestUserToDb(1);
+        user2 = await addTestUserToDb(2);
+    });
+    afterEach(async () => {
+        await deleteTestUsersFromDb();
+    });
+    it('User2 follows User1', async done => {
+        await addUserFollower(user1.username, user2.username).then((result) => {
+            expect(result).not.toBeNull();
+        });
+        done();
+    });
+    it('Gets User1 followers', async done => {
+        await addUserFollower(user1.username, user2.username);
+        await getUserFollowers(user1.username).then((users: User[]) => {
+            expect(users).not.toBeNull();
+            expect(users.length).toEqual(1);
+            expect(users[0].username).toEqual(user2.username);
+        });
+        done();
+    });
+    it('Verifies that User2 follows User1', async done => {
+        await addUserFollower(user1.username, user2.username);
+        await userFollowsUser(user2.username, user1.username).then((result: boolean) => {
+            expect(result).not.toBeNull();
+            expect(result).toEqual(true);
+        });
+        done();
+    });
+    it('Verifies that User2 does not follow User1', async done => {
+        await userFollowsUser(user2.username, user1.username).then((result: boolean) => {
+            expect(result).not.toBeNull();
+            expect(result).toEqual(false);
+        });
+        done();
+    });
+    it('User2 un-follows User1', async done => {
+        await addUserFollower(user1.username, user2.username);
+        await getUserFollowers(user1.username).then((users: User[]) => {
+            expect(users).not.toBeNull();
+            expect(users.length).toEqual(1);
+        });
+        await removeUserFollower(user1.username, user2.username).then((result: string) => {
+            expect(result).not.toBeNull();
+            expect(result).toEqual('Successfully un-followed user.');
+        });
+        await getUserFollowers(user1.username).then((users: User[]) => {
+            expect(users).not.toBeNull();
+            expect(users.length).toEqual(0);
+        });
+        done();
+    });
+    it('User2 fails to follow User1, because User2 already follows User1', async done => {
+        await addUserFollower(user1.username, user2.username);
+        await addUserFollower(user1.username, user2.username)
+            .catch((error: any) => {
+                expect(error).toEqual('User already follows that user.');
+            });
+        done();
+    });
+    it('Fails to get followers of a non-existing User', async done => {
+        await getUserFollowers('non existing')
+            .catch((error: any) => {
+                expect(error).not.toBeNull();
+                expect(error).toEqual('Failed to get followers for a user that does not exist.');
+            });
+        done();
     });
 });

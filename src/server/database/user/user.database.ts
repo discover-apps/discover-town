@@ -1,5 +1,6 @@
 import {database} from '../_database';
 import User from "../../models/user.model";
+import Follower from "../../models/follower.model";
 
 export const createUser = async (user: User): Promise<number> => {
     return new Promise<number>((resolve, reject) => {
@@ -123,4 +124,79 @@ const validateUsername = (username: string): string => {
     }
 
     return undefined;
+};
+
+export const addUserFollower = async (username1: string, username2: string): Promise<string> => {
+    return new Promise<string>(async (resolve, reject) => {
+        const user1: User = await readUserByUsername(username1);
+        const user2: User = await readUserByUsername(username2);
+        database<Follower>('UserFollowsUser')
+            .insert({userId: user2.id, targetId: user1.id})
+            .then((results: any) => {
+                return resolve('Successfully followed user.');
+            })
+            .catch((error: any) => {
+                if (error && error.errno && error.errno == 1062) {
+                    reject('User already follows that user.');
+                } else {
+                    return reject(error);
+                }
+            });
+    });
+};
+
+export const removeUserFollower = async (username1: string, username2: string) => {
+    return new Promise<string>(async (resolve, reject) => {
+        const user1: User = await readUserByUsername(username1);
+        const user2: User = await readUserByUsername(username2);
+        database<Follower>('UserFollowsUser')
+            .delete()
+            .where({userId: user2.id, targetId: user1.id})
+            .then((results: any) => {
+                return resolve('Successfully un-followed user.');
+            })
+            .catch((error: any) => {
+                return reject(error);
+            });
+    });
+};
+
+export const getUserFollowers = async (username: string): Promise<User[]> => {
+    return new Promise<User[]>(async (resolve, reject) => {
+        const user = await readUserByUsername(username);
+        if (!user) {
+            return reject('Failed to get followers for a user that does not exist.');
+        }
+        database<Follower>('UserFollowsUser')
+            .where({targetId: user.id})
+            .then(async (results: Array<any>) => {
+                const users: User[] = [];
+                for (let i = 0; i < results.length; i++) {
+                    const user: User = await readUserById(results[i].userId);
+                    users.push(user);
+                }
+                return resolve(users);
+            })
+            .catch((error) => {
+                return reject(error);
+            });
+    });
+};
+
+export const userFollowsUser = async (username1: string, username2: string): Promise<boolean> => {
+    return new Promise<boolean>(async (resolve, reject) => {
+        const user1 = await readUserByUsername(username1);
+        const user2 = await readUserByUsername(username2);
+        if (!user1 || !user2) {
+            return reject('Failed to get followers for a user that does not exist.');
+        }
+        database<Follower>('UserFollowsUser')
+            .where({userId: user1.id, targetId: user2.id})
+            .then(async (results: Array<any>) => {
+                return resolve(results.length > 0);
+            })
+            .catch((error) => {
+                return reject(error);
+            });
+    });
 };

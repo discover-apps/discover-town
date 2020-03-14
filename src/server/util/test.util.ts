@@ -3,6 +3,8 @@ import {deleteAllSessionsForUser} from "../database/session/session.database";
 import {registerUser} from "../controllers/auth/auth.controller";
 import Session from "../models/session.model";
 import User from "../models/user.model";
+import {database} from "../database/_database";
+import Follower from "../models/follower.model";
 
 /**
  * This file contains all of the test object entities that are used
@@ -42,6 +44,20 @@ export const testSession: Session = {
     agent: "testUserAgent"
 };
 
+export const generateTestUser = (n: number): User => {
+    return {
+        id: undefined,
+        username: `TestUser${n}`,
+        email: `TestUser${n}@email.com`,
+        name: `Test User`,
+        password: `testPassword123`,
+        city: `Test City`,
+        state: `Test State`,
+        country: `Test Country`,
+        joined: new Date(),
+        private: false
+    }
+};
 /**
  * Test database functions
  */
@@ -62,6 +78,57 @@ export const deleteTestUserFromDb = async () => {
         // delete user record from database
         await deleteUser(testUserUpdateId.id);
     }
+};
+
+export const addTestUserToDb = async (n: number): Promise<User> => {
+    const user = generateTestUser(n);
+    user.id = await database<User>('Users')
+        .insert(user);
+    if (user.id) {
+        return user;
+    }
+    throw 'Error adding test user to database.'
+};
+
+export const deleteTestUsersFromDb = async () => {
+    // Clear foreign key restraints that prevent deletion of User records
+    await database<User>('Users')
+        .where('username', 'like', 'TestUser%')
+        .then(async (results: any) => {
+            for (let i = 0; i < results.length; i++) {
+                await deleteFollowersFromUser(results[i].id);
+                await deleteSessionsFromUser(results[i].id);
+            }
+        })
+        .catch((error) => {
+            throw error;
+        });
+
+    // Delete all test users from database
+    await database<User>('Users')
+        .delete()
+        .where('username', 'like', 'TestUser%')
+        .catch((error) => {
+            throw error;
+        });
+};
+
+const deleteFollowersFromUser = async (userId: number) => {
+    await database<Follower>('UserFollowsUser')
+        .delete()
+        .where({userId: userId})
+        .catch((error) => {
+            throw error;
+        });
+};
+
+const deleteSessionsFromUser = async (userId: number) => {
+    await database<Session>('Sessions')
+        .delete()
+        .where({userId: userId})
+        .catch((error) => {
+            throw error;
+        });
 };
 
 export const registerTestUserToDb = async (): Promise<Session> => {

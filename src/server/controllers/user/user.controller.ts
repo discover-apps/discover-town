@@ -1,5 +1,5 @@
 import {Request, Response} from "express";
-import {readUserById, readUserByUsername, updateUser} from "../../database/user/user.database";
+import {addUserFollower, readUserById, readUserByUsername, updateUser} from "../../database/user/user.database";
 import User from "../../models/user.model";
 
 export const getCurrentProfile = (req: Request, res: Response) => {
@@ -35,4 +35,18 @@ export const editUserProfile = (req: Request, res: Response) => {
     }).catch((error) => {
         res.status(500).json(error);
     })
+};
+
+export const followUser = async (req: Request, res: Response) => {
+    // get user id from req
+    const userId = Number.parseInt(req.user.toString());
+    const user = await readUserById(userId);
+    // get target username from req body
+    const targetUsername = req.body;
+    // update follower record in database
+    addUserFollower(user.username, targetUsername).then((result: string) => {
+        res.status(200).json({message: result});
+    }).catch((error) => {
+        res.status(500).json(error);
+    });
 };
