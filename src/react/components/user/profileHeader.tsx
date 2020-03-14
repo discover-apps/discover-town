@@ -34,7 +34,7 @@ export const ProfileHeader = (props: Props) => {
                     <h5>100 Followers</h5>
                 </div>
                 <div className="follow-button">
-                    {currentUser ?
+                    {currentUser && currentUser.username === props.user.username ?
                         <button className="outline-button"
                                 onClick={() => navigateTo('/profile/edit/')}>
                             Edit

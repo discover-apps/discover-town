@@ -146,7 +146,7 @@ const ProfileForm = (props: FormProps) => {
                 }
                 {props.error ? <p className="form-error">{props.error}</p> : ''}
             </form>
-            <Link to={'/profile'}>Back to profile</Link>
+            <Link to={`/profile/${props.user.username}`}>Back to profile</Link>
         </section>
     );
 };

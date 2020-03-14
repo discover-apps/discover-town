@@ -17,9 +17,8 @@ import {loadClientAuthorization} from "../util/auth";
 import {ProfileEdit} from "./user/profileEdit";
 
 const App = () => {
-    const sidebarOpen = useSelector((state: any) => state.sidebar.open);
-
     loadClientAuthorization();
+    const sidebarOpen = useSelector((state: any) => state.sidebar.open);
 
     return (
         <div className="app_container no-scroll">
@@ -33,8 +32,9 @@ const App = () => {
                         <Route path="/register" component={Register}/>
                         <Route path="/browse" component={Browse}/>
                         <Route path="/event" component={Event}/>
-                        <ProtectedRoute exact path="/profile" component={Profile}/>
-                        <ProtectedRoute exact path="/profile/edit" component={ProfileEdit}/>
+                        <ProtectedRoute exact path="/profile/edit/" component={ProfileEdit}/>
+                        <Route exact path='/profile/:username' component={Profile}/>
+                        <Route exact path='/profile' component={Profile}/>
                         <Route path="/" component={Home}/>
                     </Switch>
                 </div>

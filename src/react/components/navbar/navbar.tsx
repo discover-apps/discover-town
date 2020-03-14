@@ -9,6 +9,7 @@ export const Navbar = () => {
 
     const dispatch = useDispatch();
     const sidebarOpen = useSelector((state: any) => state.sidebar.open);
+    const currentUser = useSelector((state: any) => state.auth.currentUser);
     const history = useHistory();
 
     const clickSidebar = () => {
@@ -17,7 +18,7 @@ export const Navbar = () => {
     };
 
     const clickProfile = () => {
-        history.push('/profile');
+        history.push(`/profile${currentUser ? '/' + currentUser.username : ''}`);
     };
 
     return <nav className="navbar_container">

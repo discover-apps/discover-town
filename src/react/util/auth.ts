@@ -1,4 +1,4 @@
-import {deleteAccessToken, setAccessToken, setCurrentUser} from "../store/actions/auth.action";
+import {deleteAccessToken, deleteCurrentUser, setAccessToken, setCurrentUser} from "../store/actions/auth.action";
 import store from "../store/store";
 import {modifyHttpHeader} from "../api/_api";
 import {getCurrentUser} from "../api/user.api";
@@ -34,6 +34,8 @@ export const deauthorizeClient = (): Promise<void> => {
     localStorage.removeItem("accessToken");
     // remove accessToken from http authorization header
     modifyHttpHeader(undefined);
+    // remove current user to redux store
+    store.dispatch(deleteCurrentUser());
     return;
 };
 

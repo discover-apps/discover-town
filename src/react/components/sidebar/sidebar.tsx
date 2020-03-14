@@ -45,7 +45,8 @@ export const Sidebar = () => {
                 <div className="link" onClick={() => navigateTo('/browse')}>
                     Browse
                 </div>
-                <div className="link" onClick={() => navigateTo('/profile/')}>
+                <div className="link"
+                     onClick={() => navigateTo(`/profile${currentUser ? '/' + currentUser.username : ''}`)}>
                     My Profile
                 </div>
                 <div className="link" onClick={() => navigateTo('/categories')}>
