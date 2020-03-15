@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {User} from "../../models/user.model";
 import Placeholder from '../../../assets/img/placeholder_person.jpg';
-import {followUser, unfollowUser, userFollowsUser} from "../../api/user.api";
+import {followUser, unfollowUser, userFollowerCount, userFollowsUser} from "../../api/user.api";
 import {CircularProgress} from "@material-ui/core";
 
 interface Props {
@@ -14,9 +14,16 @@ interface Props {
 
 export const ProfileHeader = (props: Props) => {
 
+    const [followerCount, setFollowerCount] = useState(0);
     const selected = (page: number) => {
         return props.selectedPage == page ? 'selected' : '';
     };
+
+    useEffect(() => {
+        userFollowerCount(props.user).then((count: number) => {
+            setFollowerCount(count);
+        });
+    });
 
     return (
         <section className="profile-header elevation-4">
@@ -26,7 +33,7 @@ export const ProfileHeader = (props: Props) => {
                 </div>
                 <div className="details">
                     <h3>{props.user ? props.user.username : 'Loading...'}</h3>
-                    <h5>100 Followers</h5>
+                    <h5 onClick={() => props.navigateTo(`/profile/${props.user.username}/followers/`)}>{followerCount} Followers</h5>
                 </div>
                 <div className="follow-button">
                     <FollowButton user={props.user} currentUser={props.currentUser} navigateTo={props.navigateTo}/>
@@ -53,7 +60,7 @@ interface FollowButtonProps {
     navigateTo: any;
 }
 
-const FollowButton = (props: FollowButtonProps) => {
+export const FollowButton = (props: FollowButtonProps) => {
     const userIsCurrentUser: boolean = props.currentUser && props.currentUser.username === props.user.username;
     const navigateToEditProfile = () => props.navigateTo('/profile/edit/');
     const [currentUserIsFollowingUser, setCurrentUserIsFollowingUser] = useState(false);

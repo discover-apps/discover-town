@@ -170,7 +170,7 @@ export const removeUserFollower = async (username1: string, username2: string) =
     });
 };
 
-export const getUserFollowers = async (username: string): Promise<User[]> => {
+export const readUserFollowers = async (username: string): Promise<User[]> => {
     return new Promise<User[]>(async (resolve, reject) => {
         const user = await readUserByUsername(username);
         if (!user) {
@@ -192,6 +192,28 @@ export const getUserFollowers = async (username: string): Promise<User[]> => {
     });
 };
 
+export const readUserFollowing = async (username: string): Promise<User[]> => {
+    return new Promise<User[]>(async (resolve, reject) => {
+        const user = await readUserByUsername(username);
+        if (!user) {
+            return reject('Failed to get following for a user that does not exist.');
+        }
+        database<Follower>('UserFollowsUser')
+            .where({userId: user.id})
+            .then(async (results: Array<any>) => {
+                const users: User[] = [];
+                for (let i = 0; i < results.length; i++) {
+                    const user: User = await readUserById(results[i].targetId);
+                    users.push(user);
+                }
+                return resolve(users);
+            })
+            .catch((error) => {
+                return reject(error);
+            });
+    });
+};
+
 export const userFollowsUser = async (username1: string, username2: string): Promise<boolean> => {
     return new Promise<boolean>(async (resolve, reject) => {
         const user1 = await readUserByUsername(username1);
@@ -203,6 +225,23 @@ export const userFollowsUser = async (username1: string, username2: string): Pro
             .where({userId: user1.id, targetId: user2.id})
             .then(async (results: Array<any>) => {
                 return resolve(results.length > 0);
+            })
+            .catch((error) => {
+                return reject(error);
+            });
+    });
+};
+
+export const readUserFollowerCount = async (username: string): Promise<number> => {
+    return new Promise<number>(async (resolve, reject) => {
+        const user: User = await readUserByUsername(username);
+        if (!user) {
+            return reject('Failed to get follower count for a user that does not exist.');
+        }
+        database<Follower>('UserFollowsUser')
+            .where({targetId: user.id})
+            .then(async (results: Array<any>) => {
+                return resolve(results.length);
             })
             .catch((error) => {
                 return reject(error);

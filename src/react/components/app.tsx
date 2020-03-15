@@ -15,6 +15,7 @@ import Profile from "./user/profile";
 import {ProtectedRoute} from "../util/protected.route";
 import {loadClientAuthorization} from "../util/auth";
 import {ProfileEdit} from "./user/profileEdit";
+import {ProfileFollowers} from "./user/profileFollowers";
 
 const App = () => {
     loadClientAuthorization();
@@ -34,6 +35,7 @@ const App = () => {
                         <Route path="/event" component={Event}/>
                         <ProtectedRoute exact path="/profile/edit/" component={ProfileEdit}/>
                         <Route exact path='/profile/:username' component={Profile}/>
+                        <Route exact path='/profile/:username/followers' component={ProfileFollowers}/>
                         <Route exact path='/profile' component={Profile}/>
                         <Route path="/" component={Home}/>
                     </Switch>

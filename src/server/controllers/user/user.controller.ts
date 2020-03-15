@@ -3,6 +3,9 @@ import {
     addUserFollower,
     readUserById,
     readUserByUsername,
+    readUserFollowerCount,
+    readUserFollowers,
+    readUserFollowing,
     removeUserFollower,
     updateUser,
     userFollowsUser
@@ -83,5 +86,35 @@ export const followsUser = async (req: Request, res: Response) => {
         res.status(200).json(result);
     }).catch((error) => {
         res.status(500).json(error);
-    })
+    });
+};
+
+export const getFollowerCount = async (req: Request, res: Response) => {
+    // get target username from req body
+    const targetUsername: string = req.body.username;
+    await readUserFollowerCount(targetUsername).then((count: number) => {
+        res.status(200).json(count);
+    }).catch((error) => {
+        res.status(500).json(error);
+    });
+};
+
+export const getFollowers = async (req: Request, res: Response) => {
+    // get target username from req body
+    const targetUsername: string = req.body.username;
+    await readUserFollowers(targetUsername).then((users: User[]) => {
+        res.status(200).json(users);
+    }).catch((error) => {
+        res.status(500).json(error);
+    });
+};
+
+export const getFollowing = async (req: Request, res: Response) => {
+    // get target username from req body
+    const targetUsername: string = req.body.username;
+    await readUserFollowing(targetUsername).then((users: User[]) => {
+        res.status(200).json(users);
+    }).catch((error) => {
+        res.status(500).json(error);
+    });
 };

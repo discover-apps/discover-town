@@ -49,3 +49,27 @@ export const userFollowsUser = async (user: User): Promise<boolean> => {
     }
     throw 'Error checking if user follows user.';
 };
+
+export const userFollowerCount = async (user: User): Promise<number> => {
+    const response: AxiosResponse<number> = await http.post('user/followercount', user);
+    if (response.status == 200) {
+        return response.data;
+    }
+    throw 'Error getting follower count for user.'
+};
+
+export const getUserFollowers = async (user: User): Promise<User[]> => {
+    const response: AxiosResponse<User[]> = await http.post('user/followers', user);
+    if (response.status == 200) {
+        return response.data;
+    }
+    throw 'Error getting followers for user.';
+};
+
+export const getUserFollowing = async (user: User): Promise<User[]> => {
+    const response: AxiosResponse<User[]> = await http.post('user/following', user);
+    if (response.status == 200) {
+        return response.data;
+    }
+    throw 'Error getting users that user follows.';
+};

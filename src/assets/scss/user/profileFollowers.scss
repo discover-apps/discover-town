@@ -1,0 +1,78 @@
+main.profile-followers {
+  section.menu {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    div.option {
+      color: $black-777;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 500;
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+
+      &:hover {
+        background-color: $white-444;
+        transition-duration: 0.5s;
+      }
+
+      &:not(:hover) {
+        transition-duration: 0.5s;
+      }
+    }
+
+    div.selected {
+      color: $primary-1;
+      border-bottom: 3px solid $primary-1;
+    }
+  }
+
+  section.followers {
+    div.follower {
+      border-bottom: 1px solid $black-999;
+      padding: 1rem;
+      display: grid;
+      grid-template-columns: 42px auto 100px;
+
+      div.image {
+        width: 42px;
+        height: 42px;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 50%;
+        }
+      }
+
+      div.details {
+        padding: 0 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        span {
+          font-size: 0.875rem;
+          font-weight: 400;
+          color: $black-777;
+        }
+
+        span.username {
+          font-weight: 500;
+        }
+      }
+
+      div.follow-button {
+        button {
+          padding: 0.5rem 2rem;
+          height: 35px;
+          width: 100px;
+          font-size: 0.875rem;
+        }
+      }
+    }
+  }
+}

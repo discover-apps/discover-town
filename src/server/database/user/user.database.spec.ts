@@ -3,10 +3,12 @@ import {
     addUserFollower,
     createUser,
     deleteUser,
-    getUserFollowers,
     readUserByEmail,
     readUserById,
     readUserByUsername,
+    readUserFollowerCount,
+    readUserFollowers,
+    readUserFollowing,
     removeUserFollower,
     updateUser,
     userFollowsUser
@@ -196,7 +198,16 @@ describe('Tests UserFollowsUser database', () => {
     });
     it('Gets User1 followers', async done => {
         await addUserFollower(user1.username, user2.username);
-        await getUserFollowers(user1.username).then((users: User[]) => {
+        await readUserFollowers(user1.username).then((users: User[]) => {
+            expect(users).not.toBeNull();
+            expect(users.length).toEqual(1);
+            expect(users[0].username).toEqual(user2.username);
+        });
+        done();
+    });
+    it('Gets users that User1 follows', async done => {
+        await addUserFollower(user2.username, user1.username);
+        await readUserFollowing(user1.username).then((users: User[]) => {
             expect(users).not.toBeNull();
             expect(users.length).toEqual(1);
             expect(users[0].username).toEqual(user2.username);
@@ -220,7 +231,7 @@ describe('Tests UserFollowsUser database', () => {
     });
     it('User2 un-follows User1', async done => {
         await addUserFollower(user1.username, user2.username);
-        await getUserFollowers(user1.username).then((users: User[]) => {
+        await readUserFollowers(user1.username).then((users: User[]) => {
             expect(users).not.toBeNull();
             expect(users.length).toEqual(1);
         });
@@ -228,7 +239,7 @@ describe('Tests UserFollowsUser database', () => {
             expect(result).not.toBeNull();
             expect(result).toEqual('Successfully un-followed user.');
         });
-        await getUserFollowers(user1.username).then((users: User[]) => {
+        await readUserFollowers(user1.username).then((users: User[]) => {
             expect(users).not.toBeNull();
             expect(users.length).toEqual(0);
         });
@@ -243,11 +254,34 @@ describe('Tests UserFollowsUser database', () => {
         done();
     });
     it('Fails to get followers of a non-existing User', async done => {
-        await getUserFollowers('non existing')
+        await readUserFollowers('non existing')
             .catch((error: any) => {
                 expect(error).not.toBeNull();
                 expect(error).toEqual('Failed to get followers for a user that does not exist.');
             });
+        done();
+    });
+    it('Fails to get following of a non-existing User', async done => {
+        await readUserFollowing('non existing')
+            .catch((error: any) => {
+                expect(error).not.toBeNull();
+                expect(error).toEqual('Failed to get following for a user that does not exist.');
+            });
+        done();
+    });
+    it('Gets the follower count of User1', async done => {
+        await addUserFollower(user1.username, user2.username);
+        await readUserFollowerCount(user1.username).then((count: number) => {
+            expect(count).not.toBeNull();
+            expect(count).toEqual(1);
+        });
+        done();
+    });
+    it('Fails to get follower count of user that does not exist', async done => {
+        await readUserFollowerCount(user1.username).catch((error) => {
+            expect(error).not.toBeNull();
+            expect(error).toEqual('Failed to get follower count for a user that does not exist.');
+        });
         done();
     });
 });
