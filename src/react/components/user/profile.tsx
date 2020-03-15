@@ -60,7 +60,7 @@ const ProfileBody = (props: ProfileBodyProps) => {
         case 1:
             return <ProfileEvents user={props.user}/>;
         case 2:
-            return <ProfileDetails/>;
+            return <ProfileDetails user={props.user}/>;
         default:
             return <ProfileActivity user={props.user}/>;
     }

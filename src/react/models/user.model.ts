@@ -7,6 +7,7 @@ export interface User {
     city: string;
     state: string;
     country: string;
+    joined: Date;
 }
 
 export interface RegisterUser {
