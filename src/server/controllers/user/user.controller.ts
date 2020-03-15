@@ -1,5 +1,12 @@
 import {Request, Response} from "express";
-import {addUserFollower, readUserById, readUserByUsername, updateUser} from "../../database/user/user.database";
+import {
+    addUserFollower,
+    readUserById,
+    readUserByUsername,
+    removeUserFollower,
+    updateUser,
+    userFollowsUser
+} from "../../database/user/user.database";
 import User from "../../models/user.model";
 
 export const getCurrentProfile = (req: Request, res: Response) => {
@@ -42,11 +49,39 @@ export const followUser = async (req: Request, res: Response) => {
     const userId = Number.parseInt(req.user.toString());
     const user = await readUserById(userId);
     // get target username from req body
-    const targetUsername = req.body;
+    const targetUsername = req.body.username;
     // update follower record in database
-    addUserFollower(user.username, targetUsername).then((result: string) => {
+    await addUserFollower(targetUsername, user.username).then((result: string) => {
         res.status(200).json({message: result});
     }).catch((error) => {
         res.status(500).json(error);
     });
+};
+
+export const unfollowUser = async (req: Request, res: Response) => {
+    // get user id from req
+    const userId = Number.parseInt(req.user.toString());
+    const user = await readUserById(userId);
+    // get target username from req body
+    const targetUsername = req.body.username;
+    // update follower record in database
+    await removeUserFollower(targetUsername, user.username).then((result: string) => {
+        res.status(200).json(result);
+    }).catch((error) => {
+        res.status(500).json(error);
+    });
+};
+
+export const followsUser = async (req: Request, res: Response) => {
+    // get user id from req
+    const userId = Number.parseInt(req.user.toString());
+    const user = await readUserById(userId);
+    // get target username from req body
+    const targetUsername: string = req.body.username;
+    // update follower record in database
+    await userFollowsUser(user.username, targetUsername).then((result: boolean) => {
+        res.status(200).json(result);
+    }).catch((error) => {
+        res.status(500).json(error);
+    })
 };

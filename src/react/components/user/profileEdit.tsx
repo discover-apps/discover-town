@@ -1,7 +1,7 @@
 import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import Placeholder from '../../../assets/img/placeholder_person.jpg';
 import {Link, useHistory} from "react-router-dom";
-import {getUserProfile, updateUserProfile} from "../../api/user.api";
+import {editUserProfile, getUserProfile} from "../../api/user.api";
 import {User} from "../../models/user.model";
 import {useSelector} from "react-redux";
 import {CircularProgress} from "@material-ui/core";
@@ -19,7 +19,7 @@ export const ProfileEdit = () => {
         setError(''); // clear error (if any)
         setLoading(true); // lock submit button
         await setTimeout(() => {
-            updateUserProfile(user).then(async (message: string) => {
+            editUserProfile(user).then(async (message: string) => {
                 // update client information
                 await loadClientAuthorization();
                 // redirect to profile section

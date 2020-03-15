@@ -11,6 +11,9 @@ import {ProfileDetails} from "./profileDetails";
 export const Profile = () => {
     let {username} = useParams();
     const history = useHistory();
+    const navigateTo = (url: string) => {
+        history.push(url);
+    };
     const currentUser = useSelector((state: any) => state.auth.currentUser);
     const [user, setUser] = useState(undefined);
     const [page, setPage] = useState(0);
@@ -28,8 +31,15 @@ export const Profile = () => {
     if (user) {
         return (
             <main>
-                <ProfileHeader user={user} selectPage={setPage} selectedPage={page}/>
-                <ProfileBody page={page} user={user}/>
+                <ProfileHeader user={user}
+                               currentUser={currentUser}
+                               selectPage={setPage}
+                               selectedPage={page}
+                               navigateTo={navigateTo}
+                />
+                <ProfileBody page={page}
+                             user={user}
+                />
             </main>
         )
     } else {

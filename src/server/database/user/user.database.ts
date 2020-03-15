@@ -128,23 +128,32 @@ const validateUsername = (username: string): string => {
 
 export const addUserFollower = async (username1: string, username2: string): Promise<string> => {
     return new Promise<string>(async (resolve, reject) => {
-        const user1: User = await readUserByUsername(username1);
-        const user2: User = await readUserByUsername(username2);
-        database<Follower>('UserFollowsUser')
-            .insert({userId: user2.id, targetId: user1.id})
-            .then((results: any) => {
-                return resolve('Successfully followed user.');
-            })
-            .catch((error: any) => {
-                if (error && error.errno && error.errno == 1062) {
-                    reject('User already follows that user.');
-                } else {
-                    return reject(error);
-                }
-            });
+        try {
+            const user1: User = await readUserByUsername(username1);
+            const user2: User = await readUserByUsername(username2);
+            database<Follower>('UserFollowsUser')
+                .insert({userId: user2.id, targetId: user1.id})
+                .then((results: any) => {
+                    return resolve('Successfully followed user.');
+                })
+                .catch((error: any) => {
+                    if (error && error.errno && error.errno == 1062) {
+                        return reject('User already follows that user.');
+                    } else {
+                        return reject(error);
+                    }
+                });
+        } catch (error) {
+            reject(error);
+        }
     });
 };
 
+/**
+ *
+ * @param username1
+ * @param username2
+ */
 export const removeUserFollower = async (username1: string, username2: string) => {
     return new Promise<string>(async (resolve, reject) => {
         const user1: User = await readUserByUsername(username1);
