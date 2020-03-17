@@ -59,3 +59,9 @@ if (!MYSQL_DATABASE) {
     console.error('Environmental Variable: MYSQL_DATABASE not found, please check .env files.');
     process.exit(1);
 }
+
+export const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
+if (!GOOGLE_MAPS_API_KEY) {
+    console.error('Environmental Variable: GOOGLE_MAPS_API_KEY not found, please check .env files.');
+    process.exit(1);
+}

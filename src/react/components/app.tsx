@@ -9,7 +9,7 @@ import Navbar from "./navbar/navbar";
 import Register from "./login/register";
 import Login from "./login/login";
 import Browse from "./home/browse";
-import Event from './event/event';
+import ViewEvent from './event/viewEvent';
 import Home from "./home/home";
 import Profile from "./user/profile";
 import {ProtectedRoute} from "../util/protected.route";
@@ -32,7 +32,7 @@ const App = () => {
                         <Route path="/login" component={Login}/>
                         <Route path="/register" component={Register}/>
                         <Route path="/browse" component={Browse}/>
-                        <Route path="/event" component={Event}/>
+                        <Route path="/event" component={ViewEvent}/>
                         <ProtectedRoute exact path="/profile/edit/" component={ProfileEdit}/>
                         <Route exact path='/profile/:username' component={Profile}/>
                         <Route exact path='/profile/:username/followers' component={ProfileFollowers}/>

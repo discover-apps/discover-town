@@ -9,7 +9,7 @@
 @import './_text.scss';
 
 /* Components */
-@import './event/event';
+@import 'event/viewEvent';
 @import './event/eventAttendees';
 @import './event/eventDetails';
 @import './event/eventInformation';
