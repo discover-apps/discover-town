@@ -49,8 +49,8 @@ export const Sidebar = () => {
                      onClick={() => navigateTo(`/profile${currentUser ? '/' + currentUser.username : ''}`)}>
                     My Profile
                 </div>
-                <div className="link" onClick={() => navigateTo('/categories')}>
-                    Categories
+                <div className="link" onClick={() => navigateTo('/event/create')}>
+                    Create Event
                 </div>
                 <div className="link" onClick={() => navigateTo('/feed')}>
                     Activity feed

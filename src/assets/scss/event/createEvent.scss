@@ -1,0 +1,46 @@
+main.create-event {
+  padding: 1rem;
+
+  form {
+    input, textarea {
+      &:not(:last-child) {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+
+  div.search-places {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-gap: 1rem;
+
+    input {
+      margin: 0;
+    }
+  }
+
+  div.search-results {
+    margin-top: 1rem;
+    max-height: 186px;
+    overflow-y: auto;
+
+    div.result {
+      padding: 0.5rem;
+      border: 2px solid rgba(0, 0, 0, 0.25);
+      border-radius: 4px;
+
+      h3 {
+        font-size: 1rem;
+      }
+
+      p {
+        font-size: 0.875rem;
+      }
+
+      &:not(:last-child) {
+        margin-bottom: 0.5rem;
+      }
+    }
+  }
+}

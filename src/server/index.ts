@@ -11,6 +11,7 @@ import {ENVIRONMENT, PORT} from '../util/secrets';
 import * as authController from './controllers/auth/auth.controller';
 import {authenticateSession} from './controllers/auth/auth.controller';
 import * as userController from './controllers/user/user.controller';
+import * as eventController from './controllers/event/event.controller';
 
 // Create express server
 const app = express();
@@ -33,6 +34,7 @@ app.post('/api/user/unfollow', authenticateSession, userController.unfollowUser)
 app.post('/api/user/followercount', userController.getFollowerCount);
 app.post('/api/user/followers', userController.getFollowers);
 app.post('/api/user/following', userController.getFollowing);
+app.post('/api/event/places', eventController.searchPlaces);
 
 app.get('/api/*', (req: Request, res: Response) => {
     res.status(404).send("Route not found");

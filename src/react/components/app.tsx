@@ -13,12 +13,11 @@ import ViewEvent from './event/viewEvent';
 import Home from "./home/home";
 import Profile from "./user/profile";
 import {ProtectedRoute} from "../util/protected.route";
-import {loadClientAuthorization} from "../util/auth";
 import {ProfileEdit} from "./user/profileEdit";
 import {ProfileFollowers} from "./user/profileFollowers";
+import {CreateEvent} from "./event/createEvent";
 
 const App = () => {
-    loadClientAuthorization();
     const sidebarOpen = useSelector((state: any) => state.sidebar.open);
 
     return (
@@ -32,7 +31,8 @@ const App = () => {
                         <Route path="/login" component={Login}/>
                         <Route path="/register" component={Register}/>
                         <Route path="/browse" component={Browse}/>
-                        <Route path="/event" component={ViewEvent}/>
+                        <Route exact path="/event" component={ViewEvent}/>
+                        <Route exact path="/event/create" component={CreateEvent}/>
                         <ProtectedRoute exact path="/profile/edit/" component={ProfileEdit}/>
                         <Route exact path='/profile/:username' component={Profile}/>
                         <Route exact path='/profile/:username/followers' component={ProfileFollowers}/>
