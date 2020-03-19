@@ -35,6 +35,7 @@ app.post('/api/user/followercount', userController.getFollowerCount);
 app.post('/api/user/followers', userController.getFollowers);
 app.post('/api/user/following', userController.getFollowing);
 app.post('/api/event/places', eventController.searchPlaces);
+app.post('/api/event/create', eventController.createEvent);
 
 app.get('/api/*', (req: Request, res: Response) => {
     res.status(404).send("Route not found");

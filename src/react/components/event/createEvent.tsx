@@ -1,16 +1,31 @@
 import React, {ChangeEvent, FormEvent, useState} from 'react';
-import {searchPlaces} from "../../api/event.api";
+import {createEventRecord, searchPlaces} from "../../api/event.api";
 import {SearchResult} from "../../models/searchResult.model";
+import Event from '../../models/event.model';
 
 export const CreateEvent = () => {
 
     const [error, setError] = useState('');
-    const [event, setEvent] = useState<Event>(undefined);
+    const [event, setEvent] = useState<Event>({
+        title: '',
+        description: '',
+        location_name: '',
+        location_address: '',
+        lat: 0,
+        lon: 0,
+        startTime: new Date(),
+        datePosted: new Date()
+    });
 
     const postEvent = () => {
         // clear error
         setError('');
         // send event object to server
+        createEventRecord(event).then((result: string) => {
+            console.log(result);
+        }).catch((error) => {
+            setError(error);
+        });
     };
 
     const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -59,24 +74,42 @@ export const CreateEvent = () => {
                        onChange={onChange}
                        required
                 />
+                <input type="text"
+                       id="location_name"
+                       name="location_name"
+                       placeholder="Location name (e.g. Jason's apartment)"
+                       value={event.location_name}
+                       onChange={onChange}
+                       required
+                />
+                <input type="text"
+                       id="location_address"
+                       name="location_address"
+                       placeholder="Location address"
+                       value={event.location_address}
+                       onChange={onChange}
+                       required
+                />
                 <button>Create event</button>
             </form>
-            <SearchPlace/>
+            <SearchPlace event={event} setEvent={setEvent}/>
         </main>
     )
 };
 
-const SearchPlace = () => {
+interface SearchPlace {
+    event: Event;
+    setEvent: any;
+}
+
+const SearchPlace = (props: SearchPlace) => {
     const [search, setSearch] = useState('');
     const [results, setResults] = useState<SearchResult[]>([]);
     const postSearch = () => {
         console.log('Submitting query', search);
         searchPlaces(search).then((results) => {
             setResults(results);
-            console.log(results);
         });
-        // receive result query
-        // set results array
     };
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {
         e.persist();
@@ -88,6 +121,15 @@ const SearchPlace = () => {
         }
         postSearch();
     };
+    const clickResult = (result: SearchResult) => {
+        props.setEvent({
+            ...props.event,
+            location_name: result.name,
+            location_address: result.formatted_address,
+            lat: result.lat,
+            lon: result.lon
+        });
+    };
     return (
         <form onSubmit={onSubmit}>
             <div className="search-places">
@@ -96,27 +138,19 @@ const SearchPlace = () => {
                        name="place"
                        placeholder="Search places"
                        onChange={onChange}
-                       required
                 />
                 <button type="submit">Search</button>
             </div>
             <div className="search-results">
+                {/*TODO: Add spinny thing here*/}
                 {
                     results.map(r =>
-                        <div className="result">
+                        <div className="result" onClick={() => clickResult(r)}>
                             <h3>{r.name}</h3>
                             <p>{r.formatted_address}</p>
                         </div>
                     )
                 }
-                {/*<div className="result">*/}
-                {/*    <h3>Empire State Building</h3>*/}
-                {/*    <p>20 W 34th St, New York, NY 10001, United States</p>*/}
-                {/*</div>*/}
-                {/*<div className="result">*/}
-                {/*    <h3>Empire State Building</h3>*/}
-                {/*    <p>20 W 34th St, New York, NY 10001, United States</p>*/}
-                {/*</div>*/}
             </div>
         </form>
     )
