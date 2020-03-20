@@ -55,8 +55,10 @@ export const validLocation = (address: string): Promise<EventLocation> => {
                         lon: r.geometry.location.lng
                     });
                 } else {
-                    reject('Unable to locate address, please try a different address.');
+                    reject('Error retrieving location, please try a different address.');
                 }
+            } else {
+                reject('Unable to locate address, please try a different address.');
             }
         }).catch((error) => {
             reject(error);

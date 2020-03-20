@@ -2,6 +2,7 @@ import {Request, Response} from 'express';
 import axios, {AxiosResponse} from "axios";
 import {SearchResult} from "../../models/searchResult.model";
 import Event from '../../models/event.model';
+import {createEvent} from "../../database/event/event.database";
 
 export const searchPlaces = async (req: Request, res: Response) => {
     const query = req.body.query;
@@ -27,8 +28,11 @@ export const searchPlaces = async (req: Request, res: Response) => {
     });
 };
 
-export const createEvent = async (req: Request, res: Response) => {
+export const create = async (req: Request, res: Response) => {
     const event: Event = req.body;
-
-    res.status(200).json('Successfully created event.');
+    createEvent(event).then((result: string) => {
+        res.status(200).json(result);
+    }).catch((error) => {
+        res.status(500).json(error);
+    });
 };
