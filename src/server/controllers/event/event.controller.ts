@@ -1,6 +1,7 @@
 import {Request, Response} from 'express';
 import axios, {AxiosResponse} from "axios";
 import {SearchResult} from "../../models/searchResult.model";
+import Event from '../../models/event.model';
 
 export const searchPlaces = async (req: Request, res: Response) => {
     const query = req.body.query;
@@ -28,13 +29,6 @@ export const searchPlaces = async (req: Request, res: Response) => {
 
 export const createEvent = async (req: Request, res: Response) => {
     const event: Event = req.body;
-    // validate event properties
-    // Title must be between 5 - 32 characters
-    // Description must be between 5 - 550 characters
-    // Date must be greater than or equal to today
-    // Location must be a valid location
 
-    // insert database record
-    // send back response
     res.status(200).json('Successfully created event.');
 };

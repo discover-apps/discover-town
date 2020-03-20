@@ -5,6 +5,7 @@ import Session from "../models/session.model";
 import User from "../models/user.model";
 import {database} from "../database/_database";
 import Follower from "../models/follower.model";
+import Event from '../models/event.model';
 
 /**
  * This file contains all of the test object entities that are used
@@ -133,4 +134,15 @@ const deleteSessionsFromUser = async (userId: number) => {
 
 export const registerTestUserToDb = async (): Promise<Session> => {
     return await registerUser(testUser, "test", "test");
+};
+
+// event database functions
+
+export const deleteTestEventFromDb = async () => {
+    await database<Event>('Events')
+        .delete()
+        .where({title: 'TestEvent'})
+        .catch((error) => {
+            throw error;
+        });
 };
