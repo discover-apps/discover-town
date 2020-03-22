@@ -11,11 +11,11 @@ import {getDateTimeString, getTimeString} from "../../util/common";
 const event: Event = {
     title: 'Lorem Ipsum',
     description: `<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.<br/><br/>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>`,
-    location_name: '',
-    location_address: '20 W 34th St, New York, NY 10001',
+    address_name: '',
+    address_location: '20 W 34th St, New York, NY 10001',
     lat: 40.7498443802915,
     lon: -73.98506271970849,
-    startTime: new Date('March 23, 2020 14:00:00'),
+    dateStart: new Date('March 23, 2020 14:00:00'),
     datePosted: new Date()
 };
 
@@ -40,7 +40,7 @@ const EventTitle = (props: EventProps) => {
 
     return (
         <section className="paper elevation-3 title">
-            <h5 className="">{getDateTimeString(props.event.startTime)}</h5>
+            <h5 className="">{getDateTimeString(props.event.dateStart)}</h5>
             <h1>Speed Networking & Business MatchMaking: Fastest Way to Expand Your Network</h1>
             <div className="member-share">
                 <div className="member">
@@ -68,7 +68,7 @@ const EventInformation = (props: EventProps) => {
                     <ClockIcon/>
                 </div>
                 <div className="text">
-                    <p>{getDateTimeString(props.event.startTime)}{" "}{getTimeString(props.event.startTime)}</p>
+                    <p>{getDateTimeString(props.event.dateStart)}{" "}{getTimeString(props.event.dateStart)}</p>
                 </div>
             </div>
             <div className="info">
@@ -76,7 +76,7 @@ const EventInformation = (props: EventProps) => {
                     <LocationIcon/>
                 </div>
                 <div className="text">
-                    <p>{event.location_address}</p>
+                    <p>{event.address_location}</p>
                 </div>
             </div>
             <div className="map">

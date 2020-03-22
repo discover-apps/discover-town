@@ -3,10 +3,15 @@ export default interface Event {
     title: string;
     description: string;
     imageUrl?: string;
-    location_name: string;
-    location_address: string;
+    address_name: string;
+    address_location: string;
     lat: number;
     lon: number;
-    startTime: Date;
+    dateStart: Date;
     datePosted: Date;
+}
+
+export interface UserHostingEvent {
+    userId: number;
+    eventId: number;
 }

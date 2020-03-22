@@ -7,7 +7,7 @@ export default interface Event {
     address_location: string;
     lat: number;
     lon: number;
-    startTime: Date;
+    dateStart: Date;
     datePosted: Date;
 }
 

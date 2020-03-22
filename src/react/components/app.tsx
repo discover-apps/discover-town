@@ -32,7 +32,7 @@ const App = () => {
                         <Route path="/register" component={Register}/>
                         <Route path="/browse" component={Browse}/>
                         <Route exact path="/event" component={ViewEvent}/>
-                        <Route exact path="/event/create" component={CreateEvent}/>
+                        <ProtectedRoute exact path="/event/create" component={CreateEvent}/>
                         <ProtectedRoute exact path="/profile/edit/" component={ProfileEdit}/>
                         <Route exact path='/profile/:username' component={Profile}/>
                         <Route exact path='/profile/:username/followers' component={ProfileFollowers}/>

@@ -59,6 +59,21 @@ export const generateTestUser = (n: number): User => {
         private: false
     }
 };
+
+export const generateTestEvent = (): Event => {
+    let testEvent: Event = {
+        title: 'TestEvent',
+        description: 'This is a test event',
+        address_name: 'Empire State Building',
+        address_location: '20 W 34th St, New York, NY 10001',
+        dateStart: new Date(),
+        datePosted: new Date(),
+        lat: 40.7127753,
+        lon: -74.0059728
+    };
+    testEvent.dateStart.setDate(testEvent.dateStart.getDate() + 1);
+    return testEvent;
+};
 /**
  * Test database functions
  */
@@ -139,6 +154,31 @@ export const registerTestUserToDb = async (): Promise<Session> => {
 // event database functions
 
 export const deleteTestEventFromDb = async () => {
+    // get Event Ids from Event table
+    const ids: number[] = [];
+    await database<Event>('Events')
+        .select()
+        .where({title: 'TestEvent'})
+        .then((records: any) => {
+                for (let i = 0; i < records.length; i++) {
+                    ids.push(records[i].id);
+                }
+            }
+        )
+        .catch((error) => {
+            throw error;
+        });
+    // delete all records from UserHostingEvent table
+    await database<Event>('UserHostingEvent')
+        .delete()
+        .whereIn('eventId', ids)
+        .catch((error) => {
+            throw error;
+        });
+
+    // TODO: delete all records from UserAttendingEvent table
+
+    // delete all records from Events table
     await database<Event>('Events')
         .delete()
         .where({title: 'TestEvent'})

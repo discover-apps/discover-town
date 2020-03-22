@@ -7,6 +7,12 @@ main.create-event {
         margin-bottom: 1rem;
       }
     }
+
+    p.error {
+      text-align: center;
+      margin-top: 1rem;
+      color: $danger;
+    }
   }
 
   div.search-places {

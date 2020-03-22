@@ -29,9 +29,13 @@ export const searchPlaces = async (req: Request, res: Response) => {
 };
 
 export const create = async (req: Request, res: Response) => {
+    // get user id from req
+    const userId = Number.parseInt(req.user.toString());
+    // get event object from body
     const event: Event = req.body;
-    createEvent(event).then((result: string) => {
-        res.status(200).json(result);
+    createEvent(event, userId).then((eventId: number) => {
+        event.id = eventId;
+        res.status(200).json(event);
     }).catch((error) => {
         res.status(500).json(error);
     });

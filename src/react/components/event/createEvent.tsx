@@ -2,29 +2,38 @@ import React, {ChangeEvent, FormEvent, useState} from 'react';
 import {createEventRecord, searchPlaces} from "../../api/event.api";
 import {SearchResult} from "../../models/searchResult.model";
 import Event from '../../models/event.model';
+import {CircularProgress} from "@material-ui/core";
+import {useHistory} from 'react-router-dom';
 
 export const CreateEvent = () => {
 
+    const history = useHistory();
     const [error, setError] = useState('');
     const [event, setEvent] = useState<Event>({
         title: '',
         description: '',
-        location_name: '',
-        location_address: '',
+        address_name: '',
+        address_location: '',
         lat: 0,
         lon: 0,
-        startTime: new Date(),
+        dateStart: new Date(),
         datePosted: new Date()
     });
+    const [loading, setLoading] = useState<boolean>(false);
 
     const postEvent = () => {
         // clear error
         setError('');
+        // lock controls
+        setLoading(true);
         // send event object to server
-        createEventRecord(event).then((result: string) => {
-            console.log(result);
+        createEventRecord(event).then((event: Event) => {
+            // TODO: redirect to created event
+            history.push('/');
         }).catch((error) => {
             setError(error);
+        }).finally(() => {
+            setLoading(false);
         });
     };
 
@@ -54,8 +63,8 @@ export const CreateEvent = () => {
                        required
                 />
                 <input type="file"
-                       id="image"
-                       name="image"
+                       id="imageUrl"
+                       name="imageUrl"
                        placeholder="Upload an image"
                        onChange={onChange}
                        disabled
@@ -67,30 +76,32 @@ export const CreateEvent = () => {
                     onChange={onChange}
                     required
                 />
-                <input type="date"
-                       id="date"
-                       name="date"
+                <input type="datetime-local"
+                       id="dateStart"
+                       name="dateStart"
                        placeholder="Search places"
                        onChange={onChange}
                        required
                 />
                 <input type="text"
-                       id="location_name"
-                       name="location_name"
-                       placeholder="Location name (e.g. Jason's apartment)"
-                       value={event.location_name}
+                       id="address_name"
+                       name="address_name"
+                       placeholder="Location name (e.g. Central Park)"
+                       value={event.address_name}
                        onChange={onChange}
                        required
                 />
                 <input type="text"
-                       id="location_address"
-                       name="location_address"
+                       id="address_location"
+                       name="address_location"
                        placeholder="Location address"
-                       value={event.location_address}
+                       value={event.address_location}
                        onChange={onChange}
                        required
                 />
-                <button>Create event</button>
+                {!loading ? <button type="submit">Create event</button> :
+                    <button type="button"><CircularProgress size={18}/></button>}
+                {error ? <p className="error">{error}</p> : ''}
             </form>
             <SearchPlace event={event} setEvent={setEvent}/>
         </main>
@@ -105,10 +116,13 @@ interface SearchPlace {
 const SearchPlace = (props: SearchPlace) => {
     const [search, setSearch] = useState('');
     const [results, setResults] = useState<SearchResult[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
     const postSearch = () => {
-        console.log('Submitting query', search);
+        setLoading(true);
         searchPlaces(search).then((results) => {
             setResults(results);
+        }).finally(() => {
+            setLoading(false);
         });
     };
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -124,8 +138,8 @@ const SearchPlace = (props: SearchPlace) => {
     const clickResult = (result: SearchResult) => {
         props.setEvent({
             ...props.event,
-            location_name: result.name,
-            location_address: result.formatted_address,
+            address_name: result.name,
+            address_location: result.formatted_address,
             lat: result.lat,
             lon: result.lon
         });
@@ -139,13 +153,13 @@ const SearchPlace = (props: SearchPlace) => {
                        placeholder="Search places"
                        onChange={onChange}
                 />
-                <button type="submit">Search</button>
+                {!loading ? <button type="submit">Search</button> :
+                    <button type="button"><CircularProgress size={18}/></button>}
             </div>
             <div className="search-results">
-                {/*TODO: Add spinny thing here*/}
                 {
-                    results.map(r =>
-                        <div className="result" onClick={() => clickResult(r)}>
+                    results.map((r, i) =>
+                        <div key={i} className="result" onClick={() => clickResult(r)}>
                             <h3>{r.name}</h3>
                             <p>{r.formatted_address}</p>
                         </div>
