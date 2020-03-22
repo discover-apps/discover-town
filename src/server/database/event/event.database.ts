@@ -110,6 +110,7 @@ export const readEventsByUser = (user: User): Promise<Event[]> => {
         await database<Event>('Events')
             .select()
             .whereIn('id', eventIds)
+            .orderBy('datePosted', 'desc')
             .then((records) => {
                 for (let i = 0; i < records.length; i++) {
                     events.push(records[i])
@@ -119,5 +120,36 @@ export const readEventsByUser = (user: User): Promise<Event[]> => {
                 reject(error);
             });
         resolve(events);
+    });
+};
+
+export const readEventsByUserFollowers = (followers: User[]): Promise<Event[]> => {
+    return new Promise<Event[]>(async (resolve, reject) => {
+        const userIds: number[] = [];
+        for (let i = 0; i < followers.length; i++) {
+            userIds.push(followers[i].id);
+        }
+        const eventIds: number[] = [];
+        await database<UserHostingEvent>('UserHostingEvent')
+            .select()
+            .whereIn('userId', userIds)
+            .then((records) => {
+                for (let i = 0; i < records.length; i++) {
+                    eventIds.push(records[i].eventId);
+                }
+            })
+            .catch((error) => {
+                reject(error);
+            });
+        await database<Event>('Events')
+            .select()
+            .whereIn('id', eventIds)
+            .orderBy('datePosted', 'desc')
+            .then((records) => {
+                resolve(records);
+            })
+            .catch((error) => {
+                reject(error);
+            });
     });
 };

@@ -1,4 +1,4 @@
-import {createEvent, readEventById, readEventsByUser} from "./event.database";
+import {createEvent, readEventById, readEventsByUser, readEventsByUserFollowers} from "./event.database";
 import Event from '../../models/event.model';
 import {
     addTestEventToDb,
@@ -151,5 +151,27 @@ describe('Tests event database functions', () => {
             });
             done();
         })
+    });
+    describe('Tests ReadyByUserFollowers Function', () => {
+        let testEvent: Event = undefined;
+        let testUser: User = undefined;
+        beforeAll(async () => {
+            await deleteTestEventFromDb();
+            await deleteTestUsersFromDb();
+            testUser = await addTestUserToDb(1);
+            testEvent = await addTestEventToDb(testUser.id);
+        });
+        afterAll(async () => {
+            await deleteTestUsersFromDb();
+            await deleteTestEventFromDb();
+        });
+        it('Successfully retrieves record for testUser', async done => {
+            await readEventsByUserFollowers([testUser]).then((events: Event[]) => {
+                expect(events).not.toBeNull();
+                expect(events.length).toEqual(1);
+                expect(events[0].title).toEqual(testEvent.title);
+            });
+            done();
+        });
     });
 });
