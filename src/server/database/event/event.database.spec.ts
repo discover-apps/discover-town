@@ -1,4 +1,4 @@
-import {createEvent, readEventById} from "./event.database";
+import {createEvent, readEventById, readEventsByUser} from "./event.database";
 import Event from '../../models/event.model';
 import {
     addTestEventToDb,
@@ -122,5 +122,34 @@ describe('Tests event database functions', () => {
             });
             done();
         });
+    });
+    describe('Tests ReadByUser Function', () => {
+        let testEvent: Event = undefined;
+        let testUser: User = undefined;
+        beforeAll(async () => {
+            await deleteTestEventFromDb();
+            await deleteTestUsersFromDb();
+            testUser = await addTestUserToDb(1);
+            testEvent = await addTestEventToDb(testUser.id);
+        });
+        afterAll(async () => {
+            await deleteTestUsersFromDb();
+            await deleteTestEventFromDb();
+        });
+        it('Successfully retrieves all event records for a user.', async done => {
+            await readEventsByUser(testUser).then((events: Event[]) => {
+                expect(events).not.toBeNull();
+                expect(events.length).toEqual(1);
+                expect(events[0].title).toEqual(testEvent.title);
+            });
+            done();
+        });
+        it('Returns a empty array for a user that does not exist', async done => {
+            await readEventsByUser({...testUser, id: -1}).then((events: Event[]) => {
+                expect(events).not.toBeNull();
+                expect(events.length).toEqual(0);
+            });
+            done();
+        })
     });
 });

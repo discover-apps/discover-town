@@ -2,6 +2,7 @@ import Event, {EventLocation} from "../../models/event.model";
 import axios, {AxiosResponse} from 'axios';
 import {database} from "../_database";
 import {UserHostingEvent} from "../../../react/models/event.model";
+import User from "../../models/user.model";
 
 export const createEvent = (event: Event, userId: number): Promise<number> => {
     return new Promise<number>((resolve, reject) => {
@@ -86,5 +87,37 @@ export const readEventById = (eventId: number): Promise<Event> => {
             .catch((error) => {
                 reject(error);
             });
+    });
+};
+
+export const readEventsByUser = (user: User): Promise<Event[]> => {
+    return new Promise<Event[]>(async (resolve, reject) => {
+        // get list of event id from UserHostingEvent
+        const eventIds: number[] = [];
+        await database<UserHostingEvent>('UserHostingEvent')
+            .select()
+            .where({userId: user.id})
+            .then((records) => {
+                for (let i = 0; i < records.length; i++) {
+                    eventIds.push(records[i].eventId);
+                }
+            })
+            .catch((error) => {
+                reject(error);
+            });
+        // get list of events
+        const events: Event[] = [];
+        await database<Event>('Events')
+            .select()
+            .whereIn('id', eventIds)
+            .then((records) => {
+                for (let i = 0; i < records.length; i++) {
+                    events.push(records[i])
+                }
+            })
+            .catch((error) => {
+                reject(error);
+            });
+        resolve(events);
     });
 };
