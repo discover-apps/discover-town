@@ -74,3 +74,17 @@ export const validLocation = (address: string): Promise<EventLocation> => {
         });
     });
 };
+
+export const readEventById = (eventId: number): Promise<Event> => {
+    return new Promise<Event>((resolve, reject) => {
+        database<Event>('Events')
+            .select()
+            .where({id: eventId})
+            .then((record) => {
+                resolve(record[0]);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+};

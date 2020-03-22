@@ -6,6 +6,7 @@ import User from "../models/user.model";
 import {database} from "../database/_database";
 import Follower from "../models/follower.model";
 import Event from '../models/event.model';
+import {UserHostingEvent} from "../../react/models/event.model";
 
 /**
  * This file contains all of the test object entities that are used
@@ -97,13 +98,18 @@ export const deleteTestUserFromDb = async () => {
 };
 
 export const addTestUserToDb = async (n: number): Promise<User> => {
-    const user = generateTestUser(n);
-    user.id = await database<User>('Users')
-        .insert(user);
-    if (user.id) {
-        return user;
-    }
-    throw 'Error adding test user to database.'
+    return new Promise<User>((resolve, reject) => {
+        let user = generateTestUser(n);
+        database<User>('Users')
+            .insert(user)
+            .then((userId) => {
+                user.id = userId[0];
+                resolve(user);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
 };
 
 export const deleteTestUsersFromDb = async () => {
@@ -153,6 +159,29 @@ export const registerTestUserToDb = async (): Promise<Session> => {
 
 // event database functions
 
+export const addTestEventToDb = async (userId: number): Promise<Event> => {
+    return new Promise<Event>(async (resolve, reject) => {
+        // create test event
+        let event: Event = generateTestEvent();
+        database<Event>('Events')
+            .insert(event)
+            .then((eventId: any) => {
+                // insert record into UserHostingEvent table
+                database<UserHostingEvent>('UserHostingEvent')
+                    .insert({
+                        userId: userId,
+                        eventId: eventId[0]
+                    }).catch(error => {
+                    reject(error);
+                });
+                resolve({...event, id: eventId[0]});
+            })
+            .catch((error: any) => {
+                reject(error);
+            });
+    });
+};
+
 export const deleteTestEventFromDb = async () => {
     // get Event Ids from Event table
     const ids: number[] = [];
@@ -160,8 +189,8 @@ export const deleteTestEventFromDb = async () => {
         .select()
         .where({title: 'TestEvent'})
         .then((records: any) => {
-                for (let i = 0; i < records.length; i++) {
-                    ids.push(records[i].id);
+            for (let i = 0; i < records.length; i++) {
+                ids.push(records[i].id);
                 }
             }
         )
