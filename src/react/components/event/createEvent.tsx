@@ -1,7 +1,7 @@
 import React, {ChangeEvent, FormEvent, useState} from 'react';
 import {createEventRecord, searchPlaces} from "../../api/event.api";
 import {SearchResult} from "../../models/searchResult.model";
-import Event from '../../models/event.model';
+import {Event} from '../../models/event.model';
 import {CircularProgress} from "@material-ui/core";
 import {useHistory} from 'react-router-dom';
 

@@ -52,7 +52,6 @@ interface ProfileBodyProps {
     page: number;
     user: User;
 }
-
 const ProfileBody = (props: ProfileBodyProps) => {
     switch (props.page) {
         case 0:

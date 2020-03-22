@@ -1,5 +1,18 @@
 section.profile-events {
+  min-height: 78vh;
   padding: 1rem;
+
+  div.loading {
+    height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  p.no-events {
+    margin-top: 25vh;
+    text-align: center;
+  }
 
   div.event {
     display: grid;
@@ -22,15 +35,16 @@ section.profile-events {
 
     div.details {
       h3 {
-        font-size: 0.875rem;
-        font-weight: 500;
+        font-size: 1rem;
+        font-weight: 800;
       }
 
       h4 {
-        margin: .5rem 0;
+        margin: 0.25rem 0;
         color: $black-777;
         font-size: 0.875rem;
         font-weight: 500;
+        text-transform: capitalize;
       }
 
       h5 {

@@ -2,7 +2,8 @@ import {Request, Response} from 'express';
 import axios, {AxiosResponse} from "axios";
 import {SearchResult} from "../../models/searchResult.model";
 import Event from '../../models/event.model';
-import {createEvent} from "../../database/event/event.database";
+import {createEvent, readEventsByUser} from "../../database/event/event.database";
+import User from "../../models/user.model";
 
 export const searchPlaces = async (req: Request, res: Response) => {
     const query = req.body.query;
@@ -38,5 +39,15 @@ export const create = async (req: Request, res: Response) => {
         res.status(200).json(event);
     }).catch((error) => {
         res.status(500).json(error);
+    });
+};
+
+export const readByUser = async (req: Request, res: Response) => {
+    // get user from req body
+    const user: User = req.body;
+    readEventsByUser(user).then((events: Event[]) => {
+        res.status(200).json(events);
+    }).catch((error) => {
+        res.status(300).json(error);
     });
 };

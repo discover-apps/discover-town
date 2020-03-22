@@ -1,5 +1,5 @@
 import React from 'react';
-import Event from './../../models/event.model';
+import {Event} from './../../models/event.model';
 import ShareIcon from "@material-ui/icons/Share";
 import ClockIcon from "@material-ui/icons/AccessTime";
 import LocationIcon from "@material-ui/icons/LocationOn";
