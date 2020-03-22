@@ -12,6 +12,9 @@ export const database = knex({
             if (field.type == 'TINY' && field.length == 4) {
                 return field.string() == '1';
             }
+            if (field.type == 'DATETIME') {
+                return new Date(field.string());
+            }
             return next();
         }
     }

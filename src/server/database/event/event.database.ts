@@ -113,7 +113,7 @@ export const readEventsByUser = (user: User): Promise<Event[]> => {
             .orderBy('datePosted', 'desc')
             .then((records) => {
                 for (let i = 0; i < records.length; i++) {
-                    events.push(records[i])
+                    events.push(records[i]);
                 }
             })
             .catch((error) => {

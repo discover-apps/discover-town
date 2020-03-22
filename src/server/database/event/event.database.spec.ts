@@ -18,8 +18,8 @@ describe('Tests event database functions', () => {
             testUser = await addTestUserToDb(1);
         });
         afterAll(async () => {
-            await deleteTestUsersFromDb();
             await deleteTestEventFromDb();
+            await deleteTestUsersFromDb();
         });
         afterEach(async () => {
             await deleteTestEventFromDb();
@@ -97,8 +97,8 @@ describe('Tests event database functions', () => {
             testEvent = await addTestEventToDb(testUser.id);
         });
         afterAll(async () => {
-            await deleteTestUsersFromDb();
             await deleteTestEventFromDb();
+            await deleteTestUsersFromDb();
         });
         it('Successfully reads a record by id', async done => {
             readEventById(testEvent.id).then((event: Event) => {
@@ -107,6 +107,8 @@ describe('Tests event database functions', () => {
                 expect(event.description).toEqual(testEvent.description);
                 expect(event.address_name).toEqual(testEvent.address_name);
                 expect(event.address_location).toEqual(testEvent.address_location);
+                expect(event.dateStart instanceof Date).toBeTruthy();
+                expect(event.datePosted instanceof Date).toBeTruthy();
                 expect(event.lat).toEqual(testEvent.lat);
                 expect(event.lon).toEqual(testEvent.lon);
             }).catch((error) => {
@@ -133,8 +135,8 @@ describe('Tests event database functions', () => {
             testEvent = await addTestEventToDb(testUser.id);
         });
         afterAll(async () => {
-            await deleteTestUsersFromDb();
             await deleteTestEventFromDb();
+            await deleteTestUsersFromDb();
         });
         it('Successfully retrieves all event records for a user.', async done => {
             await readEventsByUser(testUser).then((events: Event[]) => {
@@ -162,8 +164,8 @@ describe('Tests event database functions', () => {
             testEvent = await addTestEventToDb(testUser.id);
         });
         afterAll(async () => {
-            await deleteTestUsersFromDb();
             await deleteTestEventFromDb();
+            await deleteTestUsersFromDb();
         });
         it('Successfully retrieves record for testUser', async done => {
             await readEventsByUserFollowers([testUser]).then((events: Event[]) => {
