@@ -154,7 +154,7 @@ describe('Tests event database functions', () => {
             done();
         })
     });
-    describe('Tests ReadyByUserFollowers Function', () => {
+    describe('Tests ReadByUserFollowers Function', () => {
         let testEvent: Event = undefined;
         let testUser: User = undefined;
         beforeAll(async () => {

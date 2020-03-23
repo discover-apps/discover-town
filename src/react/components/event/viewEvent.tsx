@@ -1,12 +1,18 @@
-import React from 'react';
-import {Event} from './../../models/event.model';
+import React, {useEffect, useState} from 'react';
+import {Event} from '../../models/event.model';
 import ShareIcon from "@material-ui/icons/Share";
 import ClockIcon from "@material-ui/icons/AccessTime";
 import LocationIcon from "@material-ui/icons/LocationOn";
-import placeholder1 from "../../../assets/img/placeholder_item.png";
-import placeholder2 from "../../../assets/img/placeholder_person.jpg";
 import GoogleMapReact from "google-map-react";
 import {getDateTimeString, getTimeString} from "../../util/common";
+import {useParams} from "react-router-dom";
+import {readEventById} from "../../api/event.api";
+import marker from '../../../assets/img/marker.png';
+import placeholder1 from "../../../assets/img/placeholder_item.png";
+import placeholder2 from "../../../assets/img/placeholder_person.jpg";
+import {readUserByEvent, readUserFollowerCount} from "../../api/user.api";
+import {User} from "../../models/user.model";
+import {CircularProgress} from "@material-ui/core";
 
 const event: Event = {
     title: 'Lorem Ipsum',
@@ -20,20 +26,44 @@ const event: Event = {
 };
 
 export const ViewEvent = () => {
-    return (
-        <main className="event">
-            <EventTitle event={event}/>
-            <EventInformation event={event}/>
-            <EventDetails event={event}/>
+    const [event, setEvent] = useState(undefined);
+    const [user, setUser] = useState(undefined);
+    const [followers, setFollowers] = useState<number>(0);
+    // get id from url params
+    let {id} = useParams();
+    useEffect(() => {
+        // get event object from server
+        readEventById(Number.parseInt(id)).then((event: Event) => {
+            setEvent(event);
+            // get user object from server
+            readUserByEvent(event).then((user: User) => {
+                setUser(user);
+                // get follower count for user from server
+                readUserFollowerCount(user).then((count: number) => {
+                    setFollowers(count);
+                });
+            });
+        });
+    }, []);
+
+    if (event != undefined && user != undefined) {
+        return <main className="event">
+            <EventTitle user={user} event={event} followerCount={followers}/>
+            <EventInformation user={user} event={event} followerCount={followers}/>
+            <EventDetails user={user} event={event} followerCount={followers}/>
             <EventAttendees/>
-        </main>
-    )
+        </main>;
+    } else {
+        return <div className="loading">
+            <CircularProgress/>
+        </div>;
+    }
 };
 
-export default ViewEvent;
-
 interface EventProps {
+    user: User;
     event: Event;
+    followerCount: number;
 }
 
 const EventTitle = (props: EventProps) => {
@@ -41,15 +71,15 @@ const EventTitle = (props: EventProps) => {
     return (
         <section className="paper elevation-3 title">
             <h5 className="">{getDateTimeString(props.event.dateStart)}</h5>
-            <h1>Speed Networking & Business MatchMaking: Fastest Way to Expand Your Network</h1>
+            <h1>{props.event.title}</h1>
             <div className="member-share">
                 <div className="member">
                     <div className="image">
                         <img src={placeholder2} alt="profile_image"/>
                     </div>
                     <div className="details">
-                        <h3>Google Events</h3>
-                        <span>100 Followers</span>
+                        <h3>{props.user.username}</h3>
+                        <span>{props.followerCount} Followers</span>
                     </div>
                 </div>
                 <div className="share">
@@ -80,28 +110,22 @@ const EventInformation = (props: EventProps) => {
                 </div>
             </div>
             <div className="map">
-                <GoogleMaps event={event}/>
+                <GoogleMaps user={props.user} event={event} followerCount={props.followerCount}/>
             </div>
         </section>
     );
 };
 
+const GoogleMapsMarker = (props: any) => <div><img className="marker" src={marker} alt="marker"/></div>;
 
-interface MarkerProps {
-    text: string;
-    lat: number;
-    lng: number;
-}
-
-const Marker = ({text}: any) => <div>{text}</div>;
 const GoogleMaps = (props: EventProps) => {
 
     const geolocationUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyCFghWiQ6YR9gvIn572y9yTD49K3igUeiI";
 
     const defaultProps = {
         center: {
-            lat: 40.7484405,
-            lng: -73.98566439999999
+            lat: props.event.lat,
+            lng: props.event.lon
         },
         zoom: 5
     };
@@ -109,13 +133,16 @@ const GoogleMaps = (props: EventProps) => {
         // Important! Always set the container height explicitly
         <div style={{height: '225px', width: '100%'}}>
             <GoogleMapReact
+                yesIWantToUseGoogleMapApiInternals
                 bootstrapURLKeys={{key: "AIzaSyCFghWiQ6YR9gvIn572y9yTD49K3igUeiI"}}
                 defaultCenter={{lat: props.event.lat, lng: props.event.lon}}
                 defaultZoom={15}
             >
-                <Marker
-                    lat={59.955413}
-                    lng={30.337844}
+                <GoogleMapsMarker
+                    position={{
+                        lat: props.event.lat,
+                        lng: props.event.lon
+                    }}
                     text="My Marker"
                 />
             </GoogleMapReact>
@@ -131,13 +158,13 @@ const EventDetails = (props: EventProps) => {
             </div>
             <div className="text">
                 <h2>Details</h2>
-                <div dangerouslySetInnerHTML={{__html: props.event.description}}/>
+                <p>{props.event.description}</p>
             </div>
         </section>
     )
 };
 
-export const EventAttendees = () => {
+const EventAttendees = () => {
     return (
         <section>
             <div className="paper elevation-3 attendees-title">
@@ -152,7 +179,7 @@ export const EventAttendees = () => {
     )
 };
 
-export const Attendee = () => {
+const Attendee = () => {
     return (
         <div className="attendee paper elevation-3">
             <div className="image">

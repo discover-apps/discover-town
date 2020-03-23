@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {User} from "../../models/user.model";
 import Placeholder from '../../../assets/img/placeholder_person.jpg';
-import {followUser, unfollowUser, userFollowerCount, userFollowsUser} from "../../api/user.api";
+import {followUser, readUserFollowerCount, unfollowUser, userFollowsUser} from "../../api/user.api";
 import {CircularProgress} from "@material-ui/core";
 
 interface Props {
@@ -20,7 +20,7 @@ export const ProfileHeader = (props: Props) => {
     };
 
     useEffect(() => {
-        userFollowerCount(props.user).then((count: number) => {
+        readUserFollowerCount(props.user).then((count: number) => {
             setFollowerCount(count);
         });
     });

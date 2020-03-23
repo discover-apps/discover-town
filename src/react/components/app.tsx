@@ -9,7 +9,7 @@ import Navbar from "./navbar/navbar";
 import Register from "./login/register";
 import Login from "./login/login";
 import Browse from "./home/browse";
-import ViewEvent from './event/viewEvent';
+import {ViewEvent} from './event/viewEvent';
 import Home from "./home/home";
 import Profile from "./user/profile";
 import {ProtectedRoute} from "../util/protected.route";
@@ -31,8 +31,7 @@ const App = () => {
                         <Route path="/login" component={Login}/>
                         <Route path="/register" component={Register}/>
                         <Route path="/browse" component={Browse}/>
-                        <Route exact path="/event" component={ViewEvent}/>
-                        <Route exact path="/event" component={ViewEvent}/>
+                        <Route exact path="/event/:id" component={ViewEvent}/>
                         <ProtectedRoute exact path="/event/create" component={CreateEvent}/>
                         <ProtectedRoute exact path="/profile/edit/" component={ProfileEdit}/>
                         <Route exact path='/profile/:username' component={Profile}/>

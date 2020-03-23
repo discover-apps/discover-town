@@ -25,6 +25,20 @@ export const createEventRecord = async (event: Event): Promise<Event> => {
     });
 };
 
+export const readEventById = (eventId: number): Promise<Event> => {
+    return new Promise<Event>((resolve, reject) => {
+        http.post('/event/readById', {eventId}).then((response: AxiosResponse<Event>) => {
+            resolve({
+                ...response.data,
+                dateStart: new Date(response.data.dateStart),
+                datePosted: new Date(response.data.datePosted)
+            });
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+};
+
 export const readEventsByUser = (user: User): Promise<Event[]> => {
     return new Promise<Event[]>((resolve, reject) => {
         http.post('/event/readByUser', user).then((response: AxiosResponse<Event[]>) => {

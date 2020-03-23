@@ -4,4 +4,16 @@ main.event {
   section:not(:last-child) {
     margin-bottom: 1rem;
   }
+
+  img.marker {
+    height: 24px;
+    width: 24px;
+  }
+}
+
+div.loading {
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
