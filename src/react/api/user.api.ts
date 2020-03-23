@@ -1,6 +1,7 @@
 import {AxiosResponse} from "axios";
 import {User} from "../models/user.model";
 import {http} from './_api';
+import Event from "../../server/models/event.model";
 
 export const getCurrentUser = async (): Promise<User> => {
     const response: AxiosResponse<User> = await http.get('user');
@@ -50,7 +51,7 @@ export const userFollowsUser = async (user: User): Promise<boolean> => {
     throw 'Error checking if user follows user.';
 };
 
-export const userFollowerCount = async (user: User): Promise<number> => {
+export const readUserFollowerCount = async (user: User): Promise<number> => {
     const response: AxiosResponse<number> = await http.post('user/followercount', user);
     if (response.status == 200) {
         return response.data;
@@ -72,4 +73,18 @@ export const getUserFollowing = async (user: User): Promise<User[]> => {
         return response.data;
     }
     throw 'Error getting users that user follows.';
+};
+
+export const readUserByEvent = (event: Event): Promise<User> => {
+    return new Promise<User>((resolve, reject) => {
+        http.post('/user/readByEvent', event).then((response: AxiosResponse<User>) => {
+            resolve(response.data);
+        }).catch((error) => {
+            if (error != undefined && error.response != undefined && error.response.data != undefined && typeof error.response.data == 'string') {
+                reject(error.response.data);
+            } else {
+                reject('An unknown error occurred when retrieving user records for event.');
+            }
+        });
+    })
 };

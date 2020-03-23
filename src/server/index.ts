@@ -28,15 +28,18 @@ app.get('/api/auth/logout', authenticateSession, authController.logout);
 app.post('/api/user/edit', authenticateSession, userController.editUserProfile);
 app.get('/api/user/profile', userController.getUserProfile);
 app.get('/api/user', authenticateSession, userController.getCurrentProfile);
+// User Routes
 app.post('/api/user/follow', authenticateSession, userController.followUser);
 app.post('/api/user/follows', authenticateSession, userController.followsUser);
 app.post('/api/user/unfollow', authenticateSession, userController.unfollowUser);
 app.post('/api/user/followercount', userController.getFollowerCount);
 app.post('/api/user/followers', userController.getFollowers);
 app.post('/api/user/following', userController.getFollowing);
+app.post('/api/user/readByEvent', userController.readByEvent);
 // Event Routes
 app.post('/api/event/places', eventController.searchPlaces);
 app.post('/api/event/create', authenticateSession, eventController.create);
+app.post('/api/event/readById', eventController.readById);
 app.post('/api/event/readByUser', eventController.readByUser);
 
 app.get('/api/*', (req: Request, res: Response) => {

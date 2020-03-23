@@ -1,6 +1,7 @@
 import {Request, Response} from "express";
 import {
     addUserFollower,
+    readUserByEvent,
     readUserById,
     readUserByUsername,
     readUserFollowerCount,
@@ -11,6 +12,7 @@ import {
     userFollowsUser
 } from "../../database/user/user.database";
 import User from "../../models/user.model";
+import Event from "../../models/event.model";
 
 export const getCurrentProfile = (req: Request, res: Response) => {
     // get user id from req
@@ -114,6 +116,16 @@ export const getFollowing = async (req: Request, res: Response) => {
     const targetUsername: string = req.body.username;
     await readUserFollowing(targetUsername).then((users: User[]) => {
         res.status(200).json(users);
+    }).catch((error) => {
+        res.status(500).json(error);
+    });
+};
+
+export const readByEvent = async (req: Request, res: Response) => {
+    // get event from req body
+    const event: Event = req.body;
+    readUserByEvent(event).then((user: User) => {
+        res.status(200).json(user);
     }).catch((error) => {
         res.status(500).json(error);
     });

@@ -4,6 +4,7 @@ import {
     createUser,
     deleteUser,
     readUserByEmail,
+    readUserByEvent,
     readUserById,
     readUserByUsername,
     readUserFollowerCount,
@@ -13,7 +14,15 @@ import {
     updateUser,
     userFollowsUser
 } from "./user.database";
-import {addTestUserToDb, deleteTestUserFromDb, deleteTestUsersFromDb, testUser} from "../../util/test.util";
+import {
+    addTestEventToDb,
+    addTestUserToDb,
+    deleteTestEventFromDb,
+    deleteTestUserFromDb,
+    deleteTestUsersFromDb,
+    testUser
+} from "../../util/test.util";
+import Event from "../../models/event.model";
 
 afterAll(async () => {
     await deleteTestUserFromDb();
@@ -281,6 +290,30 @@ describe('Tests UserFollowsUser database', () => {
         await readUserFollowerCount(user1.username).catch((error) => {
             expect(error).not.toBeNull();
             expect(error).toEqual('Failed to get follower count for a user that does not exist.');
+        });
+        done();
+    });
+});
+
+describe('Tests ReadUserByEvent Function', () => {
+    let testEvent: Event = undefined;
+    let testUser: User = undefined;
+    beforeAll(async () => {
+        await deleteTestEventFromDb();
+        await deleteTestUsersFromDb();
+        testUser = await addTestUserToDb(1);
+        testEvent = await addTestEventToDb(testUser.id);
+    });
+    afterAll(async () => {
+        await deleteTestEventFromDb();
+        await deleteTestUsersFromDb();
+    });
+    it('Successfully retrieves user using an event.', async done => {
+        readUserByEvent(testEvent).then((user: User) => {
+            expect(user).not.toBeNull();
+            expect(user.id).toEqual(testUser.id);
+        }).catch((error) => {
+            expect(error).toBeNull();
         });
         done();
     });

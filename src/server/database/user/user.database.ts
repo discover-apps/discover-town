@@ -1,6 +1,8 @@
 import {database} from '../_database';
 import User from "../../models/user.model";
 import Follower from "../../models/follower.model";
+import Event from "../../models/event.model";
+import {UserHostingEvent} from "../../../react/models/event.model";
 
 export const createUser = async (user: User): Promise<number> => {
     return new Promise<number>((resolve, reject) => {
@@ -149,11 +151,6 @@ export const addUserFollower = async (username1: string, username2: string): Pro
     });
 };
 
-/**
- *
- * @param username1
- * @param username2
- */
 export const removeUserFollower = async (username1: string, username2: string) => {
     return new Promise<string>(async (resolve, reject) => {
         const user1: User = await readUserByUsername(username1);
@@ -245,6 +242,30 @@ export const readUserFollowerCount = async (username: string): Promise<number> =
             })
             .catch((error) => {
                 return reject(error);
+            });
+    });
+};
+
+export const readUserByEvent = (event: Event): Promise<User> => {
+    return new Promise<User>(async (resolve, reject) => {
+        let userId: number = -1;
+        await database<UserHostingEvent>('UserHostingEvent')
+            .select()
+            .where({eventId: event.id})
+            .then((records) => {
+                userId = records[0].userId;
+            })
+            .catch((error) => {
+                reject(error);
+            });
+        await database<User>('Users')
+            .select()
+            .where({id: userId})
+            .then((records) => {
+                resolve(records[0]);
+            })
+            .catch((error) => {
+                reject(error);
             });
     });
 };
