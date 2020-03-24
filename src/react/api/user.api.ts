@@ -3,20 +3,32 @@ import {User} from "../models/user.model";
 import {http} from './_api';
 import Event from "../../server/models/event.model";
 
-export const getCurrentUser = async (): Promise<User> => {
-    const response: AxiosResponse<User> = await http.get('user');
-    if (response.status == 200) {
-        return response.data;
-    }
-    throw 'Error retrieving current user profile.';
+export const readCurrentUser = async (): Promise<User> => {
+    return new Promise<User>((resolve, reject) => {
+        http.get('user').then((response: AxiosResponse<User>) => {
+            resolve(response.data);
+        }).catch((error) => {
+            if (error != undefined && error.response != undefined && error.response.data != undefined && typeof error.response.data == 'string') {
+                reject(error.response.data);
+            } else {
+                reject('An unknown error occurred when retrieving current user.');
+            }
+        });
+    });
 };
 
-export const getUserProfile = async (username: string): Promise<User> => {
-    const response: AxiosResponse<User> = await http.get(`user/profile?username=${username}`);
-    if (response.status == 200) {
-        return response.data;
-    }
-    throw 'Error retrieving UserModel profile.';
+export const readUserByUsername = async (username: string): Promise<User> => {
+    return new Promise<User>((resolve, reject) => {
+        http.post('user/readByUsername', {username}).then((response: AxiosResponse<User>) => {
+            resolve(response.data);
+        }).catch((error) => {
+            if (error != undefined && error.response != undefined && error.response.data != undefined && typeof error.response.data == 'string') {
+                reject(error.response.data);
+            } else {
+                reject('An unknown error occurred when retrieving user record from username.');
+            }
+        });
+    });
 };
 
 export const editUserProfile = async (user: User): Promise<string> => {
