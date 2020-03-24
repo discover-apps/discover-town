@@ -1,8 +1,8 @@
-import Event, {EventLocation} from "../../models/event.model";
+import Event, {EventLocation, UserAttendingEvent, UserHostingEvent} from "../../models/event.model";
 import axios, {AxiosResponse} from 'axios';
 import {database} from "../_database";
-import {UserHostingEvent} from "../../../react/models/event.model";
 import User from "../../models/user.model";
+import {readUserById} from "../user/user.database";
 
 export const createEvent = (event: Event, userId: number): Promise<number> => {
     return new Promise<number>((resolve, reject) => {
@@ -147,6 +147,69 @@ export const readEventsByUserFollowers = (followers: User[]): Promise<Event[]> =
             .orderBy('datePosted', 'desc')
             .then((records) => {
                 resolve(records);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+};
+
+export const addEventAttendee = (event: Event, user: User): Promise<string> => {
+    return new Promise<string>(async (resolve, reject) => {
+        await database<UserAttendingEvent>('UserAttendingEvent')
+            .insert({userId: user.id, eventId: event.id})
+            .then((record) => {
+                resolve('Successfully added event attendee.');
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+};
+
+export const removeEventAttendee = (event: Event, user: User): Promise<string> => {
+    return new Promise<string>(async (resolve, reject) => {
+        await database<UserAttendingEvent>('UserAttendingEvent')
+            .delete()
+            .where({eventId: event.id, userId: user.id})
+            .then((record) => {
+                resolve('Successfully removed event attendee.');
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+};
+
+export const readEventAttendees = (event: Event): Promise<User[]> => {
+    return new Promise<User[]>((resolve, reject) => {
+        database<UserAttendingEvent>('UserAttendingEvent')
+            .select()
+            .where({eventId: event.id})
+            .then(async (results) => {
+                const users: User[] = [];
+                for (let i = 0; i < results.length; i++) {
+                    const user: User = await readUserById(results[i].userId);
+                    users.push(user);
+                }
+                resolve(users);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+};
+
+export const userAttendingEvent = (event: Event, user: User): Promise<boolean> => {
+    return new Promise<boolean>((resolve, reject) => {
+        database<UserAttendingEvent>('UserAttendingEvent')
+            .select()
+            .where({eventId: event.id, userId: user.id})
+            .then((results) => {
+                if (results.length > 0 && results[0].userId == user.id) {
+                    resolve(true);
+                }
+                resolve(false);
             })
             .catch((error) => {
                 reject(error);

@@ -5,7 +5,7 @@ import Session from "../models/session.model";
 import User from "../models/user.model";
 import {database} from "../database/_database";
 import Follower from "../models/follower.model";
-import Event from '../models/event.model';
+import Event, {UserAttendingEvent} from '../models/event.model';
 import {UserHostingEvent} from "../../react/models/event.model";
 
 /**
@@ -189,8 +189,8 @@ export const deleteTestEventFromDb = async () => {
         .select()
         .where({title: 'TestEvent'})
         .then((records: any) => {
-            for (let i = 0; i < records.length; i++) {
-                ids.push(records[i].id);
+                for (let i = 0; i < records.length; i++) {
+                    ids.push(records[i].id);
                 }
             }
         )
@@ -198,15 +198,19 @@ export const deleteTestEventFromDb = async () => {
             throw error;
         });
     // delete all records from UserHostingEvent table
-    await database<Event>('UserHostingEvent')
+    await database<UserHostingEvent>('UserHostingEvent')
         .delete()
         .whereIn('eventId', ids)
         .catch((error) => {
             throw error;
         });
-
-    // TODO: delete all records from UserAttendingEvent table
-
+    // delete all records from UserAttendingEvent table
+    await database<UserAttendingEvent>('UserAttendingEvent')
+        .delete()
+        .whereIn('eventId', ids)
+        .catch((error) => {
+            throw error;
+        });
     // delete all records from Events table
     await database<Event>('Events')
         .delete()

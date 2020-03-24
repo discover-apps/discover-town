@@ -1,4 +1,13 @@
-import {createEvent, readEventById, readEventsByUser, readEventsByUserFollowers} from "./event.database";
+import {
+    addEventAttendee,
+    createEvent,
+    readEventAttendees,
+    readEventById,
+    readEventsByUser,
+    readEventsByUserFollowers,
+    removeEventAttendee,
+    userAttendingEvent
+} from "./event.database";
 import Event from '../../models/event.model';
 import {
     addTestEventToDb,
@@ -172,6 +181,74 @@ describe('Tests event database functions', () => {
                 expect(events).not.toBeNull();
                 expect(events.length).toEqual(1);
                 expect(events[0].title).toEqual(testEvent.title);
+            });
+            done();
+        });
+    });
+    describe('Tests AddEventAttendee Function', () => {
+        let testEvent: Event = undefined;
+        let testUser: User = undefined;
+        let testUser2: User = undefined;
+        beforeEach(async () => {
+            await deleteTestEventFromDb();
+            await deleteTestUsersFromDb();
+            testUser = await addTestUserToDb(1);
+            testUser2 = await addTestUserToDb(2);
+            testEvent = await addTestEventToDb(testUser.id);
+        });
+        afterEach(async () => {
+            await deleteTestEventFromDb();
+            await deleteTestUsersFromDb();
+        });
+        it('Successfully adds an event attendee.', async done => {
+            await addEventAttendee(testEvent, testUser2).then((message: string) => {
+                expect(message).not.toBeNull();
+                expect(message).toEqual('Successfully added event attendee.');
+            });
+            done();
+        });
+        it('Successfully removes an event attendee.', async done => {
+            await addEventAttendee(testEvent, testUser2).then((message: string) => {
+                expect(message).not.toBeNull();
+                expect(message).toEqual('Successfully added event attendee.');
+            });
+            await removeEventAttendee(testEvent, testUser2).then((message: string) => {
+                expect(message).not.toBeNull();
+                expect(message).toEqual('Successfully removed event attendee.');
+            });
+            done();
+        });
+        it('Successfully reads event attendees', async done => {
+            await addEventAttendee(testEvent, testUser2).then((message: string) => {
+                expect(message).not.toBeNull();
+                expect(message).toEqual('Successfully added event attendee.');
+            });
+            await readEventAttendees(testEvent).then((users: User[]) => {
+                expect(users).not.toBeNull();
+                expect(users.length).toEqual(1);
+                expect(users[0].id).toEqual(testUser2.id);
+            });
+            done();
+        });
+        it('Successfully identifies User2 as an Attendee.', async done => {
+            await addEventAttendee(testEvent, testUser2).then((message: string) => {
+                expect(message).not.toBeNull();
+                expect(message).toEqual('Successfully added event attendee.');
+            });
+            await userAttendingEvent(testEvent, testUser2).then((attending: boolean) => {
+                expect(attending).not.toBeNull();
+                expect(attending).toBeTruthy();
+            });
+            done();
+        });
+        it('Successfully identifies User1 as not an Attendee.', async done => {
+            await addEventAttendee(testEvent, testUser2).then((message: string) => {
+                expect(message).not.toBeNull();
+                expect(message).toEqual('Successfully added event attendee.');
+            });
+            await userAttendingEvent(testEvent, testUser).then((attending: boolean) => {
+                expect(attending).not.toBeNull();
+                expect(attending).toBeFalsy();
             });
             done();
         });
