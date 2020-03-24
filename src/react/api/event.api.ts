@@ -1,6 +1,6 @@
 import axios, {AxiosResponse} from "axios";
 import {Event} from '../models/event.model';
-import {http} from "./_api";
+import {handleHttpError, http} from "./_api";
 import {User} from "../models/user.model";
 
 export const searchPlaces = async (query: string): Promise<any> => {
@@ -57,6 +57,46 @@ export const readEventsByUser = (user: User): Promise<Event[]> => {
             } else {
                 reject('An unknown error occurred when retrieving event records for user.');
             }
+        });
+    });
+};
+
+export const readEventAttendees = async (event: Event): Promise<User[]> => {
+    return new Promise<User[]>((resolve, reject) => {
+        http.post('/event/readAttendees', {event}).then((response: AxiosResponse<User[]>) => {
+            resolve(response.data);
+        }).catch((error) => {
+            reject(handleHttpError(error, 'An unknown error occurred when retrieving attendees for event.'));
+        });
+    });
+};
+
+export const createEventAttendee = async (event: Event): Promise<string> => {
+    return new Promise<string>((resolve, reject) => {
+        http.post('/event/createAttendee', {event}).then((response: AxiosResponse<string>) => {
+            resolve(response.data);
+        }).catch((error) => {
+            reject(handleHttpError(error, 'An unknown error occurred when creating event attendee.'));
+        });
+    });
+};
+
+export const deleteEventAttendee = async (event: Event): Promise<string> => {
+    return new Promise<string>((resolve, reject) => {
+        http.post('/event/deleteAttendee', {event}).then((response: AxiosResponse<string>) => {
+            resolve(response.data);
+        }).catch((error) => {
+            reject(handleHttpError(error, 'An unknown error occurred when deleting event attendee.'));
+        });
+    });
+};
+
+export const userAttendingEvent = async (event: Event): Promise<boolean> => {
+    return new Promise<boolean>((resolve, reject) => {
+        http.post('/event/attendingEvent', {event}).then((response: AxiosResponse<boolean>) => {
+            resolve(response.data);
+        }).catch((error) => {
+            reject(handleHttpError(error, 'An unknown error occurred when checking if user is attending event.'));
         });
     });
 };

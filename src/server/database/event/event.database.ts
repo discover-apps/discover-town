@@ -154,7 +154,7 @@ export const readEventsByUserFollowers = (followers: User[]): Promise<Event[]> =
     });
 };
 
-export const addEventAttendee = (event: Event, user: User): Promise<string> => {
+export const createEventAttendee = (event: Event, user: User): Promise<string> => {
     return new Promise<string>(async (resolve, reject) => {
         await database<UserAttendingEvent>('UserAttendingEvent')
             .insert({userId: user.id, eventId: event.id})
@@ -167,7 +167,7 @@ export const addEventAttendee = (event: Event, user: User): Promise<string> => {
     });
 };
 
-export const removeEventAttendee = (event: Event, user: User): Promise<string> => {
+export const deleteEventAttendee = (event: Event, user: User): Promise<string> => {
     return new Promise<string>(async (resolve, reject) => {
         await database<UserAttendingEvent>('UserAttendingEvent')
             .delete()

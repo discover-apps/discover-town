@@ -1,7 +1,7 @@
 import {deleteAccessToken, deleteCurrentUser, setAccessToken, setCurrentUser} from "../store/actions/auth.action";
 import store from "../store/store";
 import {modifyHttpHeader} from "../api/_api";
-import {getCurrentUser} from "../api/user.api";
+import {readCurrentUser} from "../api/user.api";
 import {User} from "../models/user.model";
 
 /**
@@ -18,7 +18,7 @@ export const authorizeClient = async (token: string): Promise<void> => {
     // add accessToken to http authorization header
     modifyHttpHeader(token);
     // add current user to redux store
-    const user: User = await getCurrentUser();
+    const user: User = await readCurrentUser();
     store.dispatch(setCurrentUser(user));
     return;
 };

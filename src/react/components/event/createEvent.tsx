@@ -6,7 +6,6 @@ import {CircularProgress} from "@material-ui/core";
 import {useHistory} from 'react-router-dom';
 
 export const CreateEvent = () => {
-
     const history = useHistory();
     const [error, setError] = useState('');
     const [event, setEvent] = useState<Event>({

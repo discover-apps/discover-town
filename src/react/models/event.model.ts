@@ -15,3 +15,8 @@ export interface UserHostingEvent {
     userId: number;
     eventId: number;
 }
+
+export interface UserAttendingEvent {
+    userId: number;
+    eventId: number;
+}

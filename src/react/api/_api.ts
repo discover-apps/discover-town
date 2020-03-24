@@ -39,3 +39,11 @@ export const modifyHttpHeader = (token: string): void => {
         throw error;
     });
 };
+
+export const handleHttpError = (error: any, message: string): string => {
+    if (error != undefined && error.response != undefined && error.response.data != undefined && typeof error.response.data == 'string') {
+        return error.response.data;
+    } else {
+        return message;
+    }
+};

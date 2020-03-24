@@ -1,14 +1,13 @@
 import {
-    addEventAttendee,
     createEvent,
+    createEventAttendee,
+    deleteEventAttendee,
     readEventAttendees,
     readEventById,
     readEventsByUser,
     readEventsByUserFollowers,
-    removeEventAttendee,
     userAttendingEvent
 } from "./event.database";
-import Event from '../../models/event.model';
 import {
     addTestEventToDb,
     addTestUserToDb,
@@ -16,6 +15,7 @@ import {
     deleteTestUsersFromDb,
     generateTestEvent
 } from "../../util/test.util";
+import Event from '../../models/event.model';
 import User from "../../models/user.model";
 
 describe('Tests event database functions', () => {
@@ -201,25 +201,57 @@ describe('Tests event database functions', () => {
             await deleteTestUsersFromDb();
         });
         it('Successfully adds an event attendee.', async done => {
-            await addEventAttendee(testEvent, testUser2).then((message: string) => {
+            await createEventAttendee(testEvent, testUser2).then((message: string) => {
                 expect(message).not.toBeNull();
                 expect(message).toEqual('Successfully added event attendee.');
             });
             done();
         });
+    });
+    describe('Tests RemoveEventAttendee Function', () => {
+        let testEvent: Event = undefined;
+        let testUser: User = undefined;
+        let testUser2: User = undefined;
+        beforeEach(async () => {
+            await deleteTestEventFromDb();
+            await deleteTestUsersFromDb();
+            testUser = await addTestUserToDb(1);
+            testUser2 = await addTestUserToDb(2);
+            testEvent = await addTestEventToDb(testUser.id);
+        });
+        afterEach(async () => {
+            await deleteTestEventFromDb();
+            await deleteTestUsersFromDb();
+        });
         it('Successfully removes an event attendee.', async done => {
-            await addEventAttendee(testEvent, testUser2).then((message: string) => {
+            await createEventAttendee(testEvent, testUser2).then((message: string) => {
                 expect(message).not.toBeNull();
                 expect(message).toEqual('Successfully added event attendee.');
             });
-            await removeEventAttendee(testEvent, testUser2).then((message: string) => {
+            await deleteEventAttendee(testEvent, testUser2).then((message: string) => {
                 expect(message).not.toBeNull();
                 expect(message).toEqual('Successfully removed event attendee.');
             });
             done();
         });
+    });
+    describe('Tests ReadEventAttendees Function', () => {
+        let testEvent: Event = undefined;
+        let testUser: User = undefined;
+        let testUser2: User = undefined;
+        beforeEach(async () => {
+            await deleteTestEventFromDb();
+            await deleteTestUsersFromDb();
+            testUser = await addTestUserToDb(1);
+            testUser2 = await addTestUserToDb(2);
+            testEvent = await addTestEventToDb(testUser.id);
+        });
+        afterEach(async () => {
+            await deleteTestEventFromDb();
+            await deleteTestUsersFromDb();
+        });
         it('Successfully reads event attendees', async done => {
-            await addEventAttendee(testEvent, testUser2).then((message: string) => {
+            await createEventAttendee(testEvent, testUser2).then((message: string) => {
                 expect(message).not.toBeNull();
                 expect(message).toEqual('Successfully added event attendee.');
             });
@@ -230,8 +262,24 @@ describe('Tests event database functions', () => {
             });
             done();
         });
+    });
+    describe('Tests UserAttendingEvent Function', () => {
+        let testEvent: Event = undefined;
+        let testUser: User = undefined;
+        let testUser2: User = undefined;
+        beforeEach(async () => {
+            await deleteTestEventFromDb();
+            await deleteTestUsersFromDb();
+            testUser = await addTestUserToDb(1);
+            testUser2 = await addTestUserToDb(2);
+            testEvent = await addTestEventToDb(testUser.id);
+        });
+        afterEach(async () => {
+            await deleteTestEventFromDb();
+            await deleteTestUsersFromDb();
+        });
         it('Successfully identifies User2 as an Attendee.', async done => {
-            await addEventAttendee(testEvent, testUser2).then((message: string) => {
+            await createEventAttendee(testEvent, testUser2).then((message: string) => {
                 expect(message).not.toBeNull();
                 expect(message).toEqual('Successfully added event attendee.');
             });
@@ -242,7 +290,7 @@ describe('Tests event database functions', () => {
             done();
         });
         it('Successfully identifies User1 as not an Attendee.', async done => {
-            await addEventAttendee(testEvent, testUser2).then((message: string) => {
+            await createEventAttendee(testEvent, testUser2).then((message: string) => {
                 expect(message).not.toBeNull();
                 expect(message).toEqual('Successfully added event attendee.');
             });

@@ -1,29 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {Event} from '../../models/event.model';
-import ShareIcon from "@material-ui/icons/Share";
 import ClockIcon from "@material-ui/icons/AccessTime";
 import LocationIcon from "@material-ui/icons/LocationOn";
 import GoogleMapReact from "google-map-react";
 import {getDateTimeString, getTimeString} from "../../util/common";
 import {useParams} from "react-router-dom";
-import {readEventById} from "../../api/event.api";
+import {createEventAttendee, deleteEventAttendee, readEventById, userAttendingEvent} from "../../api/event.api";
 import marker from '../../../assets/img/marker.png';
 import placeholder1 from "../../../assets/img/placeholder_item.png";
 import placeholder2 from "../../../assets/img/placeholder_person.jpg";
 import {readUserByEvent, readUserFollowerCount} from "../../api/user.api";
 import {User} from "../../models/user.model";
 import {CircularProgress} from "@material-ui/core";
-
-const event: Event = {
-    title: 'Lorem Ipsum',
-    description: `<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.<br/><br/>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>`,
-    address_name: '',
-    address_location: '20 W 34th St, New York, NY 10001',
-    lat: 40.7498443802915,
-    lon: -73.98506271970849,
-    dateStart: new Date('March 23, 2020 14:00:00'),
-    datePosted: new Date()
-};
+import {useSelector} from "react-redux";
 
 export const ViewEvent = () => {
     const [event, setEvent] = useState(undefined);
@@ -72,7 +61,7 @@ const EventTitle = (props: EventProps) => {
         <section className="paper elevation-3 title">
             <h5 className="">{getDateTimeString(props.event.dateStart)}</h5>
             <h1>{props.event.title}</h1>
-            <div className="member-share">
+            <div className="member-attend">
                 <div className="member">
                     <div className="image">
                         <img src={placeholder2} alt="profile_image"/>
@@ -82,12 +71,54 @@ const EventTitle = (props: EventProps) => {
                         <span>{props.followerCount} Followers</span>
                     </div>
                 </div>
-                <div className="share">
-                    <button className="outline-button"><ShareIcon/>Share</button>
+                <div className="button">
+                    <EventButton user={props.user} event={props.event} followerCount={props.followerCount}/>
                 </div>
             </div>
         </section>
     )
+};
+
+const EventButton = (props: EventProps) => {
+    const [loading, setLoading] = useState<boolean>(false);
+    const [sameUser, setSameUser] = useState<boolean>(false);
+    const [attending, setAttending] = useState<boolean>(false);
+    const currentUser = useSelector((state: any) => state.auth.currentUser);
+    useEffect(() => {
+        if (currentUser && currentUser.id == props.user.id) {
+            setSameUser(true);
+        } else {
+            // check if user is attending current event
+            userAttendingEvent(props.event).then((attending: boolean) => {
+                setAttending(attending);
+            });
+        }
+    }, [currentUser, attending]);
+    const clickAttend = () => {
+        setLoading(true);
+        createEventAttendee(props.event).then((message: string) => {
+            setAttending(true);
+        }).finally(() => {
+            setLoading(false);
+        });
+    };
+    const clickAttending = () => {
+        setLoading(true);
+        deleteEventAttendee(props.event).then((message: string) => {
+            setAttending(false);
+        }).finally(() => {
+            setLoading(false);
+        });
+    };
+    if (sameUser) {
+        return <button className="outline-button">Edit</button>
+    } else if (loading) {
+        return <button><CircularProgress size={18} color="primary"/></button>
+    } else if (attending) {
+        return <button onClick={clickAttending} className="outline-button">Attending</button>
+    } else {
+        return <button onClick={clickAttend}>Attend</button>;
+    }
 };
 
 const EventInformation = (props: EventProps) => {
@@ -106,11 +137,11 @@ const EventInformation = (props: EventProps) => {
                     <LocationIcon/>
                 </div>
                 <div className="text">
-                    <p>{event.address_location}</p>
+                    <p>{props.event.address_location}</p>
                 </div>
             </div>
             <div className="map">
-                <GoogleMaps user={props.user} event={event} followerCount={props.followerCount}/>
+                <GoogleMaps user={props.user} event={props.event} followerCount={props.followerCount}/>
             </div>
         </section>
     );
@@ -119,16 +150,6 @@ const EventInformation = (props: EventProps) => {
 const GoogleMapsMarker = (props: any) => <div><img className="marker" src={marker} alt="marker"/></div>;
 
 const GoogleMaps = (props: EventProps) => {
-
-    const geolocationUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyCFghWiQ6YR9gvIn572y9yTD49K3igUeiI";
-
-    const defaultProps = {
-        center: {
-            lat: props.event.lat,
-            lng: props.event.lon
-        },
-        zoom: 5
-    };
     return (
         // Important! Always set the container height explicitly
         <div style={{height: '225px', width: '100%'}}>

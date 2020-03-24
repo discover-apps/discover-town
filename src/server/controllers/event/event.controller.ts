@@ -1,15 +1,17 @@
 import {Request, Response} from 'express';
 import axios, {AxiosResponse} from "axios";
 import {SearchResult} from "../../models/searchResult.model";
-import Event from '../../models/event.model';
+import {readUserById} from "../../database/user/user.database";
 import {
-    addEventAttendee,
     createEvent,
+    createEventAttendee,
+    deleteEventAttendee,
+    readEventAttendees,
     readEventById,
     readEventsByUser,
-    removeEventAttendee,
     userAttendingEvent
 } from "../../database/event/event.database";
+import Event from '../../models/event.model';
 import User from "../../models/user.model";
 
 export const searchPlaces = async (req: Request, res: Response) => {
@@ -69,20 +71,35 @@ export const readByUser = async (req: Request, res: Response) => {
     });
 };
 
-export const attendEvent = async (req: Request, res: Response) => {
-    const user: User = req.body.user;
+export const readAttendees = async (req: Request, res: Response) => {
     const event: Event = req.body.event;
-    addEventAttendee(event, user).then((message: string) => {
+    readEventAttendees(event).then((user: User[]) => {
+        res.status(200).json(user);
+    }).catch((error) => {
+        res.status(500).json(error);
+    });
+};
+
+export const createAttendee = async (req: Request, res: Response) => {
+    // get user id from req user
+    const userId = Number.parseInt(req.user.toString());
+    const user = await readUserById(userId);
+    // get event from req body
+    const event: Event = req.body.event;
+    createEventAttendee(event, user).then((message: string) => {
         res.status(200).json(message);
     }).catch((error) => {
         res.status(500).json(error);
     });
 };
 
-export const unattendEvent = async (req: Request, res: Response) => {
-    const user: User = req.body.user;
+export const deleteAttendee = async (req: Request, res: Response) => {
+    // get user id from req user
+    const userId = Number.parseInt(req.user.toString());
+    const user = await readUserById(userId);
+    // get event from req body
     const event: Event = req.body.event;
-    removeEventAttendee(event, user).then((message: string) => {
+    deleteEventAttendee(event, user).then((message: string) => {
         res.status(200).json(message);
     }).catch((error) => {
         res.status(500).json(error);
@@ -90,7 +107,10 @@ export const unattendEvent = async (req: Request, res: Response) => {
 };
 
 export const attendingEvent = async (req: Request, res: Response) => {
-    const user: User = req.body.user;
+    // get user id from req user
+    const userId = Number.parseInt(req.user.toString());
+    const user = await readUserById(userId);
+    // get event from req body
     const event: Event = req.body.event;
     userAttendingEvent(event, user).then((attending: boolean) => {
         res.status(200).json(attending);
