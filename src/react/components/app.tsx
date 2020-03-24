@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import 'assets/scss/app.scss';
 import {hot} from 'react-hot-loader/root';
 import {BrowserRouter, Route, Switch,} from "react-router-dom";
@@ -16,12 +16,17 @@ import {ProtectedRoute} from "../util/protected.route";
 import {ProfileEdit} from "./user/profileEdit";
 import {ProfileFollowers} from "./user/profileFollowers";
 import {CreateEvent} from "./event/createEvent";
+import {loadClientAuthorization} from "../util/auth";
 
 const App = () => {
     const sidebarOpen = useSelector((state: any) => state.sidebar.open);
+    const [loaded, setLoaded] = useState<boolean>(false);
+    loadClientAuthorization().finally(() => {
+        setLoaded(true);
+    });
 
-    return (
-        <div className="app_container no-scroll">
+    if (loaded) {
+        return <div className="app_container no-scroll">
             <BrowserRouter>
                 <header>
                     <Navbar/>
@@ -32,7 +37,7 @@ const App = () => {
                         <Route path="/register" component={Register}/>
                         <Route path="/browse" component={Browse}/>
                         <Route exact path="/event/:id" component={ViewEvent}/>
-                        <ProtectedRoute exact path="/event/create" component={CreateEvent}/>
+                        <ProtectedRoute exact path="/event/create/" component={CreateEvent}/>
                         <ProtectedRoute exact path="/profile/edit/" component={ProfileEdit}/>
                         <Route exact path='/profile/:username' component={Profile}/>
                         <Route exact path='/profile/:username/followers' component={ProfileFollowers}/>
@@ -45,7 +50,9 @@ const App = () => {
                 </div>
             </BrowserRouter>
         </div>
-    )
+    } else {
+        return <div></div>
+    }
 };
 
 export default hot(App);
