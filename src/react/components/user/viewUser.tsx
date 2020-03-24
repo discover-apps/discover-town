@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {User} from "../../models/user.model";
-import {getUserProfile} from "../../api/user.api";
+import {readUserByUsername} from "../../api/user.api";
 import {useHistory, useParams} from 'react-router-dom';
 import {ProfileHeader} from "./profileHeader";
 import {ProfileActivity} from "./profileActivity";
@@ -8,7 +8,7 @@ import {ProfileEvents} from "./profileEvents";
 import {useSelector} from "react-redux";
 import {ProfileDetails} from "./profileDetails";
 
-export const Profile = () => {
+export const ViewUser = () => {
     let {username} = useParams();
     const history = useHistory();
     const navigateTo = (url: string) => {
@@ -19,7 +19,7 @@ export const Profile = () => {
     const [page, setPage] = useState(0);
     useEffect(() => {
         if (username) {
-            getUserProfile(username).then((user: User) => {
+            readUserByUsername(username).then((user: User) => {
                 setUser(user);
             });
         } else if (currentUser) {
@@ -46,12 +46,13 @@ export const Profile = () => {
         return <ProfileNotFound/>;
     }
 };
-export default Profile;
+export default ViewUser;
 
 interface ProfileBodyProps {
     page: number;
     user: User;
 }
+
 const ProfileBody = (props: ProfileBodyProps) => {
     switch (props.page) {
         case 0:

@@ -136,7 +136,7 @@ export const registerUser = (user: User, ip: string, agent: string): Promise<Ses
 };
 
 const generateAccessToken = (userId: string) => {
-    return jwt.sign({id: userId}, JWT_ACCESS_TOKEN_SECRET, {expiresIn: '15m'});
+    return jwt.sign({id: userId}, JWT_ACCESS_TOKEN_SECRET, {expiresIn: '30d'});
 };
 
 const generateRefreshToken = (userId: string) => {

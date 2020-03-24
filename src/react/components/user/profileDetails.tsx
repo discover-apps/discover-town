@@ -12,7 +12,7 @@ interface ProfileDetailsProps {
 
 export const ProfileDetails = (props: ProfileDetailsProps) => {
     return (
-        <section className="profile-details">
+        <section className="profile-details elevation-4">
             <h3>Joined</h3>
             <div className="property">
                 <TodayIcon/><span>{props.user.joined}</span>

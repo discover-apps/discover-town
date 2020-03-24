@@ -18,10 +18,10 @@ Content-Type: application/json
   "password": "invalid_password"
 }
 
-### UserModel Profile (No token)
+### UserModel ViewUser (No token)
 GET http://localhost:3000/api/user/profile
 
-### UserModel Profile (Valid token)
+### UserModel ViewUser (Valid token)
 GET http://localhost:3000/api/user/profile
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imphc29uQGdtYWlsLmNvbSIsImlhdCI6MTU4MzI2MDgyN30.Iv1bGF28pfm81usNipMcXW4IXipFAjBGHtNXgIsCeN8
 

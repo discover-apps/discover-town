@@ -47,7 +47,7 @@ interface EventProps {
 const Event = (props: EventProps) => {
     const history = useHistory();
     const clickEvent = () => {
-        history.push(`/event?id=${props.event.id}`);
+        history.push(`/event/${props.event.id}/`);
     };
 
     return (

@@ -1,7 +1,7 @@
 import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import Placeholder from '../../../assets/img/placeholder_person.jpg';
 import {Link, useHistory} from "react-router-dom";
-import {editUserProfile, getUserProfile} from "../../api/user.api";
+import {editUserProfile, readUserByUsername} from "../../api/user.api";
 import {User} from "../../models/user.model";
 import {useSelector} from "react-redux";
 import {CircularProgress} from "@material-ui/core";
@@ -37,7 +37,7 @@ export const ProfileEdit = () => {
 
     useEffect(() => {
         if (currentUser) {
-            getUserProfile(currentUser.username).then((user: User) => {
+            readUserByUsername(currentUser.username).then((user: User) => {
                 setUser(user);
             });
         }

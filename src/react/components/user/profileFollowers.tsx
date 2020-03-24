@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Placeholder from "../../../assets/img/placeholder_person.jpg";
 import {User} from "../../models/user.model";
-import {getUserFollowers, getUserFollowing, getUserProfile} from "../../api/user.api";
+import {getUserFollowers, getUserFollowing, readUserByUsername} from "../../api/user.api";
 import {useHistory, useParams} from "react-router-dom";
 import {FollowButton} from "./profileHeader";
 import {useSelector} from "react-redux";
@@ -48,7 +48,7 @@ const ProfileFollowersFollowers = (props: ProfileFollowersProps) => {
     };
 
     useEffect(() => {
-        getUserProfile(props.username).then((user: User) => {
+        readUserByUsername(props.username).then((user: User) => {
             getUserFollowers(user).then((followers: User[]) => {
                 setFollowers(followers);
             });
@@ -71,7 +71,7 @@ const ProfileFollowersFollowing = (props: ProfileFollowersProps) => {
     };
 
     useEffect(() => {
-        getUserProfile(props.username).then((user: User) => {
+        readUserByUsername(props.username).then((user: User) => {
             getUserFollowing(user).then((followers: User[]) => {
                 setFollowers(followers);
             });

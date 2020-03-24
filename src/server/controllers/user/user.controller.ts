@@ -14,26 +14,26 @@ import {
 import User from "../../models/user.model";
 import Event from "../../models/event.model";
 
-export const getCurrentProfile = (req: Request, res: Response) => {
+export const readCurrentUser = (req: Request, res: Response) => {
     // get user id from req
     const userId = Number.parseInt(req.user.toString());
     // get user record from database
     readUserById(userId).then((user: User) => {
-        res.status(200).json({email: user.email, username: user.username});
+        res.status(200).json({...user, password: ''});
     }).catch((error) => {
         res.status(500).json(error);
     });
 };
 
-export const getUserProfile = (req: Request, res: Response) => {
+export const readByUsername = (req: Request, res: Response) => {
     // get user username from req body
-    const username: string = req.query.username;
+    const username: string = req.body.username;
     // get user database record
     readUserByUsername(username).then((user: User) => {
         res.status(200).json(user);
     }).catch((error) => {
         res.status(500).json(error);
-    })
+    });
 };
 
 export const editUserProfile = (req: Request, res: Response) => {
