@@ -5,7 +5,13 @@ import LocationIcon from "@material-ui/icons/LocationOn";
 import GoogleMapReact from "google-map-react";
 import {getDateTimeString, getTimeString} from "../../util/common";
 import {useParams} from "react-router-dom";
-import {createEventAttendee, deleteEventAttendee, readEventById, userAttendingEvent} from "../../api/event.api";
+import {
+    createEventAttendee,
+    deleteEventAttendee,
+    readEventAttendees,
+    readEventById,
+    userAttendingEvent
+} from "../../api/event.api";
 import marker from '../../../assets/img/marker.png';
 import placeholder1 from "../../../assets/img/placeholder_item.png";
 import placeholder2 from "../../../assets/img/placeholder_person.jpg";
@@ -40,7 +46,7 @@ export const ViewEvent = () => {
             <EventTitle user={user} event={event} followerCount={followers}/>
             <EventInformation user={user} event={event} followerCount={followers}/>
             <EventDetails user={user} event={event} followerCount={followers}/>
-            <EventAttendees/>
+            <EventAttendees user={user} event={event} followerCount={followers}/>
         </main>;
     } else {
         return <div className="loading">
@@ -185,29 +191,45 @@ const EventDetails = (props: EventProps) => {
     )
 };
 
-const EventAttendees = () => {
+const EventAttendees = (props: EventProps) => {
+    const [attendees, setAttendees] = useState<User[]>([]);
+    useEffect(() => {
+        readEventAttendees(props.event).then((users: User[]) => {
+            setAttendees(users);
+        });
+    }, []);
     return (
         <section>
             <div className="paper elevation-3 attendees-title">
-                <h2>Attendees (12)</h2>
+                <h2>Attendees ({attendees.length})</h2>
                 <a>See all</a>
             </div>
             <div className="attendees-list">
-                <Attendee/>
-                <Attendee/>
+                {attendees[0] != undefined ? <Attendee user={attendees[0]}/> : ''}
+                {attendees[1] != undefined ? <Attendee user={attendees[1]}/> : ''}
             </div>
         </section>
     )
 };
 
-const Attendee = () => {
+interface AttendeeProps {
+    user: User;
+}
+
+const Attendee = (props: AttendeeProps) => {
+    const [followersCount, setFollowerCount] = useState<number>(0);
+    useEffect(() => {
+        readUserFollowerCount(props.user).then((count: number) => {
+            setFollowerCount(count);
+        });
+    });
     return (
         <div className="attendee paper elevation-3">
             <div className="image">
                 <img src={placeholder2} alt="profile_image"/>
             </div>
-            <h3>Jason Efthimiou</h3>
-            <h4>100 followers</h4>
+            <h3>{props.user.username}</h3>
+            <h4>{followersCount} Followers</h4>
         </div>
     )
 };
