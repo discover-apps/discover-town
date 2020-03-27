@@ -61,6 +61,24 @@ export const readEventsByUser = (user: User): Promise<Event[]> => {
     });
 };
 
+export const readEventsByFollowers = (): Promise<Event[]> => {
+    return new Promise<Event[]>((resolve, reject) => {
+        http.post('/event/readByFollowers').then((response: AxiosResponse<Event[]>) => {
+            const events: Event[] = [];
+            for (let i = 0; i < response.data.length; i++) {
+                events.push({
+                    ...response.data[i],
+                    dateStart: new Date(response.data[i].dateStart),
+                    datePosted: new Date(response.data[i].datePosted)
+                });
+            }
+            resolve(events);
+        }).catch((error) => {
+            reject(handleHttpError(error, 'An unknown error occurred when retrieving events from user followers.'));
+        });
+    });
+};
+
 export const readEventAttendees = async (event: Event): Promise<User[]> => {
     return new Promise<User[]>((resolve, reject) => {
         http.post('/event/readAttendees', {event}).then((response: AxiosResponse<User[]>) => {

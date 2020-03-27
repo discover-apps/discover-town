@@ -1,7 +1,7 @@
 import {Request, Response} from 'express';
 import axios, {AxiosResponse} from "axios";
 import {SearchResult} from "../../models/searchResult.model";
-import {readUserById} from "../../database/user/user.database";
+import {readUserById, readUserFollowers} from "../../database/user/user.database";
 import {
     createEvent,
     createEventAttendee,
@@ -9,6 +9,7 @@ import {
     readEventAttendees,
     readEventById,
     readEventsByUser,
+    readEventsByUserFollowers,
     userAttendingEvent
 } from "../../database/event/event.database";
 import Event from '../../models/event.model';
@@ -68,6 +69,21 @@ export const readByUser = async (req: Request, res: Response) => {
         res.status(200).json(events);
     }).catch((error) => {
         res.status(300).json(error);
+    });
+};
+
+export const readByFollowers = async (req: Request, res: Response) => {
+    // get user id from req user
+    const userId = Number.parseInt(req.user.toString());
+    const user = await readUserById(userId);
+    readUserFollowers(user.username).then((followers: User[]) => {
+        readEventsByUserFollowers(followers).then((events: Event[]) => {
+            res.status(200).json(events);
+        }).catch((error) => {
+            res.status(500).json(error);
+        });
+    }).catch((error) => {
+        res.status(500).json(error);
     });
 };
 

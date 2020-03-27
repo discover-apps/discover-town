@@ -9,15 +9,15 @@
 @import './_text.scss';
 
 /* Components */
-@import 'event/viewEvent';
+@import './browse/browseEvent';
+@import './browse/eventListing';
+@import './event/viewEvent';
 @import './event/createEvent';
 @import './event/eventAttendees';
 @import './event/eventDetails';
 @import './event/eventInformation';
 @import './event/eventTitle';
-@import './home/browse';
 @import './home/event';
-@import './home/eventListing';
 @import './login/login';
 @import './login/register';
 @import './navbar/navbar';

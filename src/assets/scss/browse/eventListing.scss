@@ -2,19 +2,6 @@ article.event-listing {
   padding: 1rem;
   cursor: pointer;
 
-  &:not(:last-child) {
-    margin-bottom: 1rem;
-  }
-
-  &:hover {
-    background-color: #D5D5D5;
-    transition-duration: 0.5s;
-  }
-
-  &:not(:hover) {
-    transition-duration: 0.5s;
-  }
-
   /* Event title */
   h1 {
     color: #333;
@@ -27,7 +14,7 @@ article.event-listing {
     color: #333;
     font-size: 1.25rem;
     font-weight: 700;
-    text-align: center;
+    text-align: left;
     text-transform: uppercase;
   }
 
@@ -67,5 +54,18 @@ article.event-listing {
         font-size: 0.8rem;
       }
     }
+  }
+
+  &:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+
+  &:hover {
+    background-color: #D5D5D5;
+    transition-duration: 0.5s;
+  }
+
+  &:not(:hover) {
+    transition-duration: 0.5s;
   }
 }

@@ -44,6 +44,7 @@ app.post('/api/event/create', authenticateSession, eventController.create);
 app.post('/api/event/readById', eventController.readById);
 app.post('/api/event/readByUser', eventController.readByUser);
 app.post('/api/event/readAttendees', eventController.readAttendees);
+app.post('/api/event/readByFollowers', authenticateSession, eventController.readByFollowers);
 app.post('/api/event/createAttendee', authenticateSession, eventController.createAttendee);
 app.post('/api/event/deleteAttendee', authenticateSession, eventController.deleteAttendee);
 app.post('/api/event/attendingEvent', authenticateSession, eventController.attendingEvent);
