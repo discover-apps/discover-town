@@ -1,11 +1,13 @@
 import {
     createEvent,
     createEventAttendee,
+    deleteEvent,
     deleteEventAttendee,
     readEventAttendees,
     readEventById,
     readEventsByUser,
     readEventsByUserFollowers,
+    updateEvent,
     userAttendingEvent
 } from "./event.database";
 import {
@@ -96,6 +98,109 @@ describe('Tests event database functions', () => {
             done();
         });
     });
+    describe('Tests Update Function', () => {
+        let testEvent: Event = undefined;
+        let testUser: User = undefined;
+        beforeAll(async () => {
+            await deleteTestEventFromDb();
+            await deleteTestUsersFromDb();
+            testUser = await addTestUserToDb(1);
+            testEvent = await addTestEventToDb(testUser.id);
+        });
+        afterAll(async () => {
+            await deleteTestEventFromDb();
+            await deleteTestUsersFromDb();
+        });
+        it('Successfully updates an event record.', async done => {
+            await updateEvent({...testEvent, description: "Updated description."}).then((message: string) => {
+                expect(message).not.toBeNull();
+                expect(message).toEqual("Successfully updated event.");
+            });
+            await readEventById(testEvent.id).then((event: Event) => {
+                expect(event).not.toBeNull();
+                expect(event.description).toEqual("Updated description.");
+            });
+            done();
+        });
+        it('Fails to update an event record with invalid Title', async done => {
+            let testEvent = generateTestEvent();
+            testEvent.title = "asdf";
+            await updateEvent(testEvent).then((message: string) => {
+                expect(message).toBeNull();
+            }).catch((error) => {
+                expect(error).not.toBeNull();
+                expect(error).toEqual('Title must be between 5-32 characters.');
+            });
+            testEvent.title = "asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf";
+            await createEvent(testEvent, testUser.id).then((eventId: number) => {
+                expect(eventId).toBeNull();
+            }).catch((error) => {
+                expect(error).not.toBeNull();
+                expect(error).toEqual('Title must be between 5-32 characters.');
+            });
+            done();
+        });
+        it('Fails to update an event record with invalid Description', async done => {
+            let testEvent = generateTestEvent();
+            testEvent.description = "asdf";
+            await updateEvent(testEvent).then((message: string) => {
+                expect(message).toBeNull();
+            }).catch((error) => {
+                expect(error).not.toBeNull();
+                expect(error).toEqual('Description must be between 5-1000 characters.');
+            });
+            done();
+        });
+        it('Fails to update an event record with invalid Date', async done => {
+            let testEvent = generateTestEvent();
+            testEvent.dateStart.setDate(testEvent.datePosted.getDate());
+            testEvent.dateStart.setMinutes(testEvent.datePosted.getMinutes() - 1);
+            await updateEvent(testEvent).then((message: string) => {
+                expect(message).toBeNull();
+            }).catch((error) => {
+                expect(error).not.toBeNull();
+                expect(error).toEqual('Date must be greater than or equal to today.');
+            });
+            done();
+        });
+        it('Fails to update an event record with invalid Address', async done => {
+            let testEvent = generateTestEvent();
+            testEvent.address_location = 'asdffdsalkjhhjll';
+            await updateEvent(testEvent).then((message: string) => {
+                expect(message).toBeNull();
+            }).catch((error) => {
+                expect(error).not.toBeNull();
+                expect(error).toEqual('Unable to locate address, please try a different address.');
+            });
+            done();
+        });
+    });
+    describe('Tests Delete Function', () => {
+        let testEvent: Event = undefined;
+        let testUser: User = undefined;
+        beforeAll(async () => {
+            await deleteTestEventFromDb();
+            await deleteTestUsersFromDb();
+            testUser = await addTestUserToDb(1);
+            testEvent = await addTestEventToDb(testUser.id);
+        });
+        afterAll(async () => {
+            await deleteTestEventFromDb();
+            await deleteTestUsersFromDb();
+        });
+        it('Successfully deletes an event record', async done => {
+            await deleteEvent(testEvent).then((message: string) => {
+                expect(message).not.toBeNull();
+                expect(message).toEqual("Successfully deleted event.");
+            }).catch((error) => {
+                expect(error).toBeNull();
+            });
+            await readEventById(testEvent.id).then((event: Event) => {
+                expect(event).toBeUndefined();
+            });
+            done();
+        });
+    });
     describe('Tests ReadById Function', () => {
         let testEvent: Event = undefined;
         let testUser: User = undefined;
@@ -135,6 +240,7 @@ describe('Tests event database functions', () => {
         });
     });
     describe('Tests ReadByUser Function', () => {
+        // TODO: (FIX) This test runs successfully solo, but fails when running all tests...
         let testEvent: Event = undefined;
         let testUser: User = undefined;
         beforeAll(async () => {

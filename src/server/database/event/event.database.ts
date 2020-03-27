@@ -1,30 +1,13 @@
-import Event, {EventLocation, UserAttendingEvent, UserHostingEvent} from "../../models/event.model";
 import axios, {AxiosResponse} from 'axios';
-import {database} from "../_database";
 import User from "../../models/user.model";
+import Event, {EventLocation, UserAttendingEvent, UserHostingEvent} from "../../models/event.model";
+import {database} from "../_database";
 import {readUserById} from "../user/user.database";
+import {GOOGLE_MAPS_API_KEY} from "../../../util/secrets";
 
 export const createEvent = (event: Event, userId: number): Promise<number> => {
     return new Promise<number>((resolve, reject) => {
-        // validate event properties
-        // Title must be between 5 - 32 characters
-        if (event.title.length < 5 || event.title.length > 32) {
-            return reject('Title must be between 5-32 characters.');
-        }
-        // Description must be between 5 - 1000 characters
-        if (event.description.length < 5 || event.description.length > 1000) {
-            return reject('Description must be between 5-1000 characters.');
-        }
-        // Date must be greater than or equal to today
-        if (event.dateStart < event.datePosted) {
-            return reject('Date must be greater than or equal to today.');
-        }
-        // Location must be a valid location
-        validLocation(event.address_location).then((location: EventLocation) => {
-            // update event location to validated address
-            event.address_location = location.formatted_address;
-            event.lat = location.lat;
-            event.lon = location.lon;
+        validateEvent(event).then((event: Event) => {
             // insert record into event table
             database<Event>('Events')
                 .insert(event)
@@ -44,14 +27,87 @@ export const createEvent = (event: Event, userId: number): Promise<number> => {
                 });
         }).catch((error) => {
             reject(error);
+        })
+    });
+};
+
+export const updateEvent = (event: Event): Promise<string> => {
+    return new Promise<string>((resolve, reject) => {
+        validateEvent(event).then((event) => {
+            // update record in event table
+            database<Event>('Events')
+                .update(event)
+                .where({id: event.id})
+                .then((records: any) => {
+                    resolve("Successfully updated event.");
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        }).catch((error) => {
+            reject(error);
+        })
+    });
+};
+
+export const deleteEvent = (event: Event): Promise<string> => {
+    return new Promise<string>(async (resolve, reject) => {
+        // delete all records from UserHostingEvent table
+        await database<UserHostingEvent>('UserHostingEvent')
+            .delete()
+            .where('eventId', event.id)
+            .catch((error) => {
+                return reject(error);
+            });
+        // delete all records from UserAttendingEvent table
+        await database<UserAttendingEvent>('UserAttendingEvent')
+            .delete()
+            .where('eventId', event.id)
+            .catch((error) => {
+                return reject(error);
+            });
+        // delete all records from Events table
+        await database<Event>('Events')
+            .delete()
+            .where({id: event.id})
+            .catch((error) => {
+                return reject(error);
+            });
+        return resolve("Successfully deleted event.");
+    });
+};
+
+const validateEvent = (event: Event): Promise<Event> => {
+    return new Promise<Event>((resolve, reject) => {
+        // validate event properties
+        // Title must be between 5 - 32 characters
+        if (event.title.length < 5 || event.title.length > 32) {
+            return reject('Title must be between 5-32 characters.');
+        }
+        // Description must be between 5 - 1000 characters
+        if (event.description.length < 5 || event.description.length > 1000) {
+            return reject('Description must be between 5-1000 characters.');
+        }
+        // Date must be greater than or equal to today
+        if (event.dateStart < event.datePosted) {
+            return reject('Date must be greater than or equal to today.');
+        }
+        // Location must be a valid location
+        validateLocation(event.address_location).then((location: EventLocation) => {
+            // update event location to validated address
+            event.address_location = location.formatted_address;
+            event.lat = location.lat;
+            event.lon = location.lon;
+            resolve(event);
+        }).catch((error) => {
+            reject(error);
         });
     });
 };
 
-export const validLocation = (address: string): Promise<EventLocation> => {
+const validateLocation = (address: string): Promise<EventLocation> => {
     return new Promise<EventLocation>((resolve, reject) => {
-        const key = 'AIzaSyCFghWiQ6YR9gvIn572y9yTD49K3igUeiI';
-        const url: string = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURI(address)}&key=${key}`;
+        const url: string = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURI(address)}&key=${GOOGLE_MAPS_API_KEY}`;
         axios.get(url).then((response: AxiosResponse) => {
             // check if response contains results
             if (response.data.results && response.data.results.length > 0) {

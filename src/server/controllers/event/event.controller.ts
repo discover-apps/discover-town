@@ -2,18 +2,20 @@ import {Request, Response} from 'express';
 import axios, {AxiosResponse} from "axios";
 import {SearchResult} from "../../models/searchResult.model";
 import {readUserById, readUserFollowers} from "../../database/user/user.database";
+import Event from '../../models/event.model';
+import User from "../../models/user.model";
 import {
     createEvent,
     createEventAttendee,
+    deleteEvent,
     deleteEventAttendee,
     readEventAttendees,
     readEventById,
     readEventsByUser,
     readEventsByUserFollowers,
+    updateEvent,
     userAttendingEvent
 } from "../../database/event/event.database";
-import Event from '../../models/event.model';
-import User from "../../models/user.model";
 
 export const searchPlaces = async (req: Request, res: Response) => {
     const query = req.body.query;
@@ -47,6 +49,26 @@ export const create = async (req: Request, res: Response) => {
     createEvent(event, userId).then((eventId: number) => {
         event.id = eventId;
         res.status(200).json(event);
+    }).catch((error) => {
+        res.status(500).json(error);
+    });
+};
+
+export const update = async (req: Request, res: Response) => {
+    // get event object from body
+    const event: Event = req.body;
+    updateEvent(event).then((message: string) => {
+        res.status(200).json(message);
+    }).catch((error) => {
+        res.status(500).json(error);
+    });
+};
+
+export const remove = async (req: Request, res: Response) => {
+    // get event object from body
+    const event: Event = req.body;
+    deleteEvent(event).then((message: string) => {
+        res.status(200).json(message);
     }).catch((error) => {
         res.status(500).json(error);
     });

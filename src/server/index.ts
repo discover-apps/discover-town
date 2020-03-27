@@ -1,4 +1,3 @@
-// Import dependencies
 import express, {Request, Response} from 'express';
 import path from 'path';
 import helmet from 'helmet';
@@ -21,7 +20,9 @@ app.use(helmet());
 app.use(morgan('combined'));
 app.use(express.json());
 
-// Define API routes
+/**
+ * API Routes
+ */
 
 // Auth Routes
 app.get('/api/user', authenticateSession, userController.readCurrentUser);
@@ -41,6 +42,8 @@ app.post('/api/user/readByUsername', userController.readByUsername);
 // Event Routes
 app.post('/api/event/places', eventController.searchPlaces);
 app.post('/api/event/create', authenticateSession, eventController.create);
+app.post('/api/event/update', authenticateSession, eventController.update);
+app.post('/api/event/delete', authenticateSession, eventController.remove);
 app.post('/api/event/readById', eventController.readById);
 app.post('/api/event/readByUser', eventController.readByUser);
 app.post('/api/event/readAttendees', eventController.readAttendees);
