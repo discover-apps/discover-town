@@ -1,10 +1,10 @@
 import React from 'react';
-import {User} from "../../models/user.model";
 import TodayIcon from '@material-ui/icons/Today';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import PersonIcon from '@material-ui/icons/Person';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import InstagramIcon from '@material-ui/icons/Instagram';
+import {User} from "../../models/user.model";
 
 interface ProfileDetailsProps {
     user: User;

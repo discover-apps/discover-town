@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
+import {useSelector} from "react-redux";
+import {useHistory, useParams} from "react-router-dom";
+import {getUserFollowers, getUserFollowing, readUserByUsername} from "../../api/user.api";
 import Placeholder from "../../../assets/img/placeholder_person.jpg";
 import {User} from "../../models/user.model";
-import {getUserFollowers, getUserFollowing, readUserByUsername} from "../../api/user.api";
-import {useHistory, useParams} from "react-router-dom";
 import {FollowButton} from "./profileHeader";
-import {useSelector} from "react-redux";
 
 export const ProfileFollowers = () => {
     let {username} = useParams();

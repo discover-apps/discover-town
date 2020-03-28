@@ -1,8 +1,8 @@
 import React from 'react';
 import {useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {toggleSidebar} from "../../store/actions/sidebar.action";
 import CloseIcon from '@material-ui/icons/Close';
+import {toggleSidebar} from "../../store/actions/sidebar.action";
 import {deauthorizeClient} from "../../util/auth";
 
 export const Sidebar = () => {

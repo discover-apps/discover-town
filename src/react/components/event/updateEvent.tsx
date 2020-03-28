@@ -3,8 +3,7 @@ import {useHistory, useParams} from 'react-router-dom';
 import {CircularProgress} from "@material-ui/core";
 import {Event} from '../../models/event.model';
 import {SearchResult} from "../../models/searchResult.model";
-import {createEventRecord, searchPlaces} from "../../api/event.api";
-import {readEventById} from "../../../server/database/event/event.database";
+import {createEventRecord, readEventById, searchPlaces} from "../../api/event.api";
 
 export const UpdateEvent = () => {
     const {id} = useParams();

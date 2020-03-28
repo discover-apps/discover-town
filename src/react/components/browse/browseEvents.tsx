@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {useHistory} from "react-router-dom";
+import {CircularProgress} from "@material-ui/core";
+import placeholder from "../../../assets/img/placeholder_person.jpg";
 import {getDateTimeString} from "../../util/common";
 import {readEventsByFollowers} from "../../api/event.api";
 import {readUserByEvent, readUserFollowerCount} from "../../api/user.api";
 import {Event} from '../../models/event.model';
 import {User} from "../../models/user.model";
-import {CircularProgress} from "@material-ui/core";
-import placeholder from "../../../assets/img/placeholder_person.jpg";
 
 export const BrowseEvents = () => {
     const [events, setEvents] = useState<Event[]>([]);

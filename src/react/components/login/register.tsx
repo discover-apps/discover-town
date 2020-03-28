@@ -1,6 +1,6 @@
 import React, {ChangeEvent, FormEvent, useState} from 'react';
-import OAuthButton from "./oauthButton";
 import {useHistory} from "react-router-dom";
+import OAuthButton from "./oauthButton";
 import {registerUser} from "../../api/auth.api";
 import {RegisterUser} from "../../models/user.model";
 import {Session} from "../../models/session.model";

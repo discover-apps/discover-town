@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
+import {CircularProgress} from "@material-ui/core";
 import {User} from "../../models/user.model";
 import Placeholder from '../../../assets/img/placeholder_person.jpg';
 import {followUser, readUserFollowerCount, unfollowUser, userFollowsUser} from "../../api/user.api";
-import {CircularProgress} from "@material-ui/core";
 
 interface Props {
     user: User;

@@ -1,10 +1,10 @@
 import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
-import Placeholder from '../../../assets/img/placeholder_person.jpg';
+import {CircularProgress} from "@material-ui/core";
 import {Link, useHistory} from "react-router-dom";
+import {useSelector} from "react-redux";
+import Placeholder from '../../../assets/img/placeholder_person.jpg';
 import {editUserProfile, readUserByUsername} from "../../api/user.api";
 import {User} from "../../models/user.model";
-import {useSelector} from "react-redux";
-import {CircularProgress} from "@material-ui/core";
 import {loadClientAuthorization} from "../../util/auth";
 
 export const ProfileEdit = () => {

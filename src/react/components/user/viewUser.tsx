@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
+import {useHistory, useParams} from 'react-router-dom';
+import {useSelector} from "react-redux";
 import {User} from "../../models/user.model";
 import {readUserByUsername} from "../../api/user.api";
-import {useHistory, useParams} from 'react-router-dom';
 import {ProfileHeader} from "./profileHeader";
 import {ProfileActivity} from "./profileActivity";
 import {ProfileEvents} from "./profileEvents";
-import {useSelector} from "react-redux";
 import {ProfileDetails} from "./profileDetails";
 
 export const ViewUser = () => {

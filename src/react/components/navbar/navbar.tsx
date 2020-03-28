@@ -1,9 +1,9 @@
 import React from 'react';
+import {useHistory} from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
 import MenuIcon from '@material-ui/icons/Menu';
 import ProfileIcon from '@material-ui/icons/AccountCircle';
-import {useDispatch, useSelector} from 'react-redux';
 import {toggleSidebar} from "../../store/actions/sidebar.action";
-import {useHistory} from 'react-router-dom';
 
 export const Navbar = () => {
 

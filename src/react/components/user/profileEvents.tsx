@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
+import {useHistory} from 'react-router-dom';
+import {CircularProgress} from "@material-ui/core";
 import {readEventsByUser} from "../../api/event.api";
 import {User} from "../../models/user.model";
 import {Event} from '../../models/event.model';
 import Placeholder from '../../../assets/img/placeholder_item.png';
 import {getDateTimeString} from "../../util/common";
-import {CircularProgress} from "@material-ui/core";
-import {useHistory} from 'react-router-dom';
 
 interface ProfileEventsProps {
     user: User;

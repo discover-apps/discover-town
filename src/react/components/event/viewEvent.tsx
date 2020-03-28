@@ -1,10 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import {Event} from '../../models/event.model';
 import ClockIcon from "@material-ui/icons/AccessTime";
 import LocationIcon from "@material-ui/icons/LocationOn";
+import {CircularProgress} from "@material-ui/core";
 import GoogleMapReact from "google-map-react";
+import {Event} from '../../models/event.model';
 import {getDateTimeString, getTimeString} from "../../util/common";
 import {useParams} from "react-router-dom";
+import marker from '../../../assets/img/marker.png';
+import placeholder1 from "../../../assets/img/placeholder_item.png";
+import placeholder2 from "../../../assets/img/placeholder_person.jpg";
+import {readUserByEvent, readUserFollowerCount} from "../../api/user.api";
+import {User} from "../../models/user.model";
+import {useSelector} from "react-redux";
 import {
     createEventAttendee,
     deleteEventAttendee,
@@ -12,13 +19,6 @@ import {
     readEventById,
     userAttendingEvent
 } from "../../api/event.api";
-import marker from '../../../assets/img/marker.png';
-import placeholder1 from "../../../assets/img/placeholder_item.png";
-import placeholder2 from "../../../assets/img/placeholder_person.jpg";
-import {readUserByEvent, readUserFollowerCount} from "../../api/user.api";
-import {User} from "../../models/user.model";
-import {CircularProgress} from "@material-ui/core";
-import {useSelector} from "react-redux";
 
 export const ViewEvent = () => {
     const [event, setEvent] = useState(undefined);

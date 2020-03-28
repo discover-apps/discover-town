@@ -1,8 +1,8 @@
 import React, {ChangeEvent, FormEvent, useState} from 'react';
+import {useHistory} from 'react-router-dom';
 import OAuthButton from './oauthButton';
 import {loginUser} from "../../api/auth.api";
 import {Session} from "../../models/session.model";
-import {useHistory} from 'react-router-dom';
 import {authorizeClient} from "../../util/auth";
 
 export const Login = () => {

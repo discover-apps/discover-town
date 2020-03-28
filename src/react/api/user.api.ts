@@ -1,7 +1,7 @@
 import {AxiosResponse} from "axios";
 import {User} from "../models/user.model";
 import {http} from './_api';
-import Event from "../../server/models/event.model";
+import {Event} from '../models/event.model';
 
 export const readCurrentUser = async (): Promise<User> => {
     return new Promise<User>((resolve, reject) => {
