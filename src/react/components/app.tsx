@@ -17,6 +17,7 @@ import {ProfileEdit} from "./user/profileEdit";
 import {ProfileFollowers} from "./user/profileFollowers";
 import {CreateEvent} from "./event/createEvent";
 import {loadClientAuthorization} from "../util/auth";
+import {UpdateEvent} from "./event/updateEvent";
 
 const App = () => {
     const sidebarOpen = useSelector((state: any) => state.sidebar.open);
@@ -37,6 +38,7 @@ const App = () => {
                         <Route path="/register" component={Register}/>
                         <Route path="/browse" component={BrowseEvents}/>
                         <Route exact path="/event/:id" component={ViewEvent}/>
+                        <ProtectedRoute exact path="/event/update/:id" component={UpdateEvent}/>
                         <ProtectedRoute exact path="/event/create/" component={CreateEvent}/>
                         <ProtectedRoute exact path="/profile/edit/" component={ProfileEdit}/>
                         <Route exact path='/profile/:username' component={ViewUser}/>

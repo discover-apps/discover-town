@@ -74,7 +74,7 @@ export const readEventsByFollowers = (): Promise<Event[]> => {
             }
             resolve(events);
         }).catch((error) => {
-            reject(handleHttpError(error, 'An unknown error occurred when retrieving events from user followers.'));
+            reject(handleHttpError(error, 'An unknown error occurred when retrieving event from user followers.'));
         });
     });
 };

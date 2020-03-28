@@ -161,7 +161,7 @@ export const readEventsByUser = (user: User): Promise<Event[]> => {
             .catch((error) => {
                 reject(error);
             });
-        // get list of events
+        // get list of event
         const events: Event[] = [];
         await database<Event>('Events')
             .select()
