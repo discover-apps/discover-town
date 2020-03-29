@@ -1,6 +1,7 @@
 import axios, {AxiosResponse} from "axios";
-import {Event} from '../models/event.model';
+import moment from "moment";
 import {handleHttpError, http} from "./_api";
+import {Event} from '../models/event.model';
 import {User} from "../models/user.model";
 
 export const searchPlaces = async (query: string): Promise<any> => {
@@ -43,8 +44,8 @@ export const readEventById = (eventId: number): Promise<Event> => {
             } else {
                 resolve({
                     ...response.data,
-                    dateStart: new Date(response.data.dateStart),
-                    datePosted: new Date(response.data.datePosted)
+                    dateStart: moment(response.data.dateStart).toDate(),
+                    datePosted: moment(response.data.dateStart).toDate()
                 });
             }
         }).catch((error) => {
@@ -60,8 +61,8 @@ export const readEventsByUser = (user: User): Promise<Event[]> => {
             for (let i = 0; i < response.data.length; i++) {
                 events.push({
                     ...response.data[i],
-                    dateStart: new Date(response.data[i].dateStart),
-                    datePosted: new Date(response.data[i].datePosted)
+                    dateStart: moment(response.data[i].dateStart).toDate(),
+                    datePosted: moment(response.data[i].dateStart).toDate()
                 });
             }
             resolve(events);
@@ -82,8 +83,8 @@ export const readEventsByFollowers = (): Promise<Event[]> => {
             for (let i = 0; i < response.data.length; i++) {
                 events.push({
                     ...response.data[i],
-                    dateStart: new Date(response.data[i].dateStart),
-                    datePosted: new Date(response.data[i].datePosted)
+                    dateStart: moment(response.data[i].dateStart).toDate(),
+                    datePosted: moment(response.data[i].dateStart).toDate()
                 });
             }
             resolve(events);

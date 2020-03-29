@@ -4,6 +4,7 @@ import Event, {EventLocation, UserAttendingEvent, UserHostingEvent} from "../../
 import {database} from "../_database";
 import {readUserById} from "../user/user.database";
 import {GOOGLE_MAPS_API_KEY} from "../../../util/secrets";
+import moment = require('moment');
 
 export const createEvent = (event: Event, userId: number): Promise<number> => {
     return new Promise<number>((resolve, reject) => {
@@ -109,7 +110,7 @@ const validateEvent = (event: Event): Promise<Event> => {
             return reject('Description must be between 5-1000 characters.');
         }
         // Date must be greater than or equal to today
-        if (event.dateStart < event.datePosted) {
+        if (moment(event.dateStart).isSameOrBefore(new Date())) {
             return reject('Date must be greater than or equal to today.');
         }
         // Location must be a valid location

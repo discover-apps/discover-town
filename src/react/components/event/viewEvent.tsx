@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
+import moment from "moment";
 import ClockIcon from "@material-ui/icons/AccessTime";
 import LocationIcon from "@material-ui/icons/LocationOn";
 import {CircularProgress} from "@material-ui/core";
 import GoogleMapReact from "google-map-react";
 import {Event} from '../../models/event.model';
-import {getDateTimeString, getTimeString} from "../../util/common";
-import {useParams} from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
 import marker from '../../../assets/img/marker.png';
 import placeholder1 from "../../../assets/img/placeholder_item.png";
 import placeholder2 from "../../../assets/img/placeholder_person.jpg";
@@ -65,7 +65,7 @@ const EventTitle = (props: EventProps) => {
 
     return (
         <section className="paper elevation-3 title">
-            <h5 className="">{getDateTimeString(props.event.dateStart)}</h5>
+            <h5 className="">{moment(props.event.dateStart).format("dddd") + ", " + moment(props.event.dateStart).format('ll')}</h5>
             <h1>{props.event.title}</h1>
             <div className="member-attend">
                 <div className="member">
@@ -86,6 +86,7 @@ const EventTitle = (props: EventProps) => {
 };
 
 const EventButton = (props: EventProps) => {
+    const history = useHistory();
     const [loading, setLoading] = useState<boolean>(false);
     const [sameUser, setSameUser] = useState<boolean>(false);
     const [attending, setAttending] = useState<boolean>(false);
@@ -100,6 +101,9 @@ const EventButton = (props: EventProps) => {
             });
         }
     }, [currentUser, attending]);
+    const clickEdit = () => {
+        history.push(`/event/update/${props.event.id}`);
+    };
     const clickAttend = () => {
         setLoading(true);
         createEventAttendee(props.event).then((message: string) => {
@@ -117,7 +121,7 @@ const EventButton = (props: EventProps) => {
         });
     };
     if (sameUser) {
-        return <button className="outline-button">Edit</button>
+        return <button onClick={clickEdit} className="outline-button">Edit</button>
     } else if (loading) {
         return <button><CircularProgress size={18} color="primary"/></button>
     } else if (attending) {
@@ -135,7 +139,7 @@ const EventInformation = (props: EventProps) => {
                     <ClockIcon/>
                 </div>
                 <div className="text">
-                    <p>{getDateTimeString(props.event.dateStart)}{" "}{getTimeString(props.event.dateStart)}</p>
+                    <p>{moment(props.event.dateStart).format('LLLL')}</p>
                 </div>
             </div>
             <div className="info">

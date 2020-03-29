@@ -1,5 +1,6 @@
 import knex from 'knex';
 import {MYSQL_DATABASE, MYSQL_HOST, MYSQL_PASSWORD, MYSQL_USER} from "../../util/secrets";
+import moment from 'moment';
 
 export const database = knex({
     client: 'mysql',
@@ -13,7 +14,7 @@ export const database = knex({
                 return field.string() == '1';
             }
             if (field.type == 'DATETIME') {
-                return new Date(field.string());
+                return moment.utc(field.string()).toDate();
             }
             return next();
         }
