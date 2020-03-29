@@ -31,8 +31,13 @@ export const createEvent = (event: Event, userId: number): Promise<number> => {
     });
 };
 
-export const updateEvent = (event: Event): Promise<string> => {
-    return new Promise<string>((resolve, reject) => {
+export const updateEvent = (event: Event, userId: number): Promise<string> => {
+    return new Promise<string>(async (resolve, reject) => {
+        const user: User = await readUserById(userId);
+        const userValid: boolean = await validateUserHostingEvent(event, user);
+        if (!userValid) {
+            return reject('User not authorized to edit this event.');
+        }
         validateEvent(event).then((event) => {
             // update record in event table
             database<Event>('Events')
@@ -74,6 +79,21 @@ export const deleteEvent = (event: Event): Promise<string> => {
                 return reject(error);
             });
         return resolve("Successfully deleted event.");
+    });
+};
+
+const validateUserHostingEvent = (event: Event, user: User): Promise<boolean> => {
+    return new Promise<boolean>((resolve, reject) => {
+        database<UserHostingEvent>('UserHostingEvent')
+            .select()
+            .where({eventId: event.id, userId: user.id})
+            .then((results) => {
+                if (results.length > 0 && results[0].eventId == event.id) {
+                    resolve(true);
+                } else {
+                    resolve(false);
+                }
+            });
     });
 };
 
