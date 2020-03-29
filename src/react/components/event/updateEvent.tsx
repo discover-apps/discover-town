@@ -6,6 +6,7 @@ import {readEventById, updateEventRecord} from "../../api/event.api";
 import {ErrorPage} from "../error/error";
 import {SearchPlace} from "./searchPlace";
 import {getDateTimeLocalString} from "../../util/common";
+import {DeleteEvent} from "./deleteEvent";
 
 export const UpdateEvent = () => {
     const {id} = useParams();
@@ -47,6 +48,8 @@ export const UpdateForm = (props: UpdateFormProps) => {
     const history = useHistory();
     const [error, setError] = useState('');
     const [loading, setLoading] = useState<boolean>(false);
+    const [deleting, setDeleting] = useState(false);
+
     const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         try {
             e.persist();
@@ -65,14 +68,12 @@ export const UpdateForm = (props: UpdateFormProps) => {
             console.log(error);
         }
     };
-
     const onSubmit = (event: FormEvent<HTMLFormElement>) => {
         if (event) {
             event.preventDefault();
         }
         putEvent();
     };
-
     const putEvent = () => {
         // clear error
         setError('');
@@ -88,15 +89,19 @@ export const UpdateForm = (props: UpdateFormProps) => {
             setLoading(false);
         });
     };
+    const clickDelete = () => {
+        setDeleting(!deleting);
+    };
 
     return <main className="update-event">
+        {deleting ? <DeleteEvent event={props.event} setDeleting={setDeleting}/> : ''}
         <header className="sub-menu">
             <div className="back">
                 <Link to={`/event/${props.event.id}`}>{'< Back'}</Link>
             </div>
             <h3 className="title">Edit Event</h3>
             <div className="action-danger">
-                <a>{'Delete'}</a>
+                <a onClick={() => clickDelete()}>{'Delete'}</a>
             </div>
         </header>
         <section>

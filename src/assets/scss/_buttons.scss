@@ -47,12 +47,17 @@ button {
   &:hover {
     color: $primary-1;
     border-color: $primary-1;
-    background-color: $transparent-color;
+    background-color: $white-000;
   }
 }
 
 .danger-button {
   background-color: $danger;
+
+  &:hover {
+    color: $white-000;
+    background-color: $danger;
+  }
 }
 
 /* Clickable icons that are transparent except for logo */

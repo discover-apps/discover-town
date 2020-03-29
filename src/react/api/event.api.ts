@@ -36,6 +36,16 @@ export const updateEventRecord = async (event: Event): Promise<string> => {
     });
 };
 
+export const deleteEventRecord = async (event: Event): Promise<string> => {
+    return new Promise<string>((resolve, reject) => {
+        http.post('/event/delete', {event}).then((response: AxiosResponse<string>) => {
+            resolve(response.data);
+        }).catch((error) => {
+            handleHttpError(error, "An unknown error occurred when deleting event.");
+        });
+    });
+};
+
 export const readEventById = (eventId: number): Promise<Event> => {
     return new Promise<Event>((resolve, reject) => {
         http.post('/event/readById', {eventId}).then((response: AxiosResponse<Event>) => {

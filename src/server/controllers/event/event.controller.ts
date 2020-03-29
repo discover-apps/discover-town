@@ -67,9 +67,11 @@ export const update = async (req: Request, res: Response) => {
 };
 
 export const remove = async (req: Request, res: Response) => {
+    // validate user owns this event
+    const userId = Number.parseInt(req.user.toString());
     // get event object from body
-    const event: Event = req.body;
-    deleteEvent(event).then((message: string) => {
+    const event: Event = req.body.event;
+    deleteEvent(event, userId).then((message: string) => {
         res.status(200).json(message);
     }).catch((error) => {
         res.status(500).json(error);
