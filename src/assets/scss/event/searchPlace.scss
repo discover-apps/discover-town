@@ -1,0 +1,46 @@
+div.search-places {
+  form {
+    padding: 1rem 0;
+
+    div.search-input {
+      display: grid;
+      grid-template-columns: 3fr 1fr;
+      grid-gap: 1rem;
+
+      input {
+        margin: 0;
+      }
+    }
+
+    div.search-results {
+      max-height: 186px;
+      overflow-y: auto;
+      cursor: pointer;
+
+      div.result {
+        margin-top: 0.5rem;
+        padding: 0.5rem;
+        border: 2px solid rgba(0, 0, 0, 0.25);
+        border-radius: 4px;
+        background-color: $white-000;
+
+        h3 {
+          font-size: 1rem;
+        }
+
+        p {
+          font-size: 0.875rem;
+        }
+
+        &:hover {
+          background-color: #D5D5D5;
+          transition-duration: 0.5s;
+        }
+
+        &:not(:hover) {
+          transition-duration: 0.5s;
+        }
+      }
+    }
+  }
+}

@@ -1,51 +1,35 @@
-main.create-event {
-  padding: 1rem;
+main.create-event, main.update-event {
+  section {
+    padding: 0 1rem 1rem 1rem;
 
-  form {
-    input, textarea {
-      &:not(:last-child) {
-        margin-bottom: 1rem;
-      }
-    }
+    form {
+      label {
+        display: block;
 
-    p.error {
-      text-align: center;
-      margin-top: 1rem;
-      color: $danger;
-    }
-  }
+        &:not(:last-child) {
+          margin-bottom: 1rem;
+        }
 
-  div.search-places {
-    margin-top: 1rem;
-    display: grid;
-    grid-template-columns: 3fr 1fr;
-    grid-gap: 1rem;
+        input, textarea {
+          margin-top: 0.5rem;
+        }
 
-    input {
-      margin: 0;
-    }
-  }
-
-  div.search-results {
-    margin-top: 1rem;
-    max-height: 186px;
-    overflow-y: auto;
-
-    div.result {
-      padding: 0.5rem;
-      border: 2px solid rgba(0, 0, 0, 0.25);
-      border-radius: 4px;
-
-      h3 {
-        font-size: 1rem;
+        textarea {
+          width: 100%;
+          resize: none;
+        }
       }
 
-      p {
-        font-size: 0.875rem;
+      p.error {
+        text-align: center;
+        margin-top: 1rem;
+        color: $danger;
       }
 
-      &:not(:last-child) {
-        margin-bottom: 0.5rem;
+      button {
+        &:not(:last-child) {
+          margin-bottom: 0.5rem;
+        }
       }
     }
   }

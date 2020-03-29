@@ -25,14 +25,28 @@ export const createEventRecord = async (event: Event): Promise<Event> => {
     });
 };
 
+export const updateEventRecord = async (event: Event): Promise<string> => {
+    return new Promise<string>((resolve, reject) => {
+        http.post('/event/update', {event}).then((response: AxiosResponse<string>) => {
+            resolve(response.data);
+        }).catch((error) => {
+            reject(handleHttpError(error, "An unknown error occurred when updating event record."));
+        });
+    });
+};
+
 export const readEventById = (eventId: number): Promise<Event> => {
     return new Promise<Event>((resolve, reject) => {
         http.post('/event/readById', {eventId}).then((response: AxiosResponse<Event>) => {
-            resolve({
-                ...response.data,
-                dateStart: new Date(response.data.dateStart),
-                datePosted: new Date(response.data.datePosted)
-            });
+            if (response.data.id == undefined) {
+                resolve(undefined);
+            } else {
+                resolve({
+                    ...response.data,
+                    dateStart: new Date(response.data.dateStart),
+                    datePosted: new Date(response.data.datePosted)
+                });
+            }
         }).catch((error) => {
             reject(error);
         });

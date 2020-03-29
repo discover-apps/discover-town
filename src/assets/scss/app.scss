@@ -3,6 +3,8 @@
 
 /* Mixins */
 @import './_buttons.scss';
+@import './_error.scss';
+@import './_headers.scss';
 @import './_inputs.scss';
 @import './_links.scss';
 @import './_paper.scss';
@@ -17,6 +19,7 @@
 @import './event/eventDetails';
 @import './event/eventInformation';
 @import './event/eventTitle';
+@import './event/searchPlace';
 @import './home/event';
 @import './login/login';
 @import './login/register';

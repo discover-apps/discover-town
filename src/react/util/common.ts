@@ -1,3 +1,14 @@
+export const getDateTimeLocalString = (date: Date): string => {
+    const year = date.getFullYear();
+    const month = date.getMonth().toString().length === 1 ? '0' + (date.getMonth() + 1).toString() : date.getMonth() + 1;
+    const day = date.getDate().toString().length === 1 ? '0' + (date.getDate()).toString() : date.getDate();
+    const hours = date.getHours().toString().length === 1 ? '0' + date.getHours().toString() : date.getHours();
+    const minutes = date.getMinutes().toString().length === 1 ? '0' + date.getMinutes().toString() : date.getMinutes();
+    const seconds = date.getSeconds().toString().length === 1 ? '0' + date.getSeconds().toString() : date.getSeconds();
+
+    return year + '-' + month + '-' + day + 'T' + hours + ':' + minutes + ':' + seconds;
+};
+
 export const getDateTimeString = (date: Date): string => {
     const weekday = getDateDay(date.getDay());
     const monthday = date.getDate();
