@@ -16,13 +16,15 @@ export const UpdateEvent = () => {
         setLoading(true);
         const interval = setTimeout(() => {
             const eventId: number = Number.parseInt(id);
-            if (eventId != undefined && eventId >= 0) {
+            if (id && eventId != undefined && eventId >= 0) {
                 // get event from database
                 readEventById(eventId).then((event: Event) => {
                     setEvent(event);
                 }).finally(() => {
                     setLoading(false);
                 });
+            } else {
+                setLoading(false);
             }
         }, 333);
         return () => clearInterval(interval);
