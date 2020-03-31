@@ -1,45 +1,79 @@
 header.sub-menu {
-  margin-bottom: 1rem;
-  padding: 1rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  justify-content: center;
-  align-items: center;
-
   box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.2);
 
-  a {
-    font-size: 0.875rem;
-    font-weight: 400;
-    user-select: none;
-    cursor: pointer;
+  div.actions {
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: center;
+    align-items: center;
 
-    &:hover {
-      text-shadow: 2px 2px 10px $primary-1;
-      text-decoration: none;
+    div.back-action {
+      a {
+        font-size: 0.875rem;
+        font-weight: 400;
+        user-select: none;
+        cursor: pointer;
+
+        &:hover {
+          text-shadow: 2px 2px 10px $primary-1;
+          text-decoration: none;
+        }
+      }
+    }
+
+    h3.title {
+      font-size: 1rem;
+      font-weight: 400;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.05rem;
+      user-select: none;
+    }
+
+    div.forward-action {
+      display: flex;
+      justify-content: flex-end;
+
+      a {
+        color: $primary-1;
+
+        &:hover {
+          text-shadow: 2px 2px 10px $primary-1;
+          text-decoration: none;
+        }
+      }
     }
   }
 
-  h3.title {
-    font-size: 1rem;
-    font-weight: 400;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 0.05rem;
-    user-select: none;
-  }
+  div.tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-top: 0.5px solid rgba(0, 0, 0, 0.45);
 
-  div.action-danger {
-    display: flex;
-    justify-content: flex-end;
-
-    a {
-      color: $danger;
+    div.tab {
+      color: $black-777;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 500;
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
 
       &:hover {
-        text-shadow: 2px 2px 10px $danger;
-        text-decoration: none;
+        background-color: $white-444;
+        transition-duration: 0.5s;
       }
+
+      &:not(:hover) {
+        transition-duration: 0.5s;
+      }
+    }
+
+    div.selected {
+      color: $primary-1;
+      border-bottom: 3px solid $primary-1;
     }
   }
 }
