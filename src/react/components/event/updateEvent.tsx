@@ -84,7 +84,7 @@ export const UpdateForm = (props: UpdateFormProps) => {
         // send event object to server
         updateEventRecord(props.event).then((message: string) => {
             // redirect to update event
-            history.push(`/event/${props.event.id}`);
+            history.push(`/event/view/${props.event.id}`);
         }).catch((error) => {
             setError(error);
         }).finally(() => {
@@ -98,12 +98,14 @@ export const UpdateForm = (props: UpdateFormProps) => {
     return <main className="update-event">
         {deleting ? <DeleteEvent event={props.event} setDeleting={setDeleting}/> : ''}
         <header className="sub-menu">
-            <div className="back">
-                <Link to={`/event/${props.event.id}`}>{'< Back'}</Link>
-            </div>
-            <h3 className="title">Edit Event</h3>
-            <div className="action-danger">
-                <a onClick={() => clickDelete()}>{'Delete'}</a>
+            <div className="actions">
+                <div className="back-action">
+                    <Link to={`/event/view/${props.event.id}`}>{'< Back'}</Link>
+                </div>
+                <h3 className="title">Edit Event</h3>
+                <div className="forward-action">
+                    <a onClick={() => clickDelete()}>{'Delete'}</a>
+                </div>
             </div>
         </header>
         <section>

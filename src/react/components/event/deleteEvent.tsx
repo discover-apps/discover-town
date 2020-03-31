@@ -10,7 +10,6 @@ interface DeleteEventProps {
 }
 
 export const DeleteEvent = (props: DeleteEventProps) => {
-
     const history = useHistory();
     const [error, setError] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
@@ -23,7 +22,7 @@ export const DeleteEvent = (props: DeleteEventProps) => {
         setLoading(true);
         deleteEventRecord(props.event).then((message: string) => {
             // Redirect to user profile
-            history.push('/user');
+            history.push('/events');
         }).catch((error) => {
             setError(error);
         }).finally(() => {
