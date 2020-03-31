@@ -6,7 +6,6 @@ import ProfileIcon from '@material-ui/icons/AccountCircle';
 import {toggleSidebar} from "../../store/actions/sidebar.action";
 
 export const Navbar = () => {
-
     const dispatch = useDispatch();
     const sidebarOpen = useSelector((state: any) => state.sidebar.open);
     const currentUser = useSelector((state: any) => state.auth.currentUser);
@@ -18,7 +17,7 @@ export const Navbar = () => {
     };
 
     const clickProfile = () => {
-        history.push(`/profile${currentUser ? '/' + currentUser.username : ''}`);
+        history.push(`${currentUser ? '/profile/' + currentUser.username : 'login'}`);
     };
 
     return <nav className="navbar_container">

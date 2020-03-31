@@ -6,7 +6,6 @@ import {toggleSidebar} from "../../store/actions/sidebar.action";
 import {deauthorizeClient} from "../../util/auth";
 
 export const Sidebar = () => {
-
     const history = useHistory();
     const dispatch = useDispatch();
     const sidebarOpen = useSelector((state: any) => state.sidebar.open);
@@ -46,7 +45,7 @@ export const Sidebar = () => {
                     Browse
                 </div>
                 <div className="link"
-                     onClick={() => navigateTo(`/profile${currentUser ? '/' + currentUser.username : ''}`)}>
+                     onClick={() => navigateTo(`${currentUser ? '/profile/' + currentUser.username : 'login'}`)}>
                     Profile
                 </div>
                 <div className="link" onClick={() => navigateTo('/events/')}>
@@ -55,14 +54,15 @@ export const Sidebar = () => {
                 <div className="link" onClick={() => navigateTo('/event/create')}>
                     Discover
                 </div>
-                {currentUser ?
-                    <div className="link" onClick={() => logoutUser()}>
-                        Sign out
-                    </div>
-                    :
-                    <div className="link" onClick={() => navigateTo('/login')}>
-                        Sign in
-                    </div>
+                {
+                    currentUser ?
+                        <div className="link" onClick={() => logoutUser()}>
+                            Sign out
+                        </div>
+                        :
+                        <div className="link" onClick={() => navigateTo('/login')}>
+                            Sign in
+                        </div>
                 }
             </div>
         </section>

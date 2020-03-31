@@ -20,6 +20,7 @@ import {loadClientAuthorization} from "../util/auth";
 import {UpdateEvent} from "./event/updateEvent";
 import {ErrorPage} from "./error/error";
 import {Events} from "./event/events";
+import {CircularProgress} from "@material-ui/core";
 
 const App = () => {
     const sidebarOpen = useSelector((state: any) => state.sidebar.open);
@@ -47,7 +48,6 @@ const App = () => {
                         <ProtectedRoute exact path="/profile/edit/" component={ProfileEdit}/>
                         <Route exact path='/profile/:username' component={ViewUser}/>
                         <Route exact path='/profile/:username/followers' component={ProfileFollowers}/>
-                        <Route exact path='/profile' component={ViewUser}/>
                         <Route path="/" component={ErrorPage}/>
                     </Switch>
                 </div>
@@ -57,7 +57,9 @@ const App = () => {
             </BrowserRouter>
         </div>
     } else {
-        return <div></div>
+        return <div className="loading">
+            <CircularProgress/>
+        </div>
     }
 };
 
