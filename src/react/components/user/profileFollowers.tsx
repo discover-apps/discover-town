@@ -104,7 +104,7 @@ const ProfileFollower = (props: ProfileFollower) => {
                 <span className="username">{props.user.username}</span>
             </div>
             <div className="follow-button">
-                <FollowButton user={props.user} currentUser={props.currentUser} navigateTo={props.navigateTo}/>
+                <FollowButton user={props.user}/>
             </div>
         </div>
     );

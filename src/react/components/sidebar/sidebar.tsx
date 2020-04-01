@@ -51,7 +51,7 @@ export const Sidebar = () => {
                 <div className="link" onClick={() => navigateTo('/events/')}>
                     Events
                 </div>
-                <div className="link" onClick={() => navigateTo('/event/create')}>
+                <div className="link" onClick={() => navigateTo('/discover')}>
                     Discover
                 </div>
                 {

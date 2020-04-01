@@ -2,54 +2,55 @@ import React, {useEffect, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import {CircularProgress} from "@material-ui/core";
 import {readEventsByUser} from "../../api/event.api";
+import {getDateTimeString} from "../../util/common";
 import {User} from "../../models/user.model";
 import {Event} from '../../models/event.model';
 import Placeholder from '../../../assets/img/placeholder_item.png';
-import {getDateTimeString} from "../../util/common";
 
 interface ProfileEventsProps {
     user: User;
 }
-
 export const ProfileEvents = (props: ProfileEventsProps) => {
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
     const [events, setEvents] = useState<Event[]>([]);
-    const [error, setError] = useState<string>('');
     useEffect(() => {
-        setLoading(true);
         setTimeout(() => {
             readEventsByUser(props.user).then((events: Event[]) => {
                 setEvents(events);
-            }).catch((error) => {
-                setError(error);
             }).finally(() => {
                 setLoading(false);
             });
-        }, 500);
-    }, [props.user]);
-
-    return (
-        <section className="profile-events elevation-4">
-            {loading ? <div className="loading"><CircularProgress/></div> : ''}
-            {!loading && events.length == 0 ? <p className="no-events">This user is not hosting any events.</p> : ''}
-            {events.map((e, i) =>
-                <Event key={i} user={props.user} event={e}/>
-            )}
+        }, 333);
+    }, []);
+    if (loading) {
+        return <div className="loading">
+            <CircularProgress/>
+        </div>
+    } else if (events.length == 0) {
+        return <section className="profile-events elevation-4">
+            <div className="events">
+                <p className="no-events">This user is not hosting any events.</p>
+            </div>
         </section>
-    )
+    } else {
+        return <section className="profile-events elevation-4">
+            <div className="events">
+                {events.map((e, i) =>
+                    <Event key={i} user={props.user} event={e}/>
+                )}
+            </div>
+        </section>
+    }
 };
-
 interface EventProps {
     user: User;
     event: Event;
 }
-
 const Event = (props: EventProps) => {
     const history = useHistory();
     const clickEvent = () => {
-        history.push(`/event/${props.event.id}/`);
+        history.push(`/event/view/${props.event.id}/`);
     };
-
     return (
         <div className="event" onClick={clickEvent}>
             <div className="image">

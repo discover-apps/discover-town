@@ -28,6 +28,19 @@ section.profile-header {
         font-weight: 400;
         color: $black-777;
       }
+
+      h3 {
+        text-transform: capitalize;
+      }
+
+      h5 {
+        cursor: pointer;
+
+        &:hover {
+          color: $primary-1;
+          text-shadow: $primary-1 2.5px 2.5px 10px;
+        }
+      }
     }
 
     div.follow-button {

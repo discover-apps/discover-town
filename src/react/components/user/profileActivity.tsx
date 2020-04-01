@@ -1,24 +1,35 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import EventIcon from '@material-ui/icons/Event';
 import GroupIcon from '@material-ui/icons/Group';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Placeholder from '../../../assets/img/placeholder_item.png';
 import {User} from "../../models/user.model";
+import {CircularProgress} from "@material-ui/core";
 
 interface Props {
     user: User;
 }
 
 export const ProfileActivity = (props: Props) => {
-    return (
-        <section className="profile-activity elevation-4">
+    const [loading, setLoading] = useState<boolean>(true);
+    useEffect(() => {
+        const delay = setTimeout(() => {
+            setLoading(false);
+        }, 333);
+        return () => clearInterval(delay);
+    });
+    if (loading) {
+        return <div className="loading">
+            <CircularProgress/>
+        </div>
+    } else {
+        return <section className="profile-activity elevation-4">
             <EventActivity/>
             <FollowActivity/>
             <LikeActivity/>
         </section>
-    )
+    }
 };
-
 const EventActivity = () => {
     return (
         <div className="activity">
@@ -35,7 +46,6 @@ const EventActivity = () => {
         </div>
     )
 };
-
 const FollowActivity = () => {
     return (
         <div className="activity">
@@ -51,7 +61,6 @@ const FollowActivity = () => {
         </div>
     )
 };
-
 const LikeActivity = () => {
     return (
         <div className="activity">
