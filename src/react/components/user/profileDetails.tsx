@@ -4,6 +4,7 @@ import LocationOnIcon from '@material-ui/icons/LocationOn';
 import PersonIcon from '@material-ui/icons/Person';
 import {User} from "../../models/user.model";
 import {CircularProgress} from "@material-ui/core";
+import moment from 'moment';
 
 interface ProfileDetailsProps {
     user: User;
@@ -24,7 +25,7 @@ export const ProfileDetails = (props: ProfileDetailsProps) => {
         return <section className="profile-details elevation-4">
             <h3>Joined</h3>
             <div className="property">
-                <TodayIcon/><span>{props.user.joined}</span>
+                <TodayIcon/><span>{moment(props.user.joined).format('LL')}</span>
             </div>
             <h3>Location</h3>
             <div className="property">
@@ -34,13 +35,6 @@ export const ProfileDetails = (props: ProfileDetailsProps) => {
             <div className="property">
                 <PersonIcon/><span>{props.user.name}</span>
             </div>
-            {/*<h3>Social</h3>*/}
-            {/*<div className="property">*/}
-            {/*    <FacebookIcon/><span>Jason Efthimiou</span>*/}
-            {/*</div>*/}
-            {/*<div className="property">*/}
-            {/*    <InstagramIcon/><span>@jasonefthimiou</span>*/}
-            {/*</div>*/}
         </section>
     }
 };

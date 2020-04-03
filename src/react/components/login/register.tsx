@@ -19,7 +19,7 @@ export const Register = () => {
             // authorize client
             await authorizeClient(session.accessToken);
             // redirect to profile page
-            history.push('/profile');
+            history.push(`/profile/${user.username}`);
         }).catch((error) => {
             if (error.response) {
                 setError(error.response.data);

@@ -34,7 +34,8 @@ export const register = (req: Request, res: Response) => {
     const user: User = {
         email: req.body.email,
         username: req.body.username,
-        password: req.body.password
+        password: req.body.password,
+        joined: new Date()
     };
     // get client information from request headers
     const ip = req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'][0] : 'unknown';
