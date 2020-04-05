@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useSelector} from "react-redux";
-import {useHistory, useParams} from "react-router-dom";
+import {Link, useHistory, useParams} from "react-router-dom";
 import {getUserFollowers, getUserFollowing, readUserByUsername} from "../../api/user.api";
 import Placeholder from "../../../assets/img/placeholder_person.jpg";
 import {User} from "../../models/user.model";
@@ -14,13 +14,24 @@ export const ProfileFollowers = () => {
 
     return (
         <main className="profile-followers">
+            <header className="sub-menu">
+                <div className="actions">
+                    <div className="back-action">
+                        <Link to={`/profile/${username}`}>{'< Back'}</Link>
+                    </div>
+                    <h3 className="title">{`${username}'s Followers`}</h3>
+                </div>
+                <div className="tabs">
+                    <div className={`tab ${page == 0 ? 'selected' : ''}`} onClick={() => setPage(0)}>
+                        Followers
+                    </div>
+                    <div className={`tab ${page == 1 ? 'selected' : ''}`} onClick={() => setPage(1)}>
+                        Following
+                    </div>
+                </div>
+            </header>
             <section className="menu elevation-3">
-                <div className={`option ${page == 0 ? 'selected' : ''}`} onClick={() => setPage(0)}>
-                    Followers
-                </div>
-                <div className={`option ${page == 1 ? 'selected' : ''}`} onClick={() => setPage(1)}>
-                    Following
-                </div>
+
             </section>
             {
                 page == 0 ?
