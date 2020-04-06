@@ -30,9 +30,6 @@ export const ProfileFollowers = () => {
                     </div>
                 </div>
             </header>
-            <section className="menu elevation-3">
-
-            </section>
             {
                 page == 0 ?
                     <ProfileFollowersFollowers history={history} username={username} currentUser={currentUser}
@@ -105,8 +102,12 @@ interface ProfileFollower {
 }
 
 const ProfileFollower = (props: ProfileFollower) => {
+    const history = useHistory();
+    const clickFollower = () => {
+        history.push(`/profile/${props.user.username}`);
+    };
     return (
-        <div className="follower">
+        <div className="follower" onClick={clickFollower}>
             <div className="image">
                 <img src={Placeholder} alt="user_image"/>
             </div>
