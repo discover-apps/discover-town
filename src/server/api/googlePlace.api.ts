@@ -13,13 +13,13 @@ export enum Category {
     Lodging = 'lodging',
     Aquarium = 'aquarium',
     Nightclub = 'Nightclub',
-    restaurant = 'restaurant',
+    Restaurant = 'restaurant',
     University = 'university',
     Campground = 'campground',
     ArtGallery = 'art_gallery',
     ShoppingMall = 'shopping_mall',
     MovieTheater = 'movie_theater',
-    BowlingAllery = 'bowling_alley',
+    BowlingAlley = 'bowling_alley',
     AmusementPark = 'amusement_park',
     TouristAttraction = 'tourist_attraction'
 }
