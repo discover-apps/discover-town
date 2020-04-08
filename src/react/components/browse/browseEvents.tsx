@@ -50,7 +50,7 @@ const EventListing = (props: EventListingProps) => {
 
     if (user != undefined && count >= 0) {
         return <article className="paper elevation-3 event-listing"
-                        onClick={() => history.push(`/event/${props.event.id}`)}>
+                        onClick={() => history.push(`/event/view/${props.event.id}`)}>
             <h5>{getDateTimeString(props.event.dateStart)}</h5>
             <h1>{props.event.title}</h1>
             <div className="member">
