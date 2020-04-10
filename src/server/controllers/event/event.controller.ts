@@ -14,7 +14,8 @@ import {
     updateEvent,
     userAttendingEvent
 } from "../../database/event/event.database";
-import {GooglePlace, searchNearbyPlaces} from "../../api/googlePlace.api";
+import {searchNearbyPlaces} from "../../api/googlePlace.api";
+import {GooglePlace} from "../../models/googlePlace.model";
 
 export const searchPlaces = async (req: Request, res: Response) => {
     const query = req.body.query;

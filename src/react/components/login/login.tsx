@@ -18,7 +18,7 @@ export const Login = () => {
             // authorize client
             await authorizeClient(session.accessToken);
             // redirect to profile page
-            history.push(`/profile/`);
+            history.push(`/browse/`);
         }).catch((error) => {
             setError(error.response.data);
         });

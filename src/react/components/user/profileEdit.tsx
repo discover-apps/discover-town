@@ -23,7 +23,7 @@ export const ProfileEdit = () => {
                 // update client information
                 await loadClientAuthorization();
                 // redirect to profile section
-                history.push('/profile');
+                history.push(`/profile/${user.username}`);
             }).catch(async (error) => {
                 if (error && error.response) {
                     setError(error.response.data);

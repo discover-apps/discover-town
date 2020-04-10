@@ -1,4 +1,5 @@
-import {Category, getImage, getNearbyPlaces, GooglePlace} from "./googlePlace.api";
+import {Category, getImage, getNearbyPlaces} from "./googlePlace.api";
+import {GooglePlace} from "../models/googlePlace.model";
 
 describe('Tests getNearbyPlaces', () => {
     it('Successfully gets nearby zoo places', async done => {

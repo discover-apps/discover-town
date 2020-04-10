@@ -1,6 +1,6 @@
 import {GOOGLE_MAPS_API_KEY} from "../../util/secrets";
 import axios, {AxiosResponse} from "axios";
-import {SearchResult} from "../models/searchResult.model";
+import {GooglePlace} from "../models/googlePlace.model";
 
 export enum Category {
     Zoo = 'zoo',
@@ -12,7 +12,7 @@ export enum Category {
     Stadium = 'stadium',
     Lodging = 'lodging',
     Aquarium = 'aquarium',
-    Nightclub = 'Nightclub',
+    Nightclub = 'nightclub',
     Restaurant = 'restaurant',
     University = 'university',
     Campground = 'campground',
@@ -24,26 +24,18 @@ export enum Category {
     TouristAttraction = 'tourist_attraction'
 }
 
-export interface GooglePlace {
-    name: string;
-    formatted_address: string;
-    lat: number;
-    lon: number;
-    imgUrl?: string;
-}
-
 export const getNearbyPlaces = (category: Category, maxResults: number): Promise<GooglePlace[]> => {
     return new Promise<GooglePlace[]>((resolve, reject) => {
         const key: string = GOOGLE_MAPS_API_KEY;
         const url: string = `https://maps.googleapis.com/maps/api/place/textsearch/json?type=amusement_park&key=${key}`;
         axios.get(url).then(async (response: AxiosResponse) => {
             maxResults = response.data.results.length < maxResults ? response.data.results.length : maxResults;
-            const results: SearchResult[] = [];
+            const results: GooglePlace[] = [];
             // loop through response.data.results
             for (let i = 0; i < maxResults; i++) {
                 const r = response.data.results[i];
                 if (r.formatted_address && r.name && r.geometry && r.geometry.location && r.geometry.location.lat != undefined && r.geometry.location.lng != undefined) {
-                    const result: SearchResult = {
+                    const result: GooglePlace = {
                         name: r.name,
                         formatted_address: r.formatted_address,
                         lat: r.geometry.location.lat,
@@ -52,7 +44,7 @@ export const getNearbyPlaces = (category: Category, maxResults: number): Promise
                     // get image for this result
                     if (r.photos && r.photos.length > 0) {
                         const image: string = await getImage(r.photos[0].photo_reference);
-                        result.imgUrl = image;
+                        result.image = image;
                     }
                     results.push(result);
                 }
@@ -83,7 +75,7 @@ export const searchNearbyPlaces = (query: string, maxResults: number): Promise<G
         const url: string = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURI(query)}&key=${key}`;
         axios.get(url).then((response: AxiosResponse) => {
             maxResults = response.data.results.length < maxResults || maxResults == -1 ? response.data.results.length : maxResults;
-            const results: SearchResult[] = [];
+            const results: GooglePlace[] = [];
             // loop through response.data.results
             for (let i = 0; i < maxResults; i++) {
                 const r = response.data.results[i];
