@@ -1,15 +1,16 @@
-import React, {useState} from 'react';
-import 'assets/scss/app.scss';
-import {hot} from 'react-hot-loader/root';
-import {BrowserRouter, Route, Switch,} from "react-router-dom";
-import {useSelector} from 'react-redux';
+import React, {useState} from "react";
+import "assets/scss/app.scss";
+import {hot} from "react-hot-loader/root";
+import {BrowserRouter, Route, Switch} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {CircularProgress} from "@material-ui/core";
 
 import Sidebar from "./sidebar/sidebar";
 import Navbar from "./navbar/navbar";
 import Register from "./login/register";
 import Login from "./login/login";
 import {BrowseEvents} from "./browse/browseEvents";
-import {ViewEvent} from './event/viewEvent';
+import {ViewEvent} from "./event/viewEvent";
 import Home from "./home/home";
 import ViewUser from "./user/viewUser";
 import {ProtectedRoute} from "../util/protected.route";
@@ -20,7 +21,7 @@ import {loadClientAuthorization} from "../util/auth";
 import {UpdateEvent} from "./event/updateEvent";
 import {ErrorPage} from "./error/error";
 import {Events} from "./event/events";
-import {CircularProgress} from "@material-ui/core";
+import {Discover} from "./discover/discover";
 
 const App = () => {
     const sidebarOpen = useSelector((state: any) => state.sidebar.open);
@@ -41,6 +42,7 @@ const App = () => {
                         <Route path="/login" component={Login}/>
                         <Route path="/register" component={Register}/>
                         <Route path="/browse" component={BrowseEvents}/>
+                        <Route path="/discover" component={Discover}/>
                         <ProtectedRoute exact path="/events/" component={Events}/>
                         <Route exact path="/event/view/:id" component={ViewEvent}/>
                         <ProtectedRoute exact path="/event/update/:id" component={UpdateEvent}/>
