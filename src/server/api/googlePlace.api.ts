@@ -3,25 +3,25 @@ import axios, {AxiosResponse} from "axios";
 import {GooglePlace} from "../models/googlePlace.model";
 
 export enum Category {
-    Zoo = 'zoo',
-    Bar = 'bar',
-    Gym = 'gym',
-    Park = 'park',
-    Cafe = 'cafe',
-    Museum = 'Museum',
-    Stadium = 'stadium',
-    Lodging = 'lodging',
-    Aquarium = 'aquarium',
-    Nightclub = 'nightclub',
-    Restaurant = 'restaurant',
-    University = 'university',
-    Campground = 'campground',
-    ArtGallery = 'art_gallery',
-    ShoppingMall = 'shopping_mall',
-    MovieTheater = 'movie_theater',
-    BowlingAlley = 'bowling_alley',
-    AmusementPark = 'amusement_park',
-    TouristAttraction = 'tourist_attraction'
+    Zoo = "zoo",
+    Bar = "bar",
+    Gym = "gym",
+    Park = "park",
+    Cafe = "cafe",
+    Museum = "museum",
+    Stadium = "stadium",
+    Lodging = "lodging",
+    Aquarium = "aquarium",
+    Nightclub = "nightclub",
+    Restaurant = "restaurant",
+    University = "university",
+    Campground = "campground",
+    ArtGallery = "art_gallery",
+    ShoppingMall = "shopping_mall",
+    MovieTheater = "movie_theater",
+    BowlingAlley = "bowling_alley",
+    AmusementPark = "amusement_park",
+    TouristAttraction = "tourist_attraction"
 }
 
 export const getNearbyPlaces = (category: Category, maxResults: number): Promise<GooglePlace[]> => {
@@ -92,5 +92,72 @@ export const searchNearbyPlaces = (query: string, maxResults: number): Promise<G
         }).catch((error) => {
             reject(error);
         });
+    });
+};
+
+export const getCategoryFromString = (category: string): Promise<Category> => {
+    return new Promise<Category>((resolve, reject) => {
+        switch (category.toLowerCase()) {
+            case "zoo":
+                resolve(Category.Zoo);
+                break;
+            case "bar":
+                resolve(Category.Bar);
+                break;
+            case "gym":
+                resolve(Category.Gym);
+                break;
+            case "park":
+                resolve(Category.Park);
+                break;
+            case "cafe":
+                resolve(Category.Cafe);
+                break;
+            case "museum":
+                resolve(Category.Museum);
+                break;
+            case "stadium":
+                resolve(Category.Stadium);
+                break;
+            case "lodging":
+                resolve(Category.Lodging);
+                break;
+            case "aquarium":
+                resolve(Category.Aquarium);
+                break;
+            case "nightclub":
+                resolve(Category.Nightclub);
+                break;
+            case "restaurant":
+                resolve(Category.Restaurant);
+                break;
+            case "university":
+                resolve(Category.University);
+                break;
+            case "campground":
+                resolve(Category.Campground);
+                break;
+            case "art_gallery":
+                resolve(Category.ArtGallery);
+                break;
+            case "shopping_mall":
+                resolve(Category.ShoppingMall);
+                break;
+            case "movie_theatre":
+                resolve(Category.MovieTheater);
+                break;
+            case "bowling_alley":
+                resolve(Category.BowlingAlley);
+                break;
+            case "amusement_park":
+                resolve(Category.AmusementPark);
+                break;
+            case "tourist_attraction":
+                resolve(Category.TouristAttraction);
+                break;
+            default:
+                reject("Invalid category");
+                break;
+        }
     });
 };
