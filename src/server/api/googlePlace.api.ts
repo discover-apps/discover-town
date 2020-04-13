@@ -27,7 +27,7 @@ export enum Category {
 export const getNearbyPlaces = (category: Category, maxResults: number): Promise<GooglePlace[]> => {
     return new Promise<GooglePlace[]>((resolve, reject) => {
         const key: string = GOOGLE_MAPS_API_KEY;
-        const url: string = `https://maps.googleapis.com/maps/api/place/textsearch/json?type=amusement_park&key=${key}`;
+        const url: string = `https://maps.googleapis.com/maps/api/place/textsearch/json?type=${category}&key=${key}`;
         axios.get(url).then(async (response: AxiosResponse) => {
             maxResults = response.data.results.length < maxResults ? response.data.results.length : maxResults;
             const results: GooglePlace[] = [];
@@ -62,7 +62,11 @@ export const getImage = (photoReference: string): Promise<string> => {
         const key: string = GOOGLE_MAPS_API_KEY;
         const url: string = `https://maps.googleapis.com/maps/api/place/photo?photoreference=${photoReference}&key=${key}&maxheight=${height}`;
         axios.get(url).then((response: AxiosResponse) => {
-            resolve(response.data);
+            // save image to file
+            // decode the image to base64
+            // delete the image file
+            // return base64 string
+            resolve(url);
         }).catch((error) => {
             reject(error);
         });
