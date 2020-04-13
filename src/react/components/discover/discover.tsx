@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {GooglePlace} from "../../models/googlePlace.model";
 import {discoverPlacesByCategory} from "../../api/discover.api";
+import {DiscoverItem} from "./discoverItem";
 
 export const Discover = () => {
     return (
@@ -36,7 +37,7 @@ interface DiscoverCategoryProps {
 const DiscoverCategory = (props: DiscoverCategoryProps) => {
     const [places, setPlaces] = useState<GooglePlace[]>([]);
     useEffect(() => {
-        discoverPlacesByCategory(props.category).then((places: GooglePlace[]) => {
+        discoverPlacesByCategory(props.category, 4).then((places: GooglePlace[]) => {
             setPlaces(places);
         });
     }, []);
@@ -48,28 +49,13 @@ const DiscoverCategory = (props: DiscoverCategoryProps) => {
                     {props.category.replace("_", " ")}
                 </div>
                 <div className="link">
-                    <Link to={`/`}>See all ></Link>
+                    <Link to={`/discover/${props.category}`}>See all ></Link>
                 </div>
             </div>
             <div className="items">
                 {places.map((p: GooglePlace) => {
                     return <DiscoverItem key={p.name} place={p}/>
                 })}
-            </div>
-        </div>
-    );
-};
-
-interface DiscoverItemProps {
-    place: GooglePlace;
-}
-
-const DiscoverItem = (props: DiscoverItemProps) => {
-    return (
-        <div className="item">
-            <img src={props.place.image} alt="place_image"/>
-            <div className="overlay">
-                <span>{props.place.name}</span>
             </div>
         </div>
     );

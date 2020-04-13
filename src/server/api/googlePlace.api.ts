@@ -160,7 +160,7 @@ export const getCategoryFromString = (category: string): Promise<Category> => {
                 resolve(Category.TouristAttraction);
                 break;
             default:
-                reject("Invalid category");
+                reject(`Invalid category: ${category}`);
                 break;
         }
     });

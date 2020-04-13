@@ -4,8 +4,9 @@ import {GooglePlace} from "../../models/googlePlace.model";
 
 export const discoverPlaces = (req: Request, res: Response) => {
     const c: string = req.body.category;
+    const n: number = req.body.count;
     getCategoryFromString(c).then((category: Category) => {
-        getNearbyPlaces(category, 4).then((places: GooglePlace[]) => {
+        getNearbyPlaces(category, n).then((places: GooglePlace[]) => {
             res.status(200).json(places);
         });
     }).catch((error) => {
