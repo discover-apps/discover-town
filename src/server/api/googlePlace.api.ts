@@ -30,26 +30,99 @@ export const getNearbyPlaces = (category: Category, maxResults: number): Promise
         const url: string = `https://maps.googleapis.com/maps/api/place/textsearch/json?type=${category}&key=${key}`;
         axios.get(url).then(async (response: AxiosResponse) => {
             maxResults = response.data.results.length < maxResults ? response.data.results.length : maxResults;
-            const results: GooglePlace[] = [];
+            const places: GooglePlace[] = [];
             // loop through response.data.results
             for (let i = 0; i < maxResults; i++) {
                 const r = response.data.results[i];
-                if (r.formatted_address && r.name && r.geometry && r.geometry.location && r.geometry.location.lat != undefined && r.geometry.location.lng != undefined) {
-                    const result: GooglePlace = {
-                        name: r.name,
-                        formatted_address: r.formatted_address,
-                        lat: r.geometry.location.lat,
-                        lon: r.geometry.location.lng
-                    };
-                    // get image for this result
-                    if (r.photos && r.photos.length > 0) {
-                        const image: string = await getImage(r.photos[0].photo_reference);
-                        result.image = image;
+                const place: GooglePlace = {};
+                // get place id
+                if (r.place_id != undefined) {
+                    place.place_id = r.place_id;
+                }
+                // get place name
+                if (r.name != undefined) {
+                    place.name = r.name;
+                }
+                // get place formatted address
+                if (r.formatted_address) {
+                    place.formatted_address = r.formatted_address;
+                }
+                // get latitude and longitude
+                if (r.geometry && r.geometry.location && r.geometry.location.lat != undefined && r.geometry.location.lng != undefined) {
+                    place.lat = r.geometry.location.lat;
+                    place.lon = r.geometry.location.lng;
+                }
+                // get image url
+                if (r.photos && r.photos.length > 0) {
+                    place.image = await getImage(r.photos[0].photo_reference);
+                }
+                places.push(place);
+            }
+            resolve(places);
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+};
+
+export const getPlaceDetails = (placeId: string): Promise<GooglePlace> => {
+    return new Promise<GooglePlace>((resolve, reject) => {
+        const key: string = GOOGLE_MAPS_API_KEY;
+        const url: string = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=${key}`;
+        axios.get(url).then(async (response: AxiosResponse) => {
+            const place: GooglePlace = {};
+            const result = response.data.result;
+            // get place id
+            if (result.place_id != undefined) {
+                place.place_id = result.place_id;
+            }
+            // get place name
+            if (result.name != undefined) {
+                place.name = result.name;
+            }
+            // get formatted address
+            if (result.formatted_address != undefined) {
+                place.formatted_address = result.formatted_address;
+            }
+            // get formatted phone number
+            if (result.formatted_phone_number != undefined) {
+                place.formatted_phone_number = result.formatted_phone_number;
+            }
+            // get website url
+            if (result.website != undefined) {
+                place.website = result.website;
+            }
+            // get opening hours
+            const oh = result.opening_hours;
+            if (oh != undefined) {
+                // get open now
+                if (oh.open_now != undefined) {
+                    place.open_now = oh.open_now;
+                }
+                // get open hours
+                if (oh.weekday_text != undefined && oh.weekday_text.length > 0) {
+                    place.open_hours = [];
+                    for (let i = 0; i < oh.weekday_text.length; i++) {
+                        place.open_hours.push(oh.weekday_text[i]);
                     }
-                    results.push(result);
                 }
             }
-            resolve(results);
+            // get location coordinates
+            if (result.geometry != undefined && result.geometry.location != undefined) {
+                // get latitude
+                if (result.geometry.location.lat != undefined) {
+                    place.lat = result.geometry.location.lat
+                }
+                // get longitude
+                if (result.geometry.location.lat != undefined) {
+                    place.lon = result.geometry.location.lng
+                }
+            }
+            // get image url
+            if (result.photos != undefined && result.photos.length > 0) {
+                place.image = await getImage(result.photos[0].photo_reference);
+            }
+            resolve(place);
         }).catch((error) => {
             reject(error);
         });

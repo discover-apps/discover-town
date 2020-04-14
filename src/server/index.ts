@@ -53,7 +53,8 @@ app.post("/api/event/createAttendee", authenticateSession, eventController.creat
 app.post("/api/event/deleteAttendee", authenticateSession, eventController.deleteAttendee);
 app.post("/api/event/attendingEvent", authenticateSession, eventController.attendingEvent);
 // Places Routes
-app.post("/api/places/discover", placesController.discoverPlaces);
+app.post("/api/places/readPlacesByCategory", placesController.readPlacesByCategory);
+app.post("/api/places/readPlaceDetails", placesController.readPlaceDetails);
 
 app.get("/api/*", (req: Request, res: Response) => {
     res.status(404).send("Route not found");
