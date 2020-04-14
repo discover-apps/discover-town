@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {GooglePlace} from "../../models/googlePlace.model";
-import {discoverPlacesByCategory} from "../../api/discover.api";
+import {readPlacesByCategory} from "../../api/places.api";
 import {DiscoverItem} from "./discoverItem";
 
 export const Discover = () => {
@@ -37,7 +37,7 @@ interface DiscoverCategoryProps {
 const DiscoverCategory = (props: DiscoverCategoryProps) => {
     const [places, setPlaces] = useState<GooglePlace[]>([]);
     useEffect(() => {
-        discoverPlacesByCategory(props.category, 4).then((places: GooglePlace[]) => {
+        readPlacesByCategory(props.category, 4).then((places: GooglePlace[]) => {
             setPlaces(places);
         });
     }, []);

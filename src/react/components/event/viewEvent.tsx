@@ -1,12 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState} from "react";
 import moment from "moment";
 import ClockIcon from "@material-ui/icons/AccessTime";
 import LocationIcon from "@material-ui/icons/LocationOn";
 import {CircularProgress} from "@material-ui/core";
-import GoogleMapReact from "google-map-react";
-import {Event} from '../../models/event.model';
+import {Event} from "../../models/event.model";
 import {useHistory, useParams} from "react-router-dom";
-import marker from '../../../assets/img/marker.png';
 import placeholder1 from "../../../assets/img/placeholder_item.png";
 import placeholder2 from "../../../assets/img/placeholder_person.jpg";
 import {readUserByEvent, readUserFollowerCount} from "../../api/user.api";
@@ -19,6 +17,7 @@ import {
     readEventById,
     userAttendingEvent
 } from "../../api/event.api";
+import {GoogleMaps} from "../maps/googleMap";
 
 export const ViewEvent = () => {
     const [event, setEvent] = useState(undefined);
@@ -151,33 +150,9 @@ const EventInformation = (props: EventProps) => {
                 </div>
             </div>
             <div className="map">
-                <GoogleMaps user={props.user} event={props.event} followerCount={props.followerCount}/>
+                <GoogleMaps lat={props.event.lat} lon={props.event.lon}/>
             </div>
         </section>
-    );
-};
-
-const GoogleMapsMarker = (props: any) => <div><img className="marker" src={marker} alt="marker"/></div>;
-
-const GoogleMaps = (props: EventProps) => {
-    return (
-        // Important! Always set the container height explicitly
-        <div style={{height: '225px', width: '100%'}}>
-            <GoogleMapReact
-                yesIWantToUseGoogleMapApiInternals
-                bootstrapURLKeys={{key: "AIzaSyCFghWiQ6YR9gvIn572y9yTD49K3igUeiI"}}
-                defaultCenter={{lat: props.event.lat, lng: props.event.lon}}
-                defaultZoom={15}
-            >
-                <GoogleMapsMarker
-                    position={{
-                        lat: props.event.lat,
-                        lng: props.event.lon
-                    }}
-                    text="My Marker"
-                />
-            </GoogleMapReact>
-        </div>
     );
 };
 

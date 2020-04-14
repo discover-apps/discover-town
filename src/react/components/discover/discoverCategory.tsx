@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Link, useParams} from "react-router-dom";
 import {GooglePlace} from "../../models/googlePlace.model";
-import {discoverPlacesByCategory} from "../../api/discover.api";
+import {readPlacesByCategory} from "../../api/places.api";
 import {DiscoverItem} from "./discoverItem";
 import {CircularProgress} from "@material-ui/core";
 
@@ -12,7 +12,7 @@ export const DiscoverCategory = () => {
     const [error, setError] = useState<string>("");
     useEffect(() => {
         setLoading(true);
-        discoverPlacesByCategory(category, 100).then((places: GooglePlace[]) => {
+        readPlacesByCategory(category, 100).then((places: GooglePlace[]) => {
             setPlaces(places);
         }).catch(error => {
             setError("An error occurred, retrying...");

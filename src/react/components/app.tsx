@@ -23,6 +23,7 @@ import {ErrorPage} from "./error/error";
 import {Events} from "./event/events";
 import {Discover} from "./discover/discover";
 import {DiscoverCategory} from "./discover/discoverCategory";
+import {DiscoverPlace} from "./discover/discoverPlace";
 
 const App = () => {
     const sidebarOpen = useSelector((state: any) => state.sidebar.open);
@@ -45,6 +46,7 @@ const App = () => {
                         <Route path="/browse" component={BrowseEvents}/>
                         <Route exact path="/discover" component={Discover}/>
                         <Route exact path="/discover/:category" component={DiscoverCategory}/>
+                        <Route exact path="/discover/place/:place_id" component={DiscoverPlace}/>
                         <ProtectedRoute exact path="/events/" component={Events}/>
                         <Route exact path="/event/view/:id" component={ViewEvent}/>
                         <ProtectedRoute exact path="/event/update/:id" component={UpdateEvent}/>

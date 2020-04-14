@@ -20,6 +20,39 @@ section.information {
     }
   }
 
+  div.info-extended {
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas: "a b" "c c";
+    align-items: center;
+
+    div.icon {
+      grid-area: a;
+      padding-right: 1rem;
+
+      svg {
+        color: $black-999;
+        height: 32px;
+        width: 32px;
+      }
+    }
+
+    div.text {
+      grid-area: b;
+      color: $black-999;
+      overflow: hidden;
+    }
+
+    div.extended {
+      color: $black-999;
+      margin-left: 1rem;
+      padding-left: 1rem;
+      border-left: 2px solid $black-999;
+      grid-area: c;
+    }
+  }
+
   div.map {
     padding: 1rem;
   }
