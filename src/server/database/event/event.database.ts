@@ -1,10 +1,10 @@
-import axios, {AxiosResponse} from 'axios';
+import axios, {AxiosResponse} from "axios";
 import User from "../../models/user.model";
 import Event, {EventLocation, UserAttendingEvent, UserHostingEvent} from "../../models/event.model";
 import {database} from "../_database";
 import {readUserById} from "../user/user.database";
 import {GOOGLE_MAPS_API_KEY} from "../../../util/secrets";
-import moment = require('moment');
+import moment = require("moment");
 
 export const createEvent = (event: Event, userId: number): Promise<number> => {
     return new Promise<number>((resolve, reject) => {
@@ -28,7 +28,7 @@ export const createEvent = (event: Event, userId: number): Promise<number> => {
                 });
         }).catch((error) => {
             reject(error);
-        })
+        });
     });
 };
 
