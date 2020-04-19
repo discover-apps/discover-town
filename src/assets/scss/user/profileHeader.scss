@@ -37,8 +37,7 @@ section.profile-header {
         cursor: pointer;
 
         &:hover {
-          color: $primary-1;
-          text-shadow: $primary-1 2.5px 2.5px 10px;
+          @include HoverGlow;
         }
       }
     }

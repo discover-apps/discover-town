@@ -61,19 +61,25 @@ interface EventProps {
 }
 
 const EventTitle = (props: EventProps) => {
-
+    const history = useHistory();
+    const navigateToProfile = () => {
+        history.push(`/profile/${props.user.username}`);
+    };
+    const navigateToUserFollowers = () => {
+        history.push(`/profile/${props.user.username}/followers`)
+    };
     return (
         <section className="paper elevation-3 title">
-            <h5 className="">{moment(props.event.dateStart).format("dddd") + ", " + moment(props.event.dateStart).format('ll')}</h5>
+            <h5 className="">{moment(props.event.dateStart).format("dddd") + ", " + moment(props.event.dateStart).format("ll")}</h5>
             <h1>{props.event.title}</h1>
             <div className="member-attend">
                 <div className="member">
-                    <div className="image">
+                    <div className="image" onClick={navigateToProfile}>
                         <img src={placeholder2} alt="profile_image"/>
                     </div>
                     <div className="details">
-                        <h3>{props.user.username}</h3>
-                        <span>{props.followerCount} Followers</span>
+                        <h3 onClick={navigateToProfile}>{props.user.username}</h3>
+                        <span onClick={navigateToUserFollowers}>{props.followerCount} Followers</span>
                     </div>
                 </div>
                 <div className="button">

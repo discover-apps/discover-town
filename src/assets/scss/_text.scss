@@ -7,3 +7,11 @@ p {
   margin: 0;
   font-size: 1em;
 }
+
+@mixin HoverGlow {
+  cursor: pointer;
+  color: $primary-1;
+  text-shadow: $primary-1 2.5px 2.5px 10px;
+
+  transition-duration: 0.1s;
+}
