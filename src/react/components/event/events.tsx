@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState} from "react";
 import {Link, useHistory} from "react-router-dom";
 import {User} from "../../models/user.model";
 import {useSelector} from "react-redux";
@@ -6,7 +6,7 @@ import {CircularProgress} from "@material-ui/core";
 import {readEventsByUser} from "../../api/event.api";
 import {Event} from "../../models/event.model";
 import Placeholder from "../../../assets/img/placeholder_item.png";
-import moment from 'moment';
+import moment from "moment";
 
 export const Events = () => {
     const user: User = useSelector((state: any) => state.auth.currentUser);
@@ -23,11 +23,11 @@ export const Events = () => {
                 </div>
             </div>
             <div className="tabs">
-                <div className={`tab ${page == 0 ? 'selected' : ''}`} onClick={() => setPage(0)}>
+                <div className={`tab ${page == 0 ? "selected" : ""}`} onClick={() => setPage(0)}>
                     My Events
                 </div>
-                <div className={`tab ${page == 1 ? 'selected' : ''}`} onClick={() => setPage(1)}>
-                    Saved Events
+                <div className={`tab ${page == 1 ? "selected" : ""}`} onClick={() => setPage(1)}>
+                    Attending Events
                 </div>
             </div>
         </header>
