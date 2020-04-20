@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
-import {useHistory} from 'react-router-dom';
+import {useHistory} from "react-router-dom";
 import {CircularProgress} from "@material-ui/core";
 import {followUser, unfollowUser, userFollowsUser} from "../../api/user.api";
 import {User} from "../../models/user.model";
-import Placeholder from '../../../assets/img/placeholder_person.jpg';
+import Placeholder from "../../../assets/img/placeholder_person.jpg";
 
 interface Props {
     user: User;
@@ -81,7 +81,7 @@ export const FollowButton = (props: FollowButtonProps) => {
     };
     if (loading) {
         return <button>
-            <CircularProgress size={18} color="primary"/>
+            <CircularProgress size={18} color="secondary"/>
         </button>
     } else if (userIsCurrentUser) {
         return <button className="outline-button" onClick={() => clickEditButton()}>
