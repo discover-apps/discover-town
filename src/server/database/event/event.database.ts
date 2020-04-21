@@ -1,10 +1,10 @@
 import axios, {AxiosResponse} from "axios";
+import moment from "moment";
 import User from "../../models/user.model";
 import Event, {EventLocation, UserAttendingEvent, UserHostingEvent} from "../../models/event.model";
 import {database} from "../_database";
 import {readUserById} from "../user/user.database";
 import {GOOGLE_MAPS_API_KEY} from "../../../util/secrets";
-import moment = require("moment");
 
 export const createEvent = (event: Event, userId: number): Promise<number> => {
     return new Promise<number>((resolve, reject) => {
@@ -131,7 +131,7 @@ export const readEventsByUser = (user: User): Promise<Event[]> => {
             .catch((error) => {
                 reject(error);
             });
-        resolve(events);
+        resolve(orderEventsByStartDate(events));
     });
 };
 
@@ -164,7 +164,7 @@ export const readAttendingByUser = (user: User): Promise<Event[]> => {
             .catch((error) => {
                 reject(error);
             });
-        resolve(events);
+        resolve(orderEventsByStartDate(events));
     });
 };
 
@@ -191,7 +191,7 @@ export const readEventsByUserFollowers = (followers: User[]): Promise<Event[]> =
             .whereIn("id", eventIds)
             .orderBy("datePosted", "desc")
             .then((records) => {
-                resolve(records);
+                resolve(orderEventsByStartDate(records));
             })
             .catch((error) => {
                 reject(error);
@@ -332,4 +332,40 @@ const validateLocation = (address: string): Promise<EventLocation> => {
             reject(error);
         });
     });
+};
+
+const orderEventsByStartDate = (events: Event[]): Event[] => {
+    let pastEvents: Event[] = [];
+    let futureEvents: Event[] = [];
+    let sortedEvents: Event[] = [];
+
+    for (let i = 0; i < events.length; i++) {
+        if (events[i].dateStart > new Date()) {
+            futureEvents.push(events[i]);
+        } else {
+            pastEvents.push(events[i]);
+        }
+    }
+
+    pastEvents.sort((a: Event, b: Event) => {
+        if (a.dateStart < b.dateStart) {
+            return -1;
+        } else if (a.dateStart > b.dateStart) {
+            return 1;
+        } else {
+            return 0;
+        }
+    });
+
+    futureEvents.sort((a: Event, b: Event) => {
+        if (a.dateStart < b.dateStart) {
+            return -1;
+        } else if (a.dateStart > b.dateStart) {
+            return 1;
+        } else {
+            return 0;
+        }
+    });
+
+    return sortedEvents.concat(futureEvents).concat(pastEvents);
 };
