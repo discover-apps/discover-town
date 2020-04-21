@@ -1,12 +1,13 @@
-import {Request, Response} from 'express';
+import {Request, Response} from "express";
 import {readUserById, readUserFollowers} from "../../database/user/user.database";
-import Event from '../../models/event.model';
+import Event from "../../models/event.model";
 import User from "../../models/user.model";
 import {
     createEvent,
     createEventAttendee,
     deleteEvent,
     deleteEventAttendee,
+    readAttendingByUser,
     readEventAttendees,
     readEventById,
     readEventsByUser,
@@ -102,6 +103,15 @@ export const readAttendees = async (req: Request, res: Response) => {
     const event: Event = req.body.event;
     readEventAttendees(event).then((user: User[]) => {
         res.status(200).json(user);
+    }).catch((error) => {
+        res.status(500).json(error);
+    });
+};
+
+export const readAttending = async (req: Request, res: Response) => {
+    const user: User = req.body.user;
+    readAttendingByUser(user).then((events: Event[]) => {
+        res.status(200).json(events);
     }).catch((error) => {
         res.status(500).json(error);
     });

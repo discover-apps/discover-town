@@ -3,6 +3,7 @@ import {
     createEventAttendee,
     deleteEvent,
     deleteEventAttendee,
+    readAttendingByUser,
     readEventAttendees,
     readEventById,
     readEventsByUser,
@@ -17,11 +18,11 @@ import {
     deleteTestUsersFromDb,
     generateTestEvent
 } from "../../util/test.util";
-import Event from '../../models/event.model';
+import Event from "../../models/event.model";
 import User from "../../models/user.model";
 
-describe('Tests event database functions', () => {
-    describe('Tests Create Function', () => {
+describe("Tests event.database.ts", () => {
+    describe("Tests createEvent", () => {
         let testUser: User = undefined;
         beforeAll(async () => {
             await deleteTestEventFromDb();
@@ -35,7 +36,7 @@ describe('Tests event database functions', () => {
         afterEach(async () => {
             await deleteTestEventFromDb();
         });
-        it('Successfully creates an event record', async done => {
+        it("Successfully creates an event record", async done => {
             const testEvent = generateTestEvent();
             await createEvent(testEvent, testUser.id).then((eventId: number) => {
                 expect(eventId).not.toBeNull();
@@ -45,36 +46,36 @@ describe('Tests event database functions', () => {
             });
             done();
         });
-        it('Fails to create an event record with invalid Title', async done => {
+        it("Fails to create an event record with invalid Title", async done => {
             let testEvent = generateTestEvent();
             testEvent.title = "asdf";
             await createEvent(testEvent, testUser.id).then((eventId: number) => {
                 expect(eventId).toBeNull();
             }).catch((error) => {
                 expect(error).not.toBeNull();
-                expect(error).toEqual('Title must be between 5-32 characters.');
+                expect(error).toEqual("Title must be between 5-32 characters.");
             });
             testEvent.title = "asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf";
             await createEvent(testEvent, testUser.id).then((eventId: number) => {
                 expect(eventId).toBeNull();
             }).catch((error) => {
                 expect(error).not.toBeNull();
-                expect(error).toEqual('Title must be between 5-32 characters.');
+                expect(error).toEqual("Title must be between 5-32 characters.");
             });
             done();
         });
-        it('Fails to create an event record with invalid Description', async done => {
+        it("Fails to create an event record with invalid Description", async done => {
             let testEvent = generateTestEvent();
             testEvent.description = "asdf";
             await createEvent(testEvent, testUser.id).then((eventId: number) => {
                 expect(eventId).toBeNull();
             }).catch((error) => {
                 expect(error).not.toBeNull();
-                expect(error).toEqual('Description must be between 5-1000 characters.');
+                expect(error).toEqual("Description must be between 5-1000 characters.");
             });
             done();
         });
-        it('Fails to create an event record with invalid Date', async done => {
+        it("Fails to create an event record with invalid Date", async done => {
             let testEvent = generateTestEvent();
             testEvent.dateStart.setDate(testEvent.datePosted.getDate());
             testEvent.dateStart.setMinutes(testEvent.datePosted.getMinutes() - 1);
@@ -82,23 +83,23 @@ describe('Tests event database functions', () => {
                 expect(eventId).toBeNull();
             }).catch((error) => {
                 expect(error).not.toBeNull();
-                expect(error).toEqual('Date must be greater than or equal to today.');
+                expect(error).toEqual("Date must be greater than or equal to today.");
             });
             done();
         });
-        it('Fails to create an event record with invalid Address', async done => {
+        it("Fails to create an event record with invalid Address", async done => {
             let testEvent = generateTestEvent();
-            testEvent.address_location = 'asdffdsalkjhhjll';
+            testEvent.address_location = "asdffdsalkjhhjll";
             await createEvent(testEvent, testUser.id).then((eventId: number) => {
                 expect(eventId).toBeNull();
             }).catch((error) => {
                 expect(error).not.toBeNull();
-                expect(error).toEqual('Unable to locate address, please try a different address.');
+                expect(error).toEqual("Unable to locate address, please try a different address.");
             });
             done();
         });
     });
-    describe('Tests Update Function', () => {
+    describe("Tests updateEvent", () => {
         let testEvent: Event = undefined;
         let testUser: User = undefined;
         beforeAll(async () => {
@@ -111,8 +112,11 @@ describe('Tests event database functions', () => {
             await deleteTestEventFromDb();
             await deleteTestUsersFromDb();
         });
-        it('Successfully updates an event record.', async done => {
-            await updateEvent({...testEvent, description: "Updated description."}).then((message: string) => {
+        it("Successfully updates an event record.", async done => {
+            await updateEvent({
+                ...testEvent,
+                description: "Updated description."
+            }, testUser.id).then((message: string) => {
                 expect(message).not.toBeNull();
                 expect(message).toEqual("Successfully updated event.");
             });
@@ -122,60 +126,63 @@ describe('Tests event database functions', () => {
             });
             done();
         });
-        it('Fails to update an event record with invalid Title', async done => {
-            let testEvent = generateTestEvent();
-            testEvent.title = "asdf";
-            await updateEvent(testEvent).then((message: string) => {
+        it("Fails to update an event record with title less than 5 characters.", async done => {
+            let updatedTestEvent: Event = {...generateTestEvent(), id: testEvent.id};
+            updatedTestEvent.title = "asdf";
+            await updateEvent(updatedTestEvent, testUser.id).then((message: string) => {
                 expect(message).toBeNull();
             }).catch((error) => {
                 expect(error).not.toBeNull();
-                expect(error).toEqual('Title must be between 5-32 characters.');
+                expect(error).toEqual("Title must be between 5-32 characters.");
             });
+            done();
+        });
+        it("Fails to update an event record with title too long", async done => {
             testEvent.title = "asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf";
-            await createEvent(testEvent, testUser.id).then((eventId: number) => {
-                expect(eventId).toBeNull();
-            }).catch((error) => {
-                expect(error).not.toBeNull();
-                expect(error).toEqual('Title must be between 5-32 characters.');
-            });
-            done();
-        });
-        it('Fails to update an event record with invalid Description', async done => {
-            let testEvent = generateTestEvent();
-            testEvent.description = "asdf";
-            await updateEvent(testEvent).then((message: string) => {
+            await updateEvent(testEvent, testUser.id).then((message: string) => {
                 expect(message).toBeNull();
             }).catch((error) => {
                 expect(error).not.toBeNull();
-                expect(error).toEqual('Description must be between 5-1000 characters.');
+                expect(error).toEqual("Title must be between 5-32 characters.");
             });
             done();
         });
-        it('Fails to update an event record with invalid Date', async done => {
-            let testEvent = generateTestEvent();
-            testEvent.dateStart.setDate(testEvent.datePosted.getDate());
-            testEvent.dateStart.setMinutes(testEvent.datePosted.getMinutes() - 1);
-            await updateEvent(testEvent).then((message: string) => {
+        it("Fails to update an event record with invalid Description", async done => {
+            let updatedTestEvent: Event = {...generateTestEvent(), id: testEvent.id};
+            updatedTestEvent.description = "asdf";
+            await updateEvent(updatedTestEvent, testUser.id).then((message: string) => {
                 expect(message).toBeNull();
             }).catch((error) => {
                 expect(error).not.toBeNull();
-                expect(error).toEqual('Date must be greater than or equal to today.');
+                expect(error).toEqual("Description must be between 5-1000 characters.");
             });
             done();
         });
-        it('Fails to update an event record with invalid Address', async done => {
-            let testEvent = generateTestEvent();
-            testEvent.address_location = 'asdffdsalkjhhjll';
-            await updateEvent(testEvent).then((message: string) => {
+        it("Fails to update an event record with invalid Date", async done => {
+            let updatedTestEvent: Event = {...generateTestEvent(), id: testEvent.id};
+            updatedTestEvent.dateStart.setDate(updatedTestEvent.datePosted.getDate());
+            updatedTestEvent.dateStart.setMinutes(updatedTestEvent.datePosted.getMinutes() - 1);
+            await updateEvent(updatedTestEvent, testUser.id).then((message: string) => {
                 expect(message).toBeNull();
             }).catch((error) => {
                 expect(error).not.toBeNull();
-                expect(error).toEqual('Unable to locate address, please try a different address.');
+                expect(error).toEqual("Date must be greater than or equal to today.");
+            });
+            done();
+        });
+        it("Fails to update an event record with invalid Address", async done => {
+            let updatedTestEvent: Event = {...generateTestEvent(), id: testEvent.id};
+            updatedTestEvent.address_location = "asdffdsalkjhhjll";
+            await updateEvent(updatedTestEvent, testUser.id).then((message: string) => {
+                expect(message).toBeNull();
+            }).catch((error) => {
+                expect(error).not.toBeNull();
+                expect(error).toEqual("Unable to locate address, please try a different address.");
             });
             done();
         });
     });
-    describe('Tests Delete Function', () => {
+    describe("Tests deleteEvent", () => {
         let testEvent: Event = undefined;
         let testUser: User = undefined;
         beforeAll(async () => {
@@ -188,8 +195,8 @@ describe('Tests event database functions', () => {
             await deleteTestEventFromDb();
             await deleteTestUsersFromDb();
         });
-        it('Successfully deletes an event record', async done => {
-            await deleteEvent(testEvent).then((message: string) => {
+        it("Successfully deletes an event record", async done => {
+            await deleteEvent(testEvent, testUser.id).then((message: string) => {
                 expect(message).not.toBeNull();
                 expect(message).toEqual("Successfully deleted event.");
             }).catch((error) => {
@@ -201,7 +208,7 @@ describe('Tests event database functions', () => {
             done();
         });
     });
-    describe('Tests ReadById Function', () => {
+    describe("Tests readEventById", () => {
         let testEvent: Event = undefined;
         let testUser: User = undefined;
         beforeAll(async () => {
@@ -214,7 +221,7 @@ describe('Tests event database functions', () => {
             await deleteTestEventFromDb();
             await deleteTestUsersFromDb();
         });
-        it('Successfully reads a record by id', async done => {
+        it("Successfully reads a record by id", async done => {
             readEventById(testEvent.id).then((event: Event) => {
                 expect(event).not.toBeNull();
                 expect(event.title).toEqual(testEvent.title);
@@ -230,7 +237,7 @@ describe('Tests event database functions', () => {
             });
             done();
         });
-        it('Fails to read a record that does not exist', async done => {
+        it("Fails to read a record that does not exist", async done => {
             readEventById(-1).then((event: Event) => {
                 expect(event).toBeNull();
             }).catch((error) => {
@@ -239,7 +246,7 @@ describe('Tests event database functions', () => {
             done();
         });
     });
-    describe('Tests ReadByUser Function', () => {
+    describe("Tests readEventsByUser", () => {
         // TODO: (FIX) This test runs successfully solo, but fails when running all tests...
         let testEvent: Event = undefined;
         let testUser: User = undefined;
@@ -253,7 +260,7 @@ describe('Tests event database functions', () => {
             await deleteTestEventFromDb();
             await deleteTestUsersFromDb();
         });
-        it('Successfully retrieves all event records for a user.', async done => {
+        it("Successfully retrieves all event records for a user.", async done => {
             await readEventsByUser(testUser).then((events: Event[]) => {
                 expect(events).not.toBeNull();
                 expect(events.length).toEqual(1);
@@ -261,15 +268,39 @@ describe('Tests event database functions', () => {
             });
             done();
         });
-        it('Returns a empty array for a user that does not exist', async done => {
+        it("Returns a empty array for a user that does not exist", async done => {
             await readEventsByUser({...testUser, id: -1}).then((events: Event[]) => {
                 expect(events).not.toBeNull();
                 expect(events.length).toEqual(0);
             });
             done();
-        })
+        });
     });
-    describe('Tests ReadByUserFollowers Function', () => {
+    describe("Tests readAttendingByUser", () => {
+        let testEvent: Event = undefined;
+        let testUser1: User = undefined;
+        let testUser2: User = undefined;
+        beforeAll(async () => {
+            await deleteTestEventFromDb();
+            await deleteTestUsersFromDb();
+            testUser1 = await addTestUserToDb(1);
+            testUser2 = await addTestUserToDb(2);
+            testEvent = await addTestEventToDb(testUser1.id);
+            await createEventAttendee(testEvent, testUser2);
+        });
+        afterAll(async () => {
+            await deleteTestEventFromDb();
+            await deleteTestUsersFromDb();
+        });
+        it("Retrieves testEvent from testUser2 Attendees.", async done => {
+            await readAttendingByUser(testUser2).then((events: Event[]) => {
+                expect(events).not.toBeNull();
+                expect(events[0].id).toEqual(testEvent.id);
+            });
+            done();
+        });
+    });
+    describe("Tests readEventsByUserFollowers", () => {
         let testEvent: Event = undefined;
         let testUser: User = undefined;
         beforeAll(async () => {
@@ -282,7 +313,7 @@ describe('Tests event database functions', () => {
             await deleteTestEventFromDb();
             await deleteTestUsersFromDb();
         });
-        it('Successfully retrieves record for testUser', async done => {
+        it("Successfully retrieves record for testUser", async done => {
             await readEventsByUserFollowers([testUser]).then((events: Event[]) => {
                 expect(events).not.toBeNull();
                 expect(events.length).toEqual(1);
@@ -291,7 +322,7 @@ describe('Tests event database functions', () => {
             done();
         });
     });
-    describe('Tests AddEventAttendee Function', () => {
+    describe("Tests createEventAttendee", () => {
         let testEvent: Event = undefined;
         let testUser: User = undefined;
         let testUser2: User = undefined;
@@ -306,15 +337,15 @@ describe('Tests event database functions', () => {
             await deleteTestEventFromDb();
             await deleteTestUsersFromDb();
         });
-        it('Successfully adds an event attendee.', async done => {
+        it("Successfully adds an event attendee.", async done => {
             await createEventAttendee(testEvent, testUser2).then((message: string) => {
                 expect(message).not.toBeNull();
-                expect(message).toEqual('Successfully added event attendee.');
+                expect(message).toEqual("Successfully added event attendee.");
             });
             done();
         });
     });
-    describe('Tests RemoveEventAttendee Function', () => {
+    describe("Tests deleteEventAttendee", () => {
         let testEvent: Event = undefined;
         let testUser: User = undefined;
         let testUser2: User = undefined;
@@ -329,19 +360,19 @@ describe('Tests event database functions', () => {
             await deleteTestEventFromDb();
             await deleteTestUsersFromDb();
         });
-        it('Successfully removes an event attendee.', async done => {
+        it("Successfully removes an event attendee.", async done => {
             await createEventAttendee(testEvent, testUser2).then((message: string) => {
                 expect(message).not.toBeNull();
-                expect(message).toEqual('Successfully added event attendee.');
+                expect(message).toEqual("Successfully added event attendee.");
             });
             await deleteEventAttendee(testEvent, testUser2).then((message: string) => {
                 expect(message).not.toBeNull();
-                expect(message).toEqual('Successfully removed event attendee.');
+                expect(message).toEqual("Successfully removed event attendee.");
             });
             done();
         });
     });
-    describe('Tests ReadEventAttendees Function', () => {
+    describe("Tests readEventAttendees", () => {
         let testEvent: Event = undefined;
         let testUser: User = undefined;
         let testUser2: User = undefined;
@@ -356,10 +387,10 @@ describe('Tests event database functions', () => {
             await deleteTestEventFromDb();
             await deleteTestUsersFromDb();
         });
-        it('Successfully reads event attendees', async done => {
+        it("Successfully reads event attendees", async done => {
             await createEventAttendee(testEvent, testUser2).then((message: string) => {
                 expect(message).not.toBeNull();
-                expect(message).toEqual('Successfully added event attendee.');
+                expect(message).toEqual("Successfully added event attendee.");
             });
             await readEventAttendees(testEvent).then((users: User[]) => {
                 expect(users).not.toBeNull();
@@ -369,7 +400,7 @@ describe('Tests event database functions', () => {
             done();
         });
     });
-    describe('Tests UserAttendingEvent Function', () => {
+    describe("Tests userAttendingEvent", () => {
         let testEvent: Event = undefined;
         let testUser: User = undefined;
         let testUser2: User = undefined;
@@ -384,10 +415,10 @@ describe('Tests event database functions', () => {
             await deleteTestEventFromDb();
             await deleteTestUsersFromDb();
         });
-        it('Successfully identifies User2 as an Attendee.', async done => {
+        it("Successfully identifies User2 as an Attendee.", async done => {
             await createEventAttendee(testEvent, testUser2).then((message: string) => {
                 expect(message).not.toBeNull();
-                expect(message).toEqual('Successfully added event attendee.');
+                expect(message).toEqual("Successfully added event attendee.");
             });
             await userAttendingEvent(testEvent, testUser2).then((attending: boolean) => {
                 expect(attending).not.toBeNull();
@@ -395,10 +426,10 @@ describe('Tests event database functions', () => {
             });
             done();
         });
-        it('Successfully identifies User1 as not an Attendee.', async done => {
+        it("Successfully identifies User1 as not an Attendee.", async done => {
             await createEventAttendee(testEvent, testUser2).then((message: string) => {
                 expect(message).not.toBeNull();
-                expect(message).toEqual('Successfully added event attendee.');
+                expect(message).toEqual("Successfully added event attendee.");
             });
             await userAttendingEvent(testEvent, testUser).then((attending: boolean) => {
                 expect(attending).not.toBeNull();

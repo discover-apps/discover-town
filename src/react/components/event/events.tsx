@@ -3,7 +3,7 @@ import {Link, useHistory} from "react-router-dom";
 import {User} from "../../models/user.model";
 import {useSelector} from "react-redux";
 import {CircularProgress} from "@material-ui/core";
-import {readEventsByUser} from "../../api/event.api";
+import {readAttendingByUser, readEventsByUser} from "../../api/event.api";
 import {Event} from "../../models/event.model";
 import Placeholder from "../../../assets/img/placeholder_item.png";
 import moment from "moment";
@@ -15,19 +15,19 @@ export const Events = () => {
         <header className="sub-menu">
             <div className="actions">
                 <div className="back-action">
-                    <Link to={`/profile/${user.username}`}>{'< Back'}</Link>
+                    <Link to={`/profile/${user.username}`}>{"< Back"}</Link>
                 </div>
                 <h3 className="title">Events</h3>
                 <div className="forward-action">
-                    <Link to={`/event/create`}>{'Create'}</Link>
+                    <Link to={`/event/create`}>{"Create"}</Link>
                 </div>
             </div>
             <div className="tabs">
                 <div className={`tab ${page == 0 ? "selected" : ""}`} onClick={() => setPage(0)}>
-                    My Events
+                    Hosting
                 </div>
                 <div className={`tab ${page == 1 ? "selected" : ""}`} onClick={() => setPage(1)}>
-                    Attending Events
+                    Attending
                 </div>
             </div>
         </header>
@@ -44,9 +44,9 @@ interface EventsBodyProps {
 
 const EventsBody = (props: EventsBodyProps) => {
     if (props.page == 0) {
-        return <MyEvents user={props.user}/>
+        return <HostingEvents user={props.user}/>
     } else {
-        return <SavedEvents/>
+        return <AttendingEvents user={props.user}/>
     }
 };
 
@@ -54,11 +54,10 @@ interface EventsProps {
     user: User;
 }
 
-const MyEvents = (props: EventsProps) => {
-    const [loading, setLoading] = useState<boolean>(false);
+const HostingEvents = (props: EventsProps) => {
+    const [loading, setLoading] = useState<boolean>(true);
     const [events, setEvents] = useState<Event[]>([]);
     useEffect(() => {
-        setLoading(true);
         const interval = setTimeout(() => {
             readEventsByUser(props.user).then((events: Event[]) => {
                 setEvents(events);
@@ -74,7 +73,7 @@ const MyEvents = (props: EventsProps) => {
         </div>
     } else if (events.length == 0) {
         return <div>
-            You do not have any events!
+            You are not hosting any events!
         </div>
     } else {
         return <div className="events">
@@ -85,13 +84,16 @@ const MyEvents = (props: EventsProps) => {
     }
 };
 
-const SavedEvents = () => {
-    const [loading, setLoading] = useState<boolean>(false);
+const AttendingEvents = (props: EventsProps) => {
+    const [loading, setLoading] = useState<boolean>(true);
     const [events, setEvents] = useState<Event[]>([]);
     useEffect(() => {
-        setLoading(true);
         const interval = setTimeout(() => {
-            setLoading(false);
+            readAttendingByUser(props.user).then((events: Event[]) => {
+                setEvents(events);
+            }).finally(() => {
+                setLoading(false);
+            });
         }, 500);
         return () => clearInterval(interval);
     }, []);
@@ -101,11 +103,13 @@ const SavedEvents = () => {
         </div>
     } else if (events.length == 0) {
         return <div>
-            You do not have any saved events!
+            You are not hosting any events!
         </div>
     } else {
         return <div className="events">
-            Events
+            {events.map((e, i) =>
+                <Event key={i} user={props.user} event={e}/>
+            )}
         </div>
     }
 };
@@ -130,8 +134,8 @@ const Event = (props: EventProps) => {
                 <h3>{props.event.title}</h3>
                 <h4>{props.user.username}</h4>
                 {moment(props.event.dateStart).isAfter(moment()) ?
-                    <h5>Starts {moment.utc(props.event.dateStart).startOf('day').fromNow()}</h5> :
-                    <h5>Posted {moment.utc(props.event.datePosted).endOf('day').fromNow()}</h5>
+                    <h5>Starts {moment.utc(props.event.dateStart).startOf("day").fromNow()}</h5> :
+                    <h5>Posted {moment.utc(props.event.datePosted).endOf("day").fromNow()}</h5>
                 }
             </div>
         </div>

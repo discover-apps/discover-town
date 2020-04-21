@@ -26,28 +26,29 @@ app.use(express.json());
  */
 
 // Auth Routes
-app.get('/api/user', authenticateSession, userController.readCurrentUser);
-app.get('/api/auth/logout', authenticateSession, authController.logout);
-app.post('/api/auth/login', authController.login);
-app.post('/api/auth/register', authController.register);
+app.get("/api/user", authenticateSession, userController.readCurrentUser);
+app.get("/api/auth/logout", authenticateSession, authController.logout);
+app.post("/api/auth/login", authController.login);
+app.post("/api/auth/register", authController.register);
 // User Routes
-app.post('/api/user/edit', authenticateSession, userController.editUserProfile);
-app.post('/api/user/follow', authenticateSession, userController.followUser);
-app.post('/api/user/follows', authenticateSession, userController.followsUser);
-app.post('/api/user/unfollow', authenticateSession, userController.unfollowUser);
-app.post('/api/user/followercount', userController.getFollowerCount);
-app.post('/api/user/followers', userController.getFollowers);
-app.post('/api/user/following', userController.getFollowing);
-app.post('/api/user/readByEvent', userController.readByEvent);
-app.post('/api/user/readByUsername', userController.readByUsername);
+app.post("/api/user/edit", authenticateSession, userController.editUserProfile);
+app.post("/api/user/follow", authenticateSession, userController.followUser);
+app.post("/api/user/follows", authenticateSession, userController.followsUser);
+app.post("/api/user/unfollow", authenticateSession, userController.unfollowUser);
+app.post("/api/user/followercount", userController.getFollowerCount);
+app.post("/api/user/followers", userController.getFollowers);
+app.post("/api/user/following", userController.getFollowing);
+app.post("/api/user/readByEvent", userController.readByEvent);
+app.post("/api/user/readByUsername", userController.readByUsername);
 // Event Routes
-app.post('/api/event/places', eventController.searchPlaces);
+app.post("/api/event/places", eventController.searchPlaces);
 app.post("/api/event/create", authenticateSession, eventController.create);
 app.post("/api/event/update", authenticateSession, eventController.update);
 app.post("/api/event/delete", authenticateSession, eventController.remove);
 app.post("/api/event/readById", eventController.readById);
 app.post("/api/event/readByUser", eventController.readByUser);
 app.post("/api/event/readAttendees", eventController.readAttendees);
+app.post("/api/event/readAttending", eventController.readAttending);
 app.post("/api/event/readByFollowers", authenticateSession, eventController.readByFollowers);
 app.post("/api/event/createAttendee", authenticateSession, eventController.createAttendee);
 app.post("/api/event/deleteAttendee", authenticateSession, eventController.deleteAttendee);
@@ -65,11 +66,11 @@ if (ENVIRONMENT === "development") {
     // Configure Webpack Dev Server (with React Hot-Reload)
     const webpackConfig = require("../../webpack.dev.js");
     const compiler = webpack(webpackConfig);
-    const history = require('connect-history-api-fallback');
+    const history = require("connect-history-api-fallback");
     app.use(history());
     app.use(
         webpackDevMiddleware(compiler, {
-            publicPath: '/',
+            publicPath: "/",
             stats: "errors-warnings"
         })
     );
@@ -79,7 +80,7 @@ if (ENVIRONMENT === "development") {
     app.use(express.static(__dirname));
 
     // Serve React Static Files (Production)
-    app.get('*', (req: Request, res: Response) => {
+    app.get("*", (req: Request, res: Response) => {
         res.sendFile(path.join(__dirname, "/index.html"));
     });
 }
