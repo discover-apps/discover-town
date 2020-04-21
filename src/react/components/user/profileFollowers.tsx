@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {Link, useHistory, useParams} from "react-router-dom";
 import {getUserFollowers, getUserFollowing, readUserByUsername} from "../../api/user.api";
@@ -17,15 +17,15 @@ export const ProfileFollowers = () => {
             <header className="sub-menu">
                 <div className="actions">
                     <div className="back-action">
-                        <Link to={`/profile/${username}`}>{'< Back'}</Link>
+                        <Link to={`/profile/${username}`}>{"< Back"}</Link>
                     </div>
                     <h3 className="title">{`${username}'s Followers`}</h3>
                 </div>
                 <div className="tabs">
-                    <div className={`tab ${page == 0 ? 'selected' : ''}`} onClick={() => setPage(0)}>
+                    <div className={`tab ${page == 0 ? "selected" : ""}`} onClick={() => setPage(0)}>
                         Followers
                     </div>
-                    <div className={`tab ${page == 1 ? 'selected' : ''}`} onClick={() => setPage(1)}>
+                    <div className={`tab ${page == 1 ? "selected" : ""}`} onClick={() => setPage(1)}>
                         Following
                     </div>
                 </div>
@@ -107,11 +107,11 @@ const ProfileFollower = (props: ProfileFollower) => {
         history.push(`/profile/${props.user.username}`);
     };
     return (
-        <div className="follower" onClick={clickFollower}>
-            <div className="image">
+        <div className="follower">
+            <div className="image" onClick={clickFollower}>
                 <img src={Placeholder} alt="user_image"/>
             </div>
-            <div className="details">
+            <div className="details" onClick={clickFollower}>
                 <span className="name">{props.user.name}</span>
                 <span className="username">{props.user.username}</span>
             </div>
