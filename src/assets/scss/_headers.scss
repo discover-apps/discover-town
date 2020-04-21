@@ -37,7 +37,10 @@ header.sub-menu {
       cursor: pointer;
 
       a {
-        color: $primary-1;
+        font-size: 0.875rem;
+        font-weight: 400;
+        user-select: none;
+        cursor: pointer;
 
         &:hover {
           text-shadow: 2px 2px 10px $primary-1;
