@@ -20,6 +20,7 @@ import {
 import {GoogleMaps} from "../maps/googleMap";
 
 export const ViewEvent = () => {
+    const history = useHistory();
     const [event, setEvent] = useState(undefined);
     const [user, setUser] = useState(undefined);
     const [followers, setFollowers] = useState<number>(0);
@@ -42,6 +43,17 @@ export const ViewEvent = () => {
 
     if (event != undefined && user != undefined) {
         return <main className="event">
+            <header className="sub-menu">
+                <div className="actions">
+                    <div className="back-action">
+                        <a onClick={() => history.goBack()}>{"< Back"}</a>
+                    </div>
+                    <h3 className="title">Event</h3>
+                    <div className="forward-action">
+                        <a>Report</a>
+                    </div>
+                </div>
+            </header>
             <EventTitle user={user} event={event} followerCount={followers}/>
             <EventInformation user={user} event={event} followerCount={followers}/>
             <EventDetails user={user} event={event} followerCount={followers}/>
@@ -144,7 +156,7 @@ const EventInformation = (props: EventProps) => {
                     <ClockIcon/>
                 </div>
                 <div className="text">
-                    <p>{moment(props.event.dateStart).format('LLLL')}</p>
+                    <p>{moment(props.event.dateStart).format("LLLL")}</p>
                 </div>
             </div>
             <div className="info">
@@ -190,8 +202,8 @@ const EventAttendees = (props: EventProps) => {
                 <a>See all</a>
             </div>
             <div className="attendees-list">
-                {attendees[0] != undefined ? <Attendee user={attendees[0]}/> : ''}
-                {attendees[1] != undefined ? <Attendee user={attendees[1]}/> : ''}
+                {attendees[0] != undefined ? <Attendee user={attendees[0]}/> : ""}
+                {attendees[1] != undefined ? <Attendee user={attendees[1]}/> : ""}
             </div>
         </section>
     )
