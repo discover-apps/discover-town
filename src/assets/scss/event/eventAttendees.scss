@@ -21,6 +21,7 @@ div.attendees-list {
 }
 
 div.attendee {
+  cursor: pointer;
   padding: 1rem;
   display: flex;
   flex-direction: column;
@@ -50,5 +51,10 @@ div.attendee {
   h4 {
     font-size: 1rem;
     font-weight: 400;
+  }
+
+  &:hover {
+    background-color: $white-444;
+    transition-duration: 0.5s;
   }
 }

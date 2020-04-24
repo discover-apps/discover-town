@@ -189,6 +189,8 @@ const EventDetails = (props: EventProps) => {
 };
 
 const EventAttendees = (props: EventProps) => {
+    const {id} = useParams();
+    const history = useHistory();
     const [attendees, setAttendees] = useState<User[]>([]);
     useEffect(() => {
         readEventAttendees(props.event).then((users: User[]) => {
@@ -199,7 +201,7 @@ const EventAttendees = (props: EventProps) => {
         <section>
             <div className="paper elevation-3 attendees-title">
                 <h2>Attendees ({attendees.length})</h2>
-                <a>See all</a>
+                <a onClick={() => history.push(`/event/view/${id}/attendees`)}>See all</a>
             </div>
             <div className="attendees-list">
                 {attendees[0] != undefined ? <Attendee user={attendees[0]}/> : ""}
@@ -214,6 +216,7 @@ interface AttendeeProps {
 }
 
 const Attendee = (props: AttendeeProps) => {
+    const history = useHistory();
     const [followersCount, setFollowerCount] = useState<number>(0);
     useEffect(() => {
         readUserFollowerCount(props.user).then((count: number) => {
@@ -221,7 +224,7 @@ const Attendee = (props: AttendeeProps) => {
         });
     });
     return (
-        <div className="attendee paper elevation-3">
+        <div className="attendee paper elevation-3" onClick={() => history.push(`/profile/${props.user.username}`)}>
             <div className="image">
                 <img src={placeholder2} alt="profile_image"/>
             </div>

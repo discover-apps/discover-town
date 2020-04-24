@@ -24,6 +24,7 @@ import {Events} from "./event/events";
 import {Discover} from "./discover/discover";
 import {DiscoverCategory} from "./discover/discoverCategory";
 import {DiscoverPlace} from "./discover/discoverPlace";
+import {ListAttendees} from "./event/listAttendees";
 
 const App = () => {
     const sidebarOpen = useSelector((state: any) => state.sidebar.open);
@@ -41,14 +42,15 @@ const App = () => {
                 <div className="app_inner">
                     <Switch>
                         <Route exact path="/" component={Home}/>
-                        <Route path="/login" component={Login}/>
-                        <Route path="/register" component={Register}/>
-                        <Route path="/browse" component={BrowseEvents}/>
+                        <Route exact path="/login" component={Login}/>
+                        <Route exact path="/register" component={Register}/>
+                        <Route exact path="/browse" component={BrowseEvents}/>
                         <Route exact path="/discover" component={Discover}/>
                         <Route exact path="/discover/:category" component={DiscoverCategory}/>
                         <Route exact path="/discover/place/:place_id" component={DiscoverPlace}/>
                         <ProtectedRoute exact path="/events/" component={Events}/>
                         <Route exact path="/event/view/:id" component={ViewEvent}/>
+                        <Route exact path="/event/view/:id/attendees/" component={ListAttendees}/>
                         <ProtectedRoute exact path="/event/update/:id" component={UpdateEvent}/>
                         <ProtectedRoute exact path="/event/create/" component={CreateEvent}/>
                         <ProtectedRoute exact path="/profile/edit/" component={ProfileEdit}/>
@@ -58,7 +60,7 @@ const App = () => {
                     </Switch>
                 </div>
                 <div className="app_modal_portal">
-                    {sidebarOpen ? <Sidebar/> : ''}
+                    {sidebarOpen ? <Sidebar/> : ""}
                 </div>
             </BrowserRouter>
         </div>
