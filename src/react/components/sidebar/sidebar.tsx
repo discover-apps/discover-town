@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 import {useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import CloseIcon from '@material-ui/icons/Close';
+import CloseIcon from "@material-ui/icons/Close";
 import {toggleSidebar} from "../../store/actions/sidebar.action";
 import {deauthorizeClient} from "../../util/auth";
 
@@ -23,7 +23,7 @@ export const Sidebar = () => {
 
     const logoutUser = async () => {
         await deauthorizeClient();
-        history.push('/');
+        history.push("/");
         clickSidebar();
     };
 
@@ -38,20 +38,17 @@ export const Sidebar = () => {
                 </div>
             </nav>
             <div className="links">
-                <div className="link" onClick={() => navigateTo('/')}>
-                    Home
-                </div>
-                <div className="link" onClick={() => navigateTo('/browse')}>
+                <div className="link" onClick={() => navigateTo("/browse")}>
                     Browse
                 </div>
                 <div className="link"
-                     onClick={() => navigateTo(`${currentUser ? '/profile/' + currentUser.username : 'login'}`)}>
+                     onClick={() => navigateTo(`${currentUser ? "/profile/" + currentUser.username : "login"}`)}>
                     Profile
                 </div>
-                <div className="link" onClick={() => navigateTo('/events/')}>
+                <div className="link" onClick={() => navigateTo("/events/")}>
                     Events
                 </div>
-                <div className="link" onClick={() => navigateTo('/discover')}>
+                <div className="link" onClick={() => navigateTo("/discover")}>
                     Discover
                 </div>
                 {
@@ -60,7 +57,7 @@ export const Sidebar = () => {
                             Sign out
                         </div>
                         :
-                        <div className="link" onClick={() => navigateTo('/login')}>
+                        <div className="link" onClick={() => navigateTo("/login")}>
                             Sign in
                         </div>
                 }
