@@ -1,12 +1,13 @@
-import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
-import {Link, useHistory, useParams} from 'react-router-dom';
+import React, {ChangeEvent, FormEvent, useEffect, useState} from "react";
+import {Link, useHistory, useParams} from "react-router-dom";
 import {CircularProgress} from "@material-ui/core";
-import {Event} from '../../models/event.model';
+import {Event} from "../../models/event.model";
 import {readEventById, updateEventRecord} from "../../api/event.api";
 import {ErrorPage} from "../error/error";
 import {SearchPlace} from "./searchPlace";
 import {getDateTimeLocalString} from "../../util/common";
 import {DeleteEvent} from "./deleteEvent";
+import moment from "moment";
 
 export const UpdateEvent = () => {
     const {id} = useParams();
@@ -48,7 +49,7 @@ interface UpdateFormProps {
 
 export const UpdateForm = (props: UpdateFormProps) => {
     const history = useHistory();
-    const [error, setError] = useState('');
+    const [error, setError] = useState("");
     const [loading, setLoading] = useState<boolean>(false);
     const [deleting, setDeleting] = useState(false);
 
@@ -78,9 +79,11 @@ export const UpdateForm = (props: UpdateFormProps) => {
     };
     const putEvent = () => {
         // clear error
-        setError('');
+        setError("");
         // lock controls
         setLoading(true);
+        // convert date from local to utc
+        props.event.dateStart = moment(props.event.dateStart).toDate();
         // send event object to server
         updateEventRecord(props.event).then((message: string) => {
             // redirect to update event
@@ -96,15 +99,15 @@ export const UpdateForm = (props: UpdateFormProps) => {
     };
 
     return <main className="update-event">
-        {deleting ? <DeleteEvent event={props.event} setDeleting={setDeleting}/> : ''}
+        {deleting ? <DeleteEvent event={props.event} setDeleting={setDeleting}/> : ""}
         <header className="sub-menu">
             <div className="actions">
                 <div className="back-action">
-                    <Link to={`/event/view/${props.event.id}`}>{'< Back'}</Link>
+                    <Link to={`/event/view/${props.event.id}`}>{"< Back"}</Link>
                 </div>
                 <h3 className="title">Edit Event</h3>
                 <div className="forward-action">
-                    <a onClick={() => clickDelete()}>{'Delete'}</a>
+                    <a onClick={() => clickDelete()}>{"Delete"}</a>
                 </div>
             </div>
         </header>
@@ -169,7 +172,7 @@ export const UpdateForm = (props: UpdateFormProps) => {
                 </label>
                 {!loading ? <button type="submit">Update event</button> :
                     <button type="button"><CircularProgress size={18}/></button>}
-                {error ? <p className="error">{error}</p> : ''}
+                {error ? <p className="error">{error}</p> : ""}
             </form>
         </section>
     </main>;

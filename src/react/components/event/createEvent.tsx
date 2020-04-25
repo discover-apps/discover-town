@@ -1,21 +1,24 @@
-import React, {ChangeEvent, FormEvent, useState} from 'react';
-import {Link, useHistory} from 'react-router-dom';
+import React, {ChangeEvent, FormEvent, useState} from "react";
+import {Link, useHistory} from "react-router-dom";
 import {CircularProgress} from "@material-ui/core";
 import {createEventRecord} from "../../api/event.api";
-import {Event} from '../../models/event.model';
+import {Event} from "../../models/event.model";
 import {SearchPlace} from "./searchPlace";
+import moment from "moment";
 
 export const CreateEvent = () => {
     const history = useHistory();
-    const [error, setError] = useState('');
+    const [error, setError] = useState("");
     const [event, setEvent] = useState<Event>(undefined);
     const [loading, setLoading] = useState<boolean>(false);
 
     const postEvent = () => {
         // clear error
-        setError('');
+        setError("");
         // lock controls
         setLoading(true);
+        // convert date from local to utc
+        event.dateStart = moment(event.dateStart).toDate();
         // send event object to server
         createEventRecord(event).then((event: Event) => {
             history.push(`/event/view/${event.id}`);
@@ -46,7 +49,7 @@ export const CreateEvent = () => {
             <header className="sub-menu">
                 <div className="actions">
                     <div className="back-action">
-                        <Link to={`/events/`}>{'< Back'}</Link>
+                        <Link to={`/events/`}>{"< Back"}</Link>
                     </div>
                     <h3 className="title">Create Event</h3>
                 </div>
@@ -95,7 +98,7 @@ export const CreateEvent = () => {
                                name="address_name"
                                placeholder="Location name (e.g. Central Park)"
                                defaultValue=""
-                               value={event ? event.address_name : ''}
+                               value={event ? event.address_name : ""}
                                onChange={onChange}
                                required
                         />
@@ -107,14 +110,14 @@ export const CreateEvent = () => {
                                name="address_location"
                                placeholder="Location address"
                                defaultValue=""
-                               value={event ? event.address_location : ''}
+                               value={event ? event.address_location : ""}
                                onChange={onChange}
                                required
                         />
                     </label>
                     {!loading ? <button type="submit">Create event</button> :
                         <button type="button"><CircularProgress size={18}/></button>}
-                    {error ? <p className="error">{error}</p> : ''}
+                    {error ? <p className="error">{error}</p> : ""}
                 </form>
             </section>
         </main>
