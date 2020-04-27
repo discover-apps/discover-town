@@ -30,6 +30,7 @@ app.get("/api/user", authenticateSession, userController.readCurrentUser);
 app.get("/api/auth/logout", authenticateSession, authController.logout);
 app.post("/api/auth/login", authController.login);
 app.post("/api/auth/register", authController.register);
+app.post("/api/auth/verifyAdmin", authenticateSession, authController.verifyAdmin);
 // User Routes
 app.post("/api/user/edit", authenticateSession, userController.editUserProfile);
 app.post("/api/user/follow", authenticateSession, userController.followUser);

@@ -11,6 +11,7 @@ import {
     readSessionById
 } from "../../database/session/session.database";
 import {JWT_ACCESS_TOKEN_SECRET, JWT_REFRESH_TOKEN_SECRET} from "../../../util/secrets";
+import {authenticateAdmin} from "../../database/auth/auth.database";
 
 export const login = async (req: Request, res: Response) => {
     // get user information from request body
@@ -133,6 +134,14 @@ export const registerUser = (user: User, ip: string, agent: string): Promise<Ses
         }).catch((error) => {
             reject(error);
         });
+    });
+};
+
+export const verifyAdmin = (req: Request, res: Response) => {
+    authenticateAdmin(Number.parseInt(req.user.toString())).then(() => {
+        res.status(200).json(true);
+    }).catch((error) => {
+        res.status(300).json(error);
     });
 };
 

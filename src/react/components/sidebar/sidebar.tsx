@@ -1,15 +1,23 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import CloseIcon from "@material-ui/icons/Close";
 import {toggleSidebar} from "../../store/actions/sidebar.action";
 import {deauthorizeClient} from "../../util/auth";
+import {verifyAdmin} from "../../api/auth.api";
 
 export const Sidebar = () => {
     const history = useHistory();
     const dispatch = useDispatch();
     const sidebarOpen = useSelector((state: any) => state.sidebar.open);
     const currentUser = useSelector((state: any) => state.auth.currentUser);
+    const [admin, setAdmin] = useState(false);
+
+    useEffect(() => {
+        verifyAdmin().then((isAdmin) => {
+            setAdmin(isAdmin);
+        });
+    }, []);
 
     const clickSidebar = () => {
         document.body.style.overflow = sidebarOpen ? "visible" : "hidden";
@@ -51,6 +59,14 @@ export const Sidebar = () => {
                 <div className="link" onClick={() => navigateTo("/discover")}>
                     Discover
                 </div>
+                {
+                    admin ?
+                        <div className="link" onClick={() => navigateTo("/admin")}>
+                            Administration
+                        </div>
+                        :
+                        ""
+                }
                 {
                     currentUser ?
                         <div className="link" onClick={() => logoutUser()}>
