@@ -45,6 +45,7 @@ app.post("/api/event/places", eventController.searchPlaces);
 app.post("/api/event/create", authenticateSession, eventController.create);
 app.post("/api/event/update", authenticateSession, eventController.update);
 app.post("/api/event/delete", authenticateSession, eventController.remove);
+app.post("/api/event/read", authenticateSession, eventController.read);
 app.post("/api/event/readById", eventController.readById);
 app.post("/api/event/readByUser", eventController.readByUser);
 app.post("/api/event/readAttendees", eventController.readAttendees);

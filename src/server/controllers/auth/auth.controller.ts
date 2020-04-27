@@ -1,6 +1,6 @@
-import {NextFunction, Request, Response} from 'express';
-import jwt from 'jsonwebtoken';
-import emailValidator from 'email-validator';
+import {NextFunction, Request, Response} from "express";
+import jwt from "jsonwebtoken";
+import emailValidator from "email-validator";
 import User from "../../models/user.model";
 import Session from "../../models/session.model";
 import {createUser, readUserByEmail} from "../../database/user/user.database";
@@ -14,13 +14,13 @@ import {JWT_ACCESS_TOKEN_SECRET, JWT_REFRESH_TOKEN_SECRET} from "../../../util/s
 
 export const login = async (req: Request, res: Response) => {
     // get user information from request body
-    const user: User = {
+    const user: User = new User({
         email: req.body.email,
         password: req.body.password
-    };
+    });
     // get client information from request headers
-    const ip = req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'][0] : 'unknown';
-    const agent = req.headers['user-agent'];
+    const ip = req.headers["x-forwarded-for"] ? req.headers["x-forwarded-for"][0] : "unknown";
+    const agent = req.headers["user-agent"];
 
     loginUser(user, ip, agent).then((session: Session) => {
         res.status(200).json(session);
@@ -31,15 +31,15 @@ export const login = async (req: Request, res: Response) => {
 
 export const register = (req: Request, res: Response) => {
     // get user information from request body
-    const user: User = {
+    const user: User = new User({
         email: req.body.email,
         username: req.body.username,
         password: req.body.password,
         joined: new Date()
-    };
+    });
     // get client information from request headers
-    const ip = req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'][0] : 'unknown';
-    const agent = req.headers['user-agent'];
+    const ip = req.headers["x-forwarded-for"] ? req.headers["x-forwarded-for"][0] : "unknown";
+    const agent = req.headers["user-agent"];
 
     registerUser(user, ip, agent).then((session: Session) => {
         res.status(200).json(session);
@@ -53,14 +53,14 @@ export const logout = (req: Request, res: Response) => {
     const userId: number = Number.parseInt(req.user.toString());
 
     deleteAllSessionsForUser(userId).then((affectedRows: number) => {
-        res.status(200).json('Successfully logged out user.');
+        res.status(200).json("Successfully logged out user.");
     }).catch((error) => {
         res.status(500).json(error);
     })
 };
 
 export const authenticateSession = (req: Request, res: Response, next: NextFunction) => {
-    const token = req.headers['authorization'];
+    const token = req.headers["authorization"];
 
     // Check if request has a auth token
     if (!token) {
@@ -105,7 +105,7 @@ export const loginUser = (user: User, ip: string, agent: string): Promise<Sessio
                 reject(error);
             });
         } else {
-            reject('Invalid email address or password.');
+            reject("Invalid email address or password.");
         }
     });
 };
@@ -137,7 +137,7 @@ export const registerUser = (user: User, ip: string, agent: string): Promise<Ses
 };
 
 const generateAccessToken = (userId: string) => {
-    return jwt.sign({id: userId}, JWT_ACCESS_TOKEN_SECRET, {expiresIn: '30d'});
+    return jwt.sign({id: userId}, JWT_ACCESS_TOKEN_SECRET, {expiresIn: "30d"});
 };
 
 const generateRefreshToken = (userId: string) => {

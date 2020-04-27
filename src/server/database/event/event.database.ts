@@ -88,6 +88,20 @@ export const deleteEvent = (event: Event, userId: number): Promise<string> => {
     });
 };
 
+export const readEvents = (): Promise<Event[]> => {
+    return new Promise<Event[]>((resolve, reject) => {
+        database<Event>("Events")
+            .select()
+            .orderBy("datePosted", "desc")
+            .then((records) => {
+                resolve(records);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+};
+
 export const readEventById = (eventId: number): Promise<Event> => {
     return new Promise<Event>((resolve, reject) => {
         database<Event>("Events")

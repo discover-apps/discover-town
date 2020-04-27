@@ -10,6 +10,7 @@ import {
     readAttendingByUser,
     readEventAttendees,
     readEventById,
+    readEvents,
     readEventsByUser,
     readEventsByUserFollowers,
     updateEvent,
@@ -17,6 +18,7 @@ import {
 } from "../../database/event/event.database";
 import {searchNearbyPlaces} from "../../api/googlePlace.api";
 import {GooglePlace} from "../../models/googlePlace.model";
+import {authenticateAdmin} from "../../database/auth/auth.database";
 
 export const searchPlaces = async (req: Request, res: Response) => {
     const query = req.body.query;
@@ -61,6 +63,18 @@ export const remove = async (req: Request, res: Response) => {
         res.status(200).json(message);
     }).catch((error) => {
         res.status(500).json(error);
+    });
+};
+
+export const read = async (req: Request, res: Response) => {
+    authenticateAdmin(Number.parseInt(req.user.toString())).then(() => {
+        readEvents().then((events: Event[]) => {
+            res.status(200).json(events);
+        }).catch((error) => {
+            res.status(300).json(error);
+        });
+    }).catch((error: any) => {
+        res.status(300).json(error);
     });
 };
 
