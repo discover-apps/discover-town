@@ -1,4 +1,4 @@
-import {database} from '../_database';
+import {database} from "../_database";
 import User from "../../models/user.model";
 import Follower from "../../models/follower.model";
 import Event from "../../models/event.model";
@@ -114,18 +114,6 @@ export const deleteUser = async (userId: number): Promise<number> => {
                 reject(error);
             });
     });
-};
-
-const validateUsername = (username: string): string => {
-    if (/[^a-zA-Z0-9_]/.test(username)) {
-        return 'Username should not contain any special characters.';
-    }
-
-    if (username.length < 4 || username.length > 16) {
-        return 'Username should be between 4 and 16 characters.';
-    }
-
-    return undefined;
 };
 
 export const addUserFollower = async (username1: string, username2: string): Promise<string> => {
@@ -268,4 +256,16 @@ export const readUserByEvent = (event: Event): Promise<User> => {
                 reject(error);
             });
     });
+};
+
+const validateUsername = (username: string): string => {
+    if (/[^a-zA-Z0-9_]/.test(username)) {
+        return "Username should not contain any special characters.";
+    }
+
+    if (username.length < 4 || username.length > 16) {
+        return "Username should be between 4 and 16 characters.";
+    }
+
+    return undefined;
 };
