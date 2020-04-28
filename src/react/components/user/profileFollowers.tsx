@@ -112,7 +112,6 @@ const ProfileFollower = (props: ProfileFollower) => {
                 <img src={Placeholder} alt="user_image"/>
             </div>
             <div className="details" onClick={clickFollower}>
-                <span className="name">{props.user.name}</span>
                 <span className="username">{props.user.username}</span>
             </div>
             <div className="follow-button">

@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
-import {useHistory} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {CircularProgress} from "@material-ui/core";
 import {followUser, unfollowUser, userFollowsUser} from "../../api/user.api";
 import {User} from "../../models/user.model";
 import Placeholder from "../../../assets/img/placeholder_person.jpg";
+import {verifyAdmin} from "../../api/auth.api";
 
 interface Props {
     user: User;
@@ -16,34 +17,52 @@ interface Props {
 export const ProfileHeader = (props: Props) => {
     const history = useHistory();
     const selected = (page: number) => {
-        return props.page == page ? 'selected' : '';
+        return props.page == page ? "selected" : "";
     };
+    const [admin, setAdmin] = useState(false);
+
+    useEffect(() => {
+        // check if user is an admin
+        verifyAdmin().then((admin: boolean) => {
+            setAdmin(admin);
+        });
+    }, []);
+
     return (
-        <section className="profile-header elevation-4">
+        <header className="sub-menu elevation-4">
+            <div className="actions">
+                <div className="back-action">
+                    <a onClick={() => history.goBack()}>{"< Back"}</a>
+                </div>
+                <h3 className="title">User</h3>
+                <div className="forward-action">
+                    {admin ? <Link to={`/user/${props.user.username}/manage`}>Manage</Link> : ""}
+                </div>
+            </div>
             <div className="user">
                 <div className="photo">
                     <img src={Placeholder} alt="user_image"/>
                 </div>
                 <div className="details">
-                    <h3>{props.user ? props.user.username : 'Loading...'}</h3>
+                    <h3>{props.user ? props.user.username : "Loading..."}</h3>
                     <h5 onClick={() => history.push(`/profile/${props.user.username}/followers/`)}>{props.followers} Followers</h5>
                 </div>
                 <div className="follow-button">
                     <FollowButton user={props.user}/>
                 </div>
             </div>
-            <div className="menu">
-                <div className={`option ${selected(0)}`} onClick={() => props.setPage(0)}>
+            <div className="tabs tabs-3">
+                <div className={`tab ${selected(0)}`} onClick={() => props.setPage(0)}>
                     activity
                 </div>
-                <div className={`option ${selected(1)}`} onClick={() => props.setPage(1)}>
+                <div className={`tab ${selected(1)}`} onClick={() => props.setPage(1)}>
                     events
                 </div>
-                <div className={`option ${selected(2)}`} onClick={() => props.setPage(2)}>
+                <div className={`tab ${selected(2)}`} onClick={() => props.setPage(2)}>
                     details
                 </div>
             </div>
-        </section>
+        </header>
     )
 };
 
@@ -57,6 +76,7 @@ export const FollowButton = (props: FollowButtonProps) => {
     const userIsCurrentUser: boolean = currentUser && currentUser.username === props.user.username;
     const [currentUserIsFollowingUser, setCurrentUserIsFollowingUser] = useState(false);
     const [loading, setLoading] = useState(true);
+
     useEffect(() => {
         if (currentUser && !userIsCurrentUser) {
             userFollowsUser(props.user).then((result: boolean) => {
