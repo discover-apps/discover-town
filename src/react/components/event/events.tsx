@@ -103,7 +103,7 @@ const AttendingEvents = (props: EventsProps) => {
         </div>
     } else if (events.length == 0) {
         return <div>
-            You are not hosting any events!
+            You are not attending any events!
         </div>
     } else {
         return <div className="events">

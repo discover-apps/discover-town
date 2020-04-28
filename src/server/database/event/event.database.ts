@@ -96,7 +96,7 @@ export const readEvents = (): Promise<Event[]> => {
             .select()
             .orderBy("datePosted", "desc")
             .then((records) => {
-                resolve(records);
+                resolve(orderEventsByStartDate(records));
             })
             .catch((error) => {
                 reject(error);
@@ -184,7 +184,7 @@ export const readAttendingByUser = (user: User): Promise<Event[]> => {
     });
 };
 
-export const readEventsByUserFollowers = (followers: User[]): Promise<Event[]> => {
+export const readEventsByUsersFollowing = (followers: User[]): Promise<Event[]> => {
     return new Promise<Event[]>(async (resolve, reject) => {
         const userIds: number[] = [];
         for (let i = 0; i < followers.length; i++) {

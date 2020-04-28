@@ -1,5 +1,5 @@
 import {Request, Response} from "express";
-import {readUserById, readUserFollowers} from "../../database/user/user.database";
+import {readUserById, readUserFollowing} from "../../database/user/user.database";
 import Event from "../../models/event.model";
 import User from "../../models/user.model";
 import {
@@ -12,13 +12,12 @@ import {
     readEventById,
     readEvents,
     readEventsByUser,
-    readEventsByUserFollowers,
+    readEventsByUsersFollowing,
     updateEvent,
     userAttendingEvent
 } from "../../database/event/event.database";
 import {searchNearbyPlaces} from "../../api/googlePlace.api";
 import {GooglePlace} from "../../models/googlePlace.model";
-import {authenticateAdmin} from "../../database/auth/auth.database";
 
 export const searchPlaces = async (req: Request, res: Response) => {
     const query = req.body.query;
@@ -67,13 +66,9 @@ export const remove = async (req: Request, res: Response) => {
 };
 
 export const read = async (req: Request, res: Response) => {
-    authenticateAdmin(Number.parseInt(req.user.toString())).then(() => {
-        readEvents().then((events: Event[]) => {
-            res.status(200).json(events);
-        }).catch((error) => {
-            res.status(300).json(error);
-        });
-    }).catch((error: any) => {
+    readEvents().then((events: Event[]) => {
+        res.status(200).json(events);
+    }).catch((error) => {
         res.status(300).json(error);
     });
 };
@@ -98,12 +93,12 @@ export const readByUser = async (req: Request, res: Response) => {
     });
 };
 
-export const readByFollowers = async (req: Request, res: Response) => {
+export const readByFollowing = async (req: Request, res: Response) => {
     // get user id from req user
     const userId = Number.parseInt(req.user.toString());
     const user = await readUserById(userId);
-    readUserFollowers(user.username).then((followers: User[]) => {
-        readEventsByUserFollowers(followers).then((events: Event[]) => {
+    readUserFollowing(user.username).then((followers: User[]) => {
+        readEventsByUsersFollowing(followers).then((events: Event[]) => {
             res.status(200).json(events);
         }).catch((error) => {
             res.status(500).json(error);

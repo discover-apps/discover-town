@@ -1,9 +1,10 @@
-import React from 'react';
-import {useHistory} from 'react-router-dom';
-import {useDispatch, useSelector} from 'react-redux';
-import MenuIcon from '@material-ui/icons/Menu';
-import ProfileIcon from '@material-ui/icons/AccountCircle';
+import React from "react";
+import {useHistory} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import MenuIcon from "@material-ui/icons/Menu";
+import ProfileIcon from "@material-ui/icons/AccountCircle";
 import {toggleSidebar} from "../../store/actions/sidebar.action";
+import logo from "../../../assets/img/logo.png";
 
 export const Navbar = () => {
     const dispatch = useDispatch();
@@ -17,7 +18,7 @@ export const Navbar = () => {
     };
 
     const clickProfile = () => {
-        history.push(`${currentUser ? '/profile/' + currentUser.username : 'login'}`);
+        history.push(`${currentUser ? "/profile/" + currentUser.username : "login"}`);
     };
 
     return <nav className="navbar_container">
@@ -25,7 +26,7 @@ export const Navbar = () => {
             <button className="icon-button" onClick={clickSidebar}>
                 <MenuIcon/>
             </button>
-            <span className="title">Discover Town</span>
+            <span className="title"><img src={logo} alt="logo"/></span>
             <button className="icon-button" onClick={clickProfile}>
                 <ProfileIcon/>
             </button>

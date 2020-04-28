@@ -7,7 +7,7 @@ import {
     readEventAttendees,
     readEventById,
     readEventsByUser,
-    readEventsByUserFollowers,
+    readEventsByUsersFollowing,
     updateEvent,
     userAttendingEvent
 } from "./event.database";
@@ -314,7 +314,7 @@ describe("Tests event.database.ts", () => {
             await deleteTestUsersFromDb();
         });
         it("Successfully retrieves record for testUser", async done => {
-            await readEventsByUserFollowers([testUser]).then((events: Event[]) => {
+            await readEventsByUsersFollowing([testUser]).then((events: Event[]) => {
                 expect(events).not.toBeNull();
                 expect(events.length).toEqual(1);
                 expect(events[0].title).toEqual(testEvent.title);

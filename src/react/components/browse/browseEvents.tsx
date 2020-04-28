@@ -1,33 +1,61 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState} from "react";
 import {useHistory} from "react-router-dom";
 import {CircularProgress} from "@material-ui/core";
 import placeholder from "../../../assets/img/placeholder_person.jpg";
 import {getDateTimeString} from "../../util/common";
-import {readEventsByFollowers} from "../../api/event.api";
+import {readAllEvents, readEventsByFollowers} from "../../api/event.api";
 import {readUserByEvent, readUserFollowerCount} from "../../api/user.api";
-import {Event} from '../../models/event.model';
+import {Event} from "../../models/event.model";
 import {User} from "../../models/user.model";
 
 export const BrowseEvents = () => {
+    return <main>
+        <header className="sub-menu">
+            <div className="actions">
+                <div className="back-action">
+
+                </div>
+                <h3 className="title">Browse Events</h3>
+                <div className="forward-action">
+
+                </div>
+            </div>
+        </header>
+        <Events/>
+    </main>
+};
+
+
+const Events = () => {
     const [events, setEvents] = useState<Event[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     useEffect(() => {
         setLoading(true);
-        readEventsByFollowers().then((events: Event[]) => {
-            setEvents(events);
+        readEventsByFollowers().then(async (events: Event[]) => {
+            if (events.length == 0) {
+                await readAllEvents().then((events: Event[]) => {
+                    setEvents(events);
+                });
+            } else {
+                setEvents(events);
+            }
+        }).catch(async () => {
+            await readAllEvents().then((events: Event[]) => {
+                setEvents(events);
+            });
         }).finally(() => {
             setLoading(false);
         });
     }, []);
 
-    if (!loading) {
-        return <main className="browse-events">
-            {events.map((e, i) => (<EventListing key={i} event={e}/>))}
-        </main>
-    } else {
+    if (loading) {
         return <div className="loading">
             <CircularProgress/>
         </div>
+    } else {
+        return <section className="browse-events">
+            {events.map((e, i) => (<EventListing key={i} event={e}/>))}
+        </section>
     }
 };
 

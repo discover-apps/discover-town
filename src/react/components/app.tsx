@@ -11,7 +11,6 @@ import Register from "./login/register";
 import Login from "./login/login";
 import {BrowseEvents} from "./browse/browseEvents";
 import {ViewEvent} from "./event/viewEvent";
-import Home from "./home/home";
 import ViewUser from "./user/viewUser";
 import {AdminRoute, UserRoute} from "../util/protected.route";
 import {ProfileEdit} from "./user/profileEdit";
@@ -44,7 +43,7 @@ const App = () => {
                 </header>
                 <div className="app_inner">
                     <Switch>
-                        <Route exact path="/" component={Home}/>
+                        <Route exact path="/" component={BrowseEvents}/>
                         <AdminRoute exact path="/admin" component={Dashboard}/>
                         <Route exact path="/login" component={Login}/>
                         <Route exact path="/register" component={Register}/>
