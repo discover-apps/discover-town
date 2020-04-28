@@ -8,6 +8,8 @@ import {useHistory, useParams} from "react-router-dom";
 import placeholder1 from "../../../assets/img/placeholder_item.png";
 import placeholder2 from "../../../assets/img/placeholder_person.jpg";
 import {readUserByEvent, readUserFollowerCount} from "../../api/user.api";
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import {User} from "../../models/user.model";
 import {useSelector} from "react-redux";
 import {
@@ -18,6 +20,7 @@ import {
     userAttendingEvent
 } from "../../api/event.api";
 import {GoogleMaps} from "../maps/googleMap";
+import {verifyAdmin} from "../../api/auth.api";
 
 export const ViewEvent = () => {
     const history = useHistory();
@@ -54,6 +57,7 @@ export const ViewEvent = () => {
                     </div>
                 </div>
             </header>
+            <EventAdmin user={user} event={event} followerCount={followers}/>
             <EventTitle user={user} event={event} followerCount={followers}/>
             <EventInformation user={user} event={event} followerCount={followers}/>
             <EventDetails user={user} event={event} followerCount={followers}/>
@@ -71,6 +75,54 @@ interface EventProps {
     event: Event;
     followerCount: number;
 }
+
+const EventAdmin = (props: EventProps) => {
+    const history = useHistory();
+    const [reportsNo, setReportsNo] = useState(0);
+    const [admin, setAdmin] = useState(false);
+    const [visible, setVisible] = useState(false);
+
+    useEffect(() => {
+        verifyAdmin().then(() => {
+            setAdmin(true);
+        });
+    }, []);
+
+    if (admin) {
+        return (
+            <section className="paper elevation-3 admin">
+                <div className="title">
+                    <span>Administration</span>
+                    {
+                        !visible ?
+                            <span onClick={() => setVisible(true)}>
+                                <KeyboardArrowDownIcon/>
+                            </span>
+                            :
+                            <span onClick={() => setVisible(false)}>
+                                <KeyboardArrowUpIcon/>
+                            </span>
+                    }
+                </div>
+                {
+                    visible ?
+                        <div className="contents">
+                            <p>Date created: {moment(props.event.datePosted).format("llll")}</p>
+                            <p>Number of reports: {reportsNo}</p>
+                            <div className="buttons">
+                                <button onClick={() => history.push(`/event/update/${props.event.id}`)}>Edit</button>
+                                <button onClick={() => history.push(`/event/view/${props.event.id}/reports`)}>Reports
+                                </button>
+                            </div>
+                        </div>
+                        : ""
+                }
+            </section>
+        );
+    } else {
+        return <div/>;
+    }
+};
 
 const EventTitle = (props: EventProps) => {
     const history = useHistory();

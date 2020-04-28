@@ -7,6 +7,32 @@ main.event {
     height: 24px;
     width: 24px;
   }
+
+  section.admin {
+    div.title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    div.contents {
+      padding: 1rem;
+      border-top: 1px solid #777;
+
+      p {
+        &:not(:last-child) {
+          margin-bottom: 1rem;
+        }
+      }
+
+      div.buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 1rem;
+      }
+    }
+  }
 }
 
 div.loading {

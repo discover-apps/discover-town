@@ -5,6 +5,7 @@ import Event, {EventLocation, UserAttendingEvent, UserHostingEvent} from "../../
 import {database} from "../_database";
 import {readUserById} from "../user/user.database";
 import {GOOGLE_MAPS_API_KEY} from "../../../util/secrets";
+import {authenticateAdmin} from "../auth/auth.database";
 
 export const createEvent = (event: Event, userId: number): Promise<number> => {
     return new Promise<number>((resolve, reject) => {
@@ -36,7 +37,8 @@ export const updateEvent = (event: Event, userId: number): Promise<string> => {
     return new Promise<string>(async (resolve, reject) => {
         const user: User = await readUserById(userId);
         const userValid: boolean = await validateUserHostingEvent(event, user);
-        if (!userValid) {
+        const userIsAdmin: boolean = await authenticateAdmin(userId);
+        if (!userValid && !userIsAdmin) {
             return reject("User not authorized to edit this event.");
         }
         validateEvent(event).then((event) => {
