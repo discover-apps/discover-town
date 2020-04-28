@@ -90,6 +90,11 @@ export const loginUser = (user: User, ip: string, agent: string): Promise<Sessio
     return new Promise<Session>(async (resolve, reject) => {
         const userRecord = await readUserByEmail(user.email);
         if (userRecord && user.password == userRecord.password) {
+            // check if user is banned
+            if (userRecord.banned) {
+                reject("Your account has been disabled, please contact support if you believe this is a mistake.");
+            }
+
             // create a session object
             const session: Session = {
                 userId: userRecord.id,
