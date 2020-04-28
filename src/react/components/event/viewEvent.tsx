@@ -83,8 +83,8 @@ const EventAdmin = (props: EventProps) => {
     const [visible, setVisible] = useState(false);
 
     useEffect(() => {
-        verifyAdmin().then(() => {
-            setAdmin(true);
+        verifyAdmin().then((admin: boolean) => {
+            setAdmin(admin);
         });
     }, []);
 

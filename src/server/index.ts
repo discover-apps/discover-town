@@ -41,6 +41,7 @@ app.post("/api/user/followers", userController.getFollowers);
 app.post("/api/user/following", userController.getFollowing);
 app.post("/api/user/readByEvent", userController.readByEvent);
 app.post("/api/user/readByUsername", userController.readByUsername);
+app.post("/api/user/banUserById", authenticateSession, userController.banUserById);
 // Event Routes
 app.post("/api/event/places", eventController.searchPlaces);
 app.post("/api/event/create", authenticateSession, eventController.create);

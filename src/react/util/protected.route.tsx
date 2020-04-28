@@ -28,8 +28,8 @@ export const AdminRoute = ({component: Component, ...rest}) => {
     const [authenticated, setAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
     useEffect(() => {
-        verifyAdmin().then(() => {
-            setAuthenticated(true);
+        verifyAdmin().then((admin: boolean) => {
+            setAuthenticated(admin);
         }).catch((error) => {
             console.error(error);
         }).finally(() => {

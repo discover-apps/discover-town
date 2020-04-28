@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {useParams} from 'react-router-dom';
+import React, {useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
 import {CircularProgress} from "@material-ui/core";
 import {readUserByUsername, readUserFollowerCount} from "../../api/user.api";
 import {ProfileHeader} from "./profileHeader";

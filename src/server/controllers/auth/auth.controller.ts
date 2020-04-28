@@ -138,8 +138,8 @@ export const registerUser = (user: User, ip: string, agent: string): Promise<Ses
 };
 
 export const verifyAdmin = (req: Request, res: Response) => {
-    authenticateAdmin(Number.parseInt(req.user.toString())).then(() => {
-        res.status(200).json(true);
+    authenticateAdmin(Number.parseInt(req.user.toString())).then((admin: boolean) => {
+        res.status(200).json(admin);
     }).catch((error) => {
         res.status(300).json(error);
     });

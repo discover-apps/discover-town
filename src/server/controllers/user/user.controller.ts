@@ -13,13 +13,14 @@ import {
 } from "../../database/user/user.database";
 import User from "../../models/user.model";
 import Event from "../../models/event.model";
+import {authenticateAdmin} from "../../database/auth/auth.database";
 
 export const readCurrentUser = (req: Request, res: Response) => {
     // get user id from req
     const userId = Number.parseInt(req.user.toString());
     // get user record from database
     readUserById(userId).then((user: User) => {
-        res.status(200).json({...user, password: ''});
+        res.status(200).json({...user, password: ""});
     }).catch((error) => {
         res.status(500).json(error);
     });
@@ -43,10 +44,10 @@ export const editUserProfile = (req: Request, res: Response) => {
     const user: User = req.body;
     // update user record in database
     updateUser(userId, user).then((rowsAffected) => {
-        res.status(200).json('Successfully update profile.');
+        res.status(200).json("Successfully update profile.");
     }).catch((error) => {
         res.status(500).json(error);
-    })
+    });
 };
 
 export const followUser = async (req: Request, res: Response) => {
@@ -128,5 +129,27 @@ export const readByEvent = async (req: Request, res: Response) => {
         res.status(200).json(user);
     }).catch((error) => {
         res.status(500).json(error);
+    });
+};
+
+export const banUserById = async (req: Request, res: Response) => {
+    // verify request is made by administrator
+    const rUserId = Number.parseInt(req.user.toString());
+    authenticateAdmin(rUserId).then(async () => {
+        // get user id from req
+        const userId = req.body.userId;
+        // get ban action
+        const banned = req.body.banned;
+        // get user object from database
+        let user = await readUserById(userId);
+        user.banned = banned;
+        // update user record
+        updateUser(userId, user).then((rowsAffected) => {
+            res.status(200).json("Successfully update profile.");
+        }).catch((error) => {
+            res.status(300).json(error);
+        });
+    }).catch((error) => {
+        res.status(300).json(error);
     });
 };

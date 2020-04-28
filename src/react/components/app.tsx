@@ -26,6 +26,8 @@ import {DiscoverCategory} from "./discover/discoverCategory";
 import {DiscoverPlace} from "./discover/discoverPlace";
 import {ListAttendees} from "./event/listAttendees";
 import {Dashboard} from "./admin/dashboard";
+import {EventReports} from "./event/eventReports";
+import {ManageUser} from "./user/manageUser";
 
 const App = () => {
     const sidebarOpen = useSelector((state: any) => state.sidebar.open);
@@ -50,14 +52,16 @@ const App = () => {
                         <Route exact path="/discover" component={Discover}/>
                         <Route exact path="/discover/:category" component={DiscoverCategory}/>
                         <Route exact path="/discover/place/:place_id" component={DiscoverPlace}/>
-                        <UserRoute exact path="/events/" component={Events}/>
+                        <UserRoute exact path="/events" component={Events}/>
                         <Route exact path="/event/view/:id" component={ViewEvent}/>
-                        <Route exact path="/event/view/:id/attendees/" component={ListAttendees}/>
+                        <Route exact path="/event/view/:id/attendees" component={ListAttendees}/>
+                        <AdminRoute exact path="/event/view/:id/reports" component={EventReports}/>
                         <UserRoute exact path="/event/update/:id" component={UpdateEvent}/>
-                        <UserRoute exact path="/event/create/" component={CreateEvent}/>
-                        <UserRoute exact path="/profile/edit/" component={ProfileEdit}/>
-                        <Route exact path='/profile/:username' component={ViewUser}/>
-                        <Route exact path='/profile/:username/followers' component={ProfileFollowers}/>
+                        <UserRoute exact path="/event/create" component={CreateEvent}/>
+                        <UserRoute exact path="/profile/edit" component={ProfileEdit}/>
+                        <AdminRoute exact path="/user/:username/manage" component={ManageUser}/>
+                        <Route exact path="/profile/:username" component={ViewUser}/>
+                        <Route exact path="/profile/:username/followers" component={ProfileFollowers}/>
                         <Route path="/" component={ErrorPage}/>
                     </Switch>
                 </div>
