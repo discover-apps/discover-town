@@ -26,7 +26,7 @@ export const Navbar = () => {
             <button className="icon-button" onClick={clickSidebar}>
                 <MenuIcon/>
             </button>
-            <span className="title"><img src={logo} alt="logo"/></span>
+            <span className="title" onClick={() => history.push("/")}><img src={logo} alt="logo"/></span>
             <button className="icon-button" onClick={clickProfile}>
                 <ProfileIcon/>
             </button>

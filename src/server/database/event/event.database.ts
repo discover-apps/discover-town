@@ -62,7 +62,8 @@ export const deleteEvent = (event: Event, userId: number): Promise<string> => {
     return new Promise<string>(async (resolve, reject) => {
         const user: User = await readUserById(userId);
         const userValid: boolean = await validateUserHostingEvent(event, user);
-        if (!userValid) {
+        const userIsAdmin: boolean = await authenticateAdmin(userId);
+        if (!userValid && !userIsAdmin) {
             return reject("User not authorized to edit this event.");
         }
         // delete all records from UserHostingEvent table
