@@ -94,7 +94,6 @@ export const loginUser = (user: User, ip: string, agent: string): Promise<Sessio
             if (userRecord.banned) {
                 reject("Your account has been disabled, please contact support if you believe this is a mistake.");
             }
-
             // create a session object
             const session: Session = {
                 userId: userRecord.id,
@@ -122,12 +121,10 @@ export const registerUser = (user: User, ip: string, agent: string): Promise<Ses
         if (user.username == "") {
             reject("Enter a valid username.");
         }
-
         // check if email is valid
         if (!emailValidator.validate(user.email)) {
             reject("Enter a valid e-mail address.");
         }
-
         // create user record in database
         createUser(user).then((userId: number) => {
             // login user
