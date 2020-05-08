@@ -11,7 +11,7 @@ export const ListAttendees = () => {
     const history = useHistory();
     const {id} = useParams();
     return (
-        <main>
+        <main className="attendees">
             <header className="sub-menu">
                 <div className="actions">
                     <div className="back-action">
@@ -52,7 +52,7 @@ const Attendees = () => {
         </section>
     } else {
         return <section>
-            <p>This event has no attendees!</p>
+            <p className="empty">This event has no attendees!</p>
         </section>
     }
 };
