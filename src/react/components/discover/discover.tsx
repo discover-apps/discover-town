@@ -7,6 +7,13 @@ import {DiscoverItem} from "./discoverItem";
 export const Discover = () => {
     return (
         <main className="discover">
+            <header className="sub-menu">
+                <div className="actions">
+                    <div className="back-action"/>
+                    <h3 className="title">Discover Places</h3>
+                    <div className="forward-action"/>
+                </div>
+            </header>
             <DiscoverCategory category={Category.TouristAttraction}/>
             <DiscoverCategory category={Category.AmusementPark}/>
             <DiscoverCategory category={Category.ArtGallery}/>
@@ -42,23 +49,27 @@ const DiscoverCategory = (props: DiscoverCategoryProps) => {
         });
     }, []);
 
-    return (
-        <div className="category">
-            <div className="menu">
-                <div className="title">
-                    {props.category.replace("_", " ")}
+    if (places.length > 0) {
+        return (
+            <div className="category">
+                <div className="menu">
+                    <div className="title">
+                        {props.category.replace("_", " ")}
+                    </div>
+                    <div className="link">
+                        <Link to={`/discover/${props.category}`}>See all ></Link>
+                    </div>
                 </div>
-                <div className="link">
-                    <Link to={`/discover/${props.category}`}>See all ></Link>
+                <div className="items">
+                    {places.map((p: GooglePlace) => {
+                        return <DiscoverItem key={p.name} place={p}/>
+                    })}
                 </div>
             </div>
-            <div className="items">
-                {places.map((p: GooglePlace) => {
-                    return <DiscoverItem key={p.name} place={p}/>
-                })}
-            </div>
-        </div>
-    );
+        );
+    } else {
+        return <div/>
+    }
 };
 
 export enum Category {
