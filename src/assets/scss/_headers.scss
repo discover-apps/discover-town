@@ -1,6 +1,8 @@
 header.sub-menu {
   background-color: $white-000;
-  box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2),
+  0 4px 5px 0 rgba(0, 0, 0, 0.14),
+  0 1px 10px 0 rgba(0, 0, 0, 0.12);
 
   div.actions {
     padding: 1rem;
@@ -108,6 +110,7 @@ header.sub-menu {
     display: grid;
     grid-template-columns: 1fr 1fr;
     border-top: 0.5px solid rgba(0, 0, 0, 0.45);
+    padding-top: 0.5px;
 
     div.tab {
       color: $black-777;
