@@ -66,9 +66,3 @@ const getDateMonth = (day: number): string => {
             return '???';
     }
 };
-
-export const getTimeString = (date: Date): string => {
-    let hours: number = date.getHours();
-    let minutes: number = date.getMinutes();
-    return `${hours > 12 ? hours - 12 : hours}:${minutes}${minutes < 10 ? '0' : ''} ${hours > 12 ? 'PM' : 'AM'}`;
-};
