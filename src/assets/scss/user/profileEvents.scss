@@ -38,6 +38,10 @@ section.profile-events {
     }
 
     div.details {
+      @media(min-width: $desktop) {
+        padding: 1rem;
+      }
+
       h3 {
         font-size: 1rem;
         font-weight: 800;

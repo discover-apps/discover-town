@@ -134,8 +134,14 @@ const Event = (props: EventProps) => {
                 <h3>{props.event.title}</h3>
                 <h4>{props.user.username}</h4>
                 {moment(props.event.dateStart).isAfter(moment()) ?
-                    <h5>Starts {moment.utc(props.event.dateStart).startOf("day").fromNow()}</h5> :
-                    <h5>Posted {moment.utc(props.event.datePosted).endOf("day").fromNow()}</h5>
+                    <div>
+                        <h4>Event Not Started</h4>
+                        <h5>Starts {moment.utc(props.event.dateStart).startOf("minute").fromNow()}</h5>
+                    </div> :
+                    <div>
+                        <h4>Event Completed</h4>
+                        <h5>Posted {moment.utc(props.event.datePosted).endOf("day").fromNow()}</h5>
+                    </div>
                 }
             </div>
         </div>
