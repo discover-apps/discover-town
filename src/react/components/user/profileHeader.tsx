@@ -53,10 +53,10 @@ export const ProfileHeader = (props: Props) => {
             </div>
             <div className="tabs tabs-3">
                 <div className={`tab ${selected(0)}`} onClick={() => props.setPage(0)}>
-                    activity
+                    events
                 </div>
                 <div className={`tab ${selected(1)}`} onClick={() => props.setPage(1)}>
-                    events
+                    activity
                 </div>
                 <div className={`tab ${selected(2)}`} onClick={() => props.setPage(2)}>
                     details

@@ -61,12 +61,12 @@ interface ProfileBodyProps {
 const ProfileBody = (props: ProfileBodyProps) => {
     switch (props.page) {
         case 0:
-            return <ProfileActivity user={props.user}/>;
-        case 1:
             return <ProfileEvents user={props.user}/>;
+        case 1:
+            return <ProfileActivity user={props.user}/>;
         case 2:
             return <ProfileDetails user={props.user}/>;
         default:
-            return <ProfileActivity user={props.user}/>;
+            return <ProfileEvents user={props.user}/>;
     }
 };
