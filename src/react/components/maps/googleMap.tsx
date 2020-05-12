@@ -12,7 +12,7 @@ interface GoogleMapsProps {
 export const GoogleMaps = (props: GoogleMapsProps) => {
     return (
         // Important! Always set the container height explicitly
-        <div style={{height: "225px", width: "100%"}}>
+        <div style={{height: "225px", width: "100%"}} className="map">
             <GoogleMapReact
                 yesIWantToUseGoogleMapApiInternals
                 bootstrapURLKeys={{key: "AIzaSyCFghWiQ6YR9gvIn572y9yTD49K3igUeiI"}}
